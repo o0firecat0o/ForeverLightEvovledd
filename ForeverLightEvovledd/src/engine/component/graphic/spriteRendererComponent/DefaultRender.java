@@ -30,12 +30,7 @@ public class DefaultRender extends SpriteRendererComponent {
 			shader = Shader.getShader("DEFAULT");
 		}
 
-		// if not intended to overide texture
-		if (TextureOveride == -1) {
-			GL11.glBindTexture(GL_TEXTURE_2D, spriteRenderer.texture);
-		} else {
-			GL11.glBindTexture(GL_TEXTURE_2D, TextureOveride);
-		}
+		GL11.glBindTexture(GL_TEXTURE_2D, spriteRenderer.texture);
 
 		shader.enable();
 		if (gameObject == null || gameObject.transform == null) {
@@ -43,8 +38,8 @@ public class DefaultRender extends SpriteRendererComponent {
 		}
 		shader.setUniformMat4f("ml_matrix",
 				Maths.createTransformationMatrix(gameObject.transform.position, gameObject.transform.rotation,
-						new Vector2f(gameObject.transform.getScale().x * spriteRenderer.graphicScaleOffset,
-								gameObject.transform.getScale().y * spriteRenderer.graphicScaleOffset)));
+						new Vector2f(gameObject.transform.getScale().x * graphicScaleOffset,
+								gameObject.transform.getScale().y * graphicScaleOffset)));
 		shader.setUniform3f("colorTaint", Color);
 
 		VertexArray.mesh_NORAML.render();

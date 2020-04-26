@@ -90,8 +90,8 @@ public class ShieldRenderer extends SpriteRendererComponent {
 
 		shader.setUniformMat4f("ml_matrix",
 				Maths.createTransformationMatrix(gameObject.transform.position, gameObject.transform.rotation,
-						new Vector2f(gameObject.transform.getScale().x * spriteRenderer.graphicScaleOffset,
-								gameObject.transform.getScale().y * spriteRenderer.graphicScaleOffset)));
+						new Vector2f(gameObject.transform.getScale().x * graphicScaleOffset,
+								gameObject.transform.getScale().y * graphicScaleOffset)));
 
 		shader.setUniform2f("ScreenSize", Main.getWidth(), Main.getHeight());
 		shader.setUniform1f("timer", timer / 600f);

@@ -75,6 +75,7 @@ import engine.component.graphic.SpriteRenderer;
 import engine.component.graphic.Texture;
 import engine.component.graphic.VertexArray;
 import engine.component.graphic.instancedRendering.InstancedRenderer;
+import engine.component.graphic.spriteRendererComponent.SpriteRendererComponent;
 import engine.font.FontRenderer;
 import engine.input.InputKey;
 import engine.input.InputMouseButton;
@@ -255,8 +256,8 @@ public class Render implements Runnable {
 		glViewport(0, 0, Main.getWidth(), Main.getHeight());
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, bloomFrameBuffer.FrameBufferID);
 		glClear(GL_DEPTH_BUFFER_BIT);
-		for (int i = 0; i < SpriteRenderer.allSpriteRenderer.size(); i++) {
-			SpriteRenderer.allSpriteRenderer.get(i).render(bloomFrameBuffer.FrameBufferID);
+		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
+			SpriteRenderer.allSpriteRendererComponents.get(i).render(bloomFrameBuffer.FrameBufferID);
 		}
 		InstancedRenderer.Render(bloomFrameBuffer.FrameBufferID);
 
@@ -264,8 +265,8 @@ public class Render implements Runnable {
 		glViewport(0, 0, Main.getWidth(), Main.getHeight());
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, rippleDistortion.FrameBufferID);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		for (int i = 0; i < SpriteRenderer.allSpriteRenderer.size(); i++) {
-			SpriteRenderer.allSpriteRenderer.get(i).render(rippleDistortion.FrameBufferID);
+		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
+			SpriteRenderer.allSpriteRendererComponents.get(i).render(rippleDistortion.FrameBufferID);
 		}
 		InstancedRenderer.Render(rippleDistortion.FrameBufferID);
 
@@ -277,8 +278,8 @@ public class Render implements Runnable {
 		// the actual background color is here!
 		fullScreenRender(Shader.getShader("UI"), Texture.getTexture("bg"), 0);
 
-		for (int i = 0; i < SpriteRenderer.allSpriteRenderer.size(); i++) {
-			SpriteRenderer.allSpriteRenderer.get(i).render(mainFrameBuffer.FrameBufferID);
+		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
+			SpriteRenderer.allSpriteRendererComponents.get(i).render(mainFrameBuffer.FrameBufferID);
 		}
 
 		InstancedRenderer.Render(mainFrameBuffer.FrameBufferID);
@@ -308,8 +309,8 @@ public class Render implements Runnable {
 		fullScreenRender(Shader.getShader("VBlur"), firstBlur.colorTextureID, 0);
 
 		// Render the stuff that does not need blur, hence, only glow
-		for (int i = 0; i < SpriteRenderer.allSpriteRenderer.size(); i++) {
-			SpriteRenderer.allSpriteRenderer.get(i).render(finalBlur.FrameBufferID);
+		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
+			SpriteRenderer.allSpriteRendererComponents.get(i).render(finalBlur.FrameBufferID);
 		}
 		InstancedRenderer.Render(finalBlur.FrameBufferID);
 
@@ -330,8 +331,8 @@ public class Render implements Runnable {
 		fullScreenRender(Shader.getShader("Ripple"), postBloomShader.FrameBufferID, rippleDistortion.colorTextureID);
 
 		// Main Render 2
-		for (int i = 0; i < SpriteRenderer.allSpriteRenderer.size(); i++) {
-			SpriteRenderer.allSpriteRenderer.get(i).render(mainFrameBuffer2.FrameBufferID);
+		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
+			SpriteRenderer.allSpriteRendererComponents.get(i).render(mainFrameBuffer2.FrameBufferID);
 		}
 		InstancedRenderer.Render(mainFrameBuffer2.FrameBufferID);
 

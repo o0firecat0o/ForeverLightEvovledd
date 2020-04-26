@@ -12,35 +12,21 @@ public class SpriteRenderer extends Component {
 
 	public static Matrix4f pr_matrix = new Matrix4f().ortho(0, Main.getWidth(), 0, Main.getHeight(), -10, 10);
 
-	public static ArrayList<SpriteRenderer> allSpriteRenderer = new ArrayList<>();
-
 	private ArrayList<SpriteRendererComponent> spriterenderercomponents = new ArrayList<>();
+
+	public static ArrayList<SpriteRendererComponent> allSpriteRendererComponents = new ArrayList<>();
 
 	public int texture;
 
 	// scaling by NOT following the gameobject scale
-	public float graphicScaleOffset = 1f;
 
 	public SpriteRenderer() {
-		allSpriteRenderer.add(this);
+
 	}
 
 	@Override
 	protected void Start() {
 
-	}
-
-	// This function will be called in the render loop
-	public void render(int FrameBufferObjectID) {
-		for (int i = 0; i < spriterenderercomponents.size(); i++) {
-			SpriteRendererComponent component = spriterenderercomponents.get(i);
-			if (component.FrameBufferIDs == null) {
-				continue;
-			}
-			if (component.FrameBufferIDs.contains(FrameBufferObjectID)) {
-				component.Render(FrameBufferObjectID);
-			}
-		}
 	}
 
 	@Override
@@ -53,7 +39,6 @@ public class SpriteRenderer extends Component {
 		 * GL30.glBindVertexArray(0); GL30.glDeleteVertexArrays(mesh.vao); } mesh =
 		 * null;
 		 */
-		allSpriteRenderer.remove(this);
 
 		for (int i = 0; i < spriterenderercomponents.size(); i++) {
 			spriterenderercomponents.get(i).Destroy();
@@ -64,11 +49,6 @@ public class SpriteRenderer extends Component {
 
 	public SpriteRenderer SetTexture(int texture) {
 		this.texture = texture;
-		return this;
-	}
-
-	public SpriteRenderer SetGraphicScaleOffset(float graphicScaleOffset) {
-		this.graphicScaleOffset = graphicScaleOffset;
 		return this;
 	}
 

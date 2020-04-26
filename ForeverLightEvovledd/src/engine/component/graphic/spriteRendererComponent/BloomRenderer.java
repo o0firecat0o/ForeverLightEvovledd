@@ -43,8 +43,8 @@ public class BloomRenderer extends SpriteRendererComponent {
 		}
 		shader.setUniformMat4f("ml_matrix",
 				Maths.createTransformationMatrix(gameObject.transform.position, gameObject.transform.rotation,
-						new Vector2f(gameObject.transform.getScale().x * spriteRenderer.graphicScaleOffset,
-								gameObject.transform.getScale().y * spriteRenderer.graphicScaleOffset)));
+						new Vector2f(gameObject.transform.getScale().x * graphicScaleOffset,
+								gameObject.transform.getScale().y * graphicScaleOffset)));
 
 		VertexArray.mesh_NORAML.render();
 

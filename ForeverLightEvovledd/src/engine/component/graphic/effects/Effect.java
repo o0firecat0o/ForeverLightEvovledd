@@ -33,10 +33,9 @@ public class Effect {
 	 * Add a tail to gameObject
 	 * 
 	 * @param spriteRenderer
-	 * @param TextureOveride
-	 *            enter -1 if overriding is NOT intended
-	 * @param number_of_interpolation
-	 *            0 if you dont want any, 1 if you want 1 in between, etc
+	 * @param TextureOveride          enter -1 if overriding is NOT intended
+	 * @param number_of_interpolation 0 if you dont want any, 1 if you want 1 in
+	 *                                between, etc
 	 */
 	public static void Tail(SpriteRenderer spriteRenderer, int Texture_Overide, int number_of_interpolation,
 			Vector4f projectileColor) {
@@ -95,8 +94,6 @@ public class Effect {
 
 				SetFrameBuffer(Render.mainFrameBuffer);
 				SetFrameBuffer(Render.finalBlur);
-				// set the overiding of spriteRenderer Texture
-				setTextureOveride(Texture_Overide);
 			}
 		});
 	}

@@ -55,8 +55,6 @@ public class ExplosionB extends Component {
 
 					Particles.add(particle);
 				}
-
-				setTextureOveride(Texture.getTexture("BlurDot"));
 				SetFrameBuffer(Render.finalBlur);
 			}
 

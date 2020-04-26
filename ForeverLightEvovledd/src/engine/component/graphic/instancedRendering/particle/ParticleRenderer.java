@@ -28,12 +28,9 @@ public abstract class ParticleRenderer extends SpriteRendererComponent {
 			instancedRenderObjects.add(new InstancedRenderObject(matrix4f, particle.color));
 
 		}
-		// if the texture is not intended to overide
-		if (TextureOveride == -1) {
-			InstancedRenderer.Add(instancedRenderObjects, spriteRenderer.texture, FrameBufferObjectID);
-		} else {
-			InstancedRenderer.Add(instancedRenderObjects, TextureOveride, FrameBufferObjectID);
-		}
+
+		InstancedRenderer.Add(instancedRenderObjects, spriteRenderer.texture, FrameBufferObjectID);
+
 	}
 
 	@Override

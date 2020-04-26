@@ -1,8 +1,10 @@
 package engine.component.graphic.spriteRendererComponent;
 
+import java.io.Console;
 import java.util.ArrayList;
 
 import engine.component.graphic.*;
+import engine.object.Component;
 
 public abstract class SpriteRendererComponent {
 	public abstract void Render(int FrameBufferObjectID);
@@ -11,25 +13,26 @@ public abstract class SpriteRendererComponent {
 
 	public abstract void Start();
 
-	protected int TextureOveride = -1;
-
-	/**
-	 * overide the parent spriteRenderer Texture
-	 * 
-	 * @param TextureID
-	 */
-	public void setTextureOveride(int TextureID) {
-		TextureOveride = TextureID;
-	}
-
-	public SpriteRendererComponent() {
-		Start();
-	}
-
-	public SpriteRenderer spriteRenderer;
+	public int texture = 0;
 
 	// which frame buffer to render to?
 	public ArrayList<Integer> FrameBufferIDs = new ArrayList<>();
+
+	protected float graphicScaleOffset = 1f;
+
+	public SpriteRendererComponent() {
+		Start();
+		SpriteRenderer.allSpriteRendererComponents.add(this);
+	}
+
+	// This function will be called in the render loop
+	public void render(int FrameBufferObjectID) {
+		if (FrameBufferIDs.contains(FrameBufferObjectID)) {
+			Render(FrameBufferObjectID);
+		}
+	}
+
+	public SpriteRenderer spriteRenderer;
 
 	public void Destroy() {
 		spriteRenderer = null;
@@ -37,6 +40,11 @@ public abstract class SpriteRendererComponent {
 			FrameBufferIDs.clear();
 			FrameBufferIDs = null;
 		}
+		SpriteRenderer.allSpriteRendererComponents.remove(this);
+	}
+
+	public void setGraphicScaleOffset(float f) {
+		graphicScaleOffset = f;
 	}
 
 	public <T extends SpriteRendererComponent> T AddFrameBuffer(FrameBufferObject fbo) {

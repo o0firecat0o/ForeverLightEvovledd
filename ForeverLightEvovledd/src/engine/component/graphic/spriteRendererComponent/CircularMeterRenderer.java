@@ -71,8 +71,8 @@ public class CircularMeterRenderer extends SpriteRendererComponent {
 		}
 		shader.setUniformMat4f("ml_matrix",
 				Maths.createTransformationMatrix(gameObject.transform.position, gameObject.transform.rotation,
-						new Vector2f(gameObject.transform.getScale().x * spriteRenderer.graphicScaleOffset,
-								gameObject.transform.getScale().y * spriteRenderer.graphicScaleOffset)));
+						new Vector2f(gameObject.transform.getScale().x * graphicScaleOffset,
+								gameObject.transform.getScale().y * graphicScaleOffset)));
 
 		shader.setUniform1f("precentage", precentage);
 		shader.setUniform1f("thickness", thickness);
