@@ -27,15 +27,13 @@ public class BloomRenderer extends SpriteRendererComponent {
 	public void Render(int FrameBufferObjectID) {
 		Shader shader;
 
-		GameObject gameObject = spriteRenderer.gameObject;
-
 		if (gameObject instanceof UIObject) {
 			shader = Shader.getShader("UI");
 		} else {
 			shader = Shader.getShader("DEFAULT");
 		}
 
-		GL11.glBindTexture(GL_TEXTURE_2D, spriteRenderer.texture);
+		GL11.glBindTexture(GL_TEXTURE_2D, texture);
 
 		shader.enable();
 		if (gameObject == null || gameObject.transform == null) {

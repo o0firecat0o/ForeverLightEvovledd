@@ -38,7 +38,7 @@ public class LineRenderer extends SpriteRendererComponent {
 	public void Update() {
 		timer++;
 		if (timer2 > fadeTime) {
-			spriteRenderer.gameObject.InitDestroy();
+			gameObject.InitDestroy();
 		}
 		if (fade) {
 			timer2++;

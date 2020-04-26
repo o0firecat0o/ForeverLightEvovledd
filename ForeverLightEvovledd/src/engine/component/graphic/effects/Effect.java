@@ -5,6 +5,7 @@ import org.joml.*;
 import engine.component.graphic.*;
 import engine.component.graphic.instancedRendering.particle.*;
 import engine.component.graphic.spriteRendererComponent.DefaultRender;
+import engine.component.graphic.spriteRendererComponent.SpriteRendererComponent;
 import engine.main.Render;
 import engine.math.Mathf;
 import engine.object.GameObject;
@@ -16,8 +17,7 @@ public class Effect {
 		GameObject gameObject = new GameObject();
 		gameObject.transform.setPosition(position);
 
-		gameObject.AddComponent(new SpriteRenderer())
-				.addSpriteRendererComponent(new DefaultRender().SetFrameBuffer(Render.rippleDistortion));
+		gameObject.AddComponent(new DefaultRender().SetFrameBuffer(Render.rippleDistortion));
 		gameObject.AddComponent(new Animation()).Load("ripple");
 		gameObject.GetComponent(Animation.class).AddFunction(new IAnimationFunction() {
 
@@ -37,9 +37,9 @@ public class Effect {
 	 * @param number_of_interpolation 0 if you dont want any, 1 if you want 1 in
 	 *                                between, etc
 	 */
-	public static void Tail(SpriteRenderer spriteRenderer, int Texture_Overide, int number_of_interpolation,
+	public static void Tail(GameObject gameObject, int Texture_Overide, int number_of_interpolation,
 			Vector4f projectileColor) {
-		spriteRenderer.addSpriteRendererComponent(new ParticleRenderer() {
+		gameObject.AddComponent(new ParticleRenderer() {
 
 			// Previous position of the gameObject
 			Vector2f PreviousPosition;
@@ -55,11 +55,11 @@ public class Effect {
 				// if it is the first frame
 				if (PreviousPosition == null) {
 					// prevent previous position stuck at 0,0,0
-					PreviousPosition = spriteRenderer.gameObject.transform.getPositionVector2f();
+					PreviousPosition = gameObject.transform.getPositionVector2f();
 				} else {
 					PreviousPosition = CurrentPosition;
 				}
-				CurrentPosition = spriteRenderer.gameObject.transform.getPositionVector2f();
+				CurrentPosition = gameObject.transform.getPositionVector2f();
 
 				for (int i = 0; i < number_of_interpolation + 1; i++) {
 					Vector2f position_of_particle = Mathf.interpolation(PreviousPosition, CurrentPosition,
@@ -82,8 +82,8 @@ public class Effect {
 					Particles.add(particle);
 					particle.transform.setPosition(position_of_particle);
 					particle.transform.setPosition(-4f);
-					particle.transform.rotation = spriteRenderer.gameObject.transform.rotation;
-					particle.transform.setScale(spriteRenderer.gameObject.transform.getScale());
+					particle.transform.rotation = gameObject.transform.rotation;
+					particle.transform.setScale(gameObject.transform.getScale());
 				}
 
 			}

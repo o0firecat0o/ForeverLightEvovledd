@@ -10,26 +10,14 @@ public class GameObject extends UpdatableObject {
 
 	public boolean blockRayCast = false;
 
+	ArrayList<Component> ComponentList = new ArrayList<Component>();
+
 	public void setTag(String Tag) {
 		this.Tag = Tag;
 	}
 
 	public String getTag() {
 		return Tag;
-	}
-
-	public static ArrayList<GameObject> getGameObjectswithTag(String Name) {
-		ArrayList<GameObject> returnList = new ArrayList<>();
-		for (int i = 0; i < UpdatableObject.AllUpdatableObject.size(); i++) {
-			UpdatableObject updatableObject = UpdatableObject.AllUpdatableObject.get(i);
-			if (updatableObject instanceof GameObject) {
-				GameObject gObject = (GameObject) updatableObject;
-				if (gObject.getTag().equals(Name)) {
-					returnList.add(gObject);
-				}
-			}
-		}
-		return returnList;
 	}
 
 	@Override
@@ -49,7 +37,29 @@ public class GameObject extends UpdatableObject {
 		}
 	}
 
-	ArrayList<Component> ComponentList = new ArrayList<Component>();
+	@Override
+	protected void Destroy() {
+		if (ComponentList != null) {
+			while (ComponentList.size() >= 1) {
+				ComponentList.get(0).Destroy();
+			}
+		}
+		super.Destroy();
+	}
+
+	public static ArrayList<GameObject> getGameObjectswithTag(String Name) {
+		ArrayList<GameObject> returnList = new ArrayList<>();
+		for (int i = 0; i < UpdatableObject.AllUpdatableObject.size(); i++) {
+			UpdatableObject updatableObject = UpdatableObject.AllUpdatableObject.get(i);
+			if (updatableObject instanceof GameObject) {
+				GameObject gObject = (GameObject) updatableObject;
+				if (gObject.getTag().equals(Name)) {
+					returnList.add(gObject);
+				}
+			}
+		}
+		return returnList;
+	}
 
 	public <T extends Component> T AddComponent(T component) throws RuntimeException {
 		if (HasComponent(component.getClass())) {
@@ -138,16 +148,6 @@ public class GameObject extends UpdatableObject {
 		throw new RuntimeException(
 				"There is no componentClass: " + componentClass + "when trying to remove the component");
 
-	}
-
-	@Override
-	protected void Destroy() {
-		if (ComponentList != null) {
-			while (ComponentList.size() >= 1) {
-				ComponentList.get(0).Destroy();
-			}
-		}
-		super.Destroy();
 	}
 
 	@Override

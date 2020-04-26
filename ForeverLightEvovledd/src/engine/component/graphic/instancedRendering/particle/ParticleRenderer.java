@@ -29,7 +29,7 @@ public abstract class ParticleRenderer extends SpriteRendererComponent {
 
 		}
 
-		InstancedRenderer.Add(instancedRenderObjects, spriteRenderer.texture, FrameBufferObjectID);
+		InstancedRenderer.Add(instancedRenderObjects, texture, FrameBufferObjectID);
 
 	}
 

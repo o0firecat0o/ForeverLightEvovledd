@@ -2,6 +2,7 @@ package engine.component.graphic;
 
 import java.util.ArrayList;
 
+import engine.component.graphic.spriteRendererComponent.DefaultRender;
 import engine.object.Component;
 
 public class Animation extends Component {
@@ -31,7 +32,7 @@ public class Animation extends Component {
 			timer = 0;
 		}
 
-		gameObject.GetComponent(SpriteRenderer.class).SetTexture(textureIDs.get(timer));
+		gameObject.GetComponent(DefaultRender.class).SetTexture(textureIDs.get(timer));
 
 	}
 

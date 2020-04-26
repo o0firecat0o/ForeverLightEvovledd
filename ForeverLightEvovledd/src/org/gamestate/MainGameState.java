@@ -1,7 +1,10 @@
 package org.gamestate;
 
+import engine.component.graphic.Texture;
+import engine.component.graphic.spriteRendererComponent.DefaultRender;
 import engine.gamestate.*;
 import engine.network.MPNetworkManager;
+import engine.object.GameObject;
 
 public class MainGameState implements IGameState {
 
@@ -17,9 +20,6 @@ public class MainGameState implements IGameState {
 
 	@Override
 	public void Init() {
-		MPNetworkManager.gameStateAfterInitiation = new GamingGameState();
-		// MPNetworkManager.InitServerClientByPanel();
-		// delete this if intended to multiplayer
-		GameState.SwitchGameState(MPNetworkManager.gameStateAfterInitiation);
+
 	}
 }

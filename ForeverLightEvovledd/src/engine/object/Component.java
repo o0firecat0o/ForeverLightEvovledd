@@ -19,7 +19,6 @@ public abstract class Component {
 
 	protected void Destroy() {
 		gameObject.ComponentList.remove(this);
-		gameObject = null;
 	}
 
 	public static ArrayList<Component> toStartComponent = new ArrayList<>();

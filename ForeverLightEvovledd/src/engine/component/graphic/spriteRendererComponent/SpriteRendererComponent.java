@@ -6,12 +6,8 @@ import java.util.ArrayList;
 import engine.component.graphic.*;
 import engine.object.Component;
 
-public abstract class SpriteRendererComponent {
+public abstract class SpriteRendererComponent extends Component {
 	public abstract void Render(int FrameBufferObjectID);
-
-	public abstract void Update();
-
-	public abstract void Start();
 
 	public int texture = 0;
 
@@ -21,7 +17,6 @@ public abstract class SpriteRendererComponent {
 	protected float graphicScaleOffset = 1f;
 
 	public SpriteRendererComponent() {
-		Start();
 		SpriteRenderer.allSpriteRendererComponents.add(this);
 	}
 
@@ -32,19 +27,24 @@ public abstract class SpriteRendererComponent {
 		}
 	}
 
-	public SpriteRenderer spriteRenderer;
-
+	@Override
 	public void Destroy() {
-		spriteRenderer = null;
 		if (FrameBufferIDs != null) {
 			FrameBufferIDs.clear();
 			FrameBufferIDs = null;
 		}
 		SpriteRenderer.allSpriteRendererComponents.remove(this);
+		super.Destroy();
 	}
 
-	public void setGraphicScaleOffset(float f) {
+	public <T extends SpriteRendererComponent> T SetTexture(int texture) {
+		this.texture = texture;
+		return (T) this;
+	}
+
+	public <T extends SpriteRendererComponent> T setGraphicScaleOffset(float f) {
 		graphicScaleOffset = f;
+		return (T) this;
 	}
 
 	public <T extends SpriteRendererComponent> T AddFrameBuffer(FrameBufferObject fbo) {

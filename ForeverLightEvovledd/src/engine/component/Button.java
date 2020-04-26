@@ -3,6 +3,7 @@ package engine.component;
 import org.joml.Vector2f;
 
 import engine.component.graphic.SpriteRenderer;
+import engine.component.graphic.spriteRendererComponent.DefaultRender;
 import engine.component.physic.ShapeType;
 import engine.input.InputMouseButton;
 import engine.object.*;
@@ -12,11 +13,11 @@ public class Button extends Component {
 	@Override
 	protected void Update() {
 		if (pressedTexture != 0 && IsHeld()) {
-			gameObject.GetComponent(SpriteRenderer.class).SetTexture(pressedTexture);
+			gameObject.GetComponent(DefaultRender.class).SetTexture(pressedTexture);
 		} else if (hoverTexture != 0 && IsHover()) {
-			gameObject.GetComponent(SpriteRenderer.class).SetTexture(hoverTexture);
+			gameObject.GetComponent(DefaultRender.class).SetTexture(hoverTexture);
 		} else {
-			gameObject.GetComponent(SpriteRenderer.class).SetTexture(unhoverTexture);
+			gameObject.GetComponent(DefaultRender.class).SetTexture(unhoverTexture);
 		}
 	}
 

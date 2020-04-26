@@ -61,8 +61,6 @@ public class CircularMeterRenderer extends SpriteRendererComponent {
 
 		Shader shader;
 
-		GameObject gameObject = spriteRenderer.gameObject;
-
 		shader = Shader.getShader("CircularMeter");
 
 		shader.enable();

@@ -70,8 +70,6 @@ public class ShieldRenderer extends SpriteRendererComponent {
 		// GL11.GL_ONE_MINUS_SRC_ALPHA);
 		// org.lwjgl.opengl.ARBImaging.glBlendEquation(org.lwjgl.opengl.ARBImaging.GL_MIN);
 
-		GameObject gameObject = spriteRenderer.gameObject;
-
 		glActiveTexture(GL_TEXTURE1);
 		GL11.glBindTexture(GL_TEXTURE_2D, Texture.getTexture("shield"));
 
