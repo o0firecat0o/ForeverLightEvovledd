@@ -14,7 +14,7 @@ public class SpriteRenderer extends Component {
 
 	public static ArrayList<SpriteRenderer> allSpriteRenderer = new ArrayList<>();
 
-	public static void loadDefault() {
+	public static void loadDefaultMesh_normal() {
 		float SIZE_X = 100 / 2;
 		float SIZE_Y = 100 / 2;
 		float[] vertices = new float[] { -SIZE_X, -SIZE_Y, 0f, -SIZE_X, SIZE_Y, 0f, SIZE_X, SIZE_Y, 0f, SIZE_X, -SIZE_Y,
@@ -25,7 +25,8 @@ public class SpriteRenderer extends Component {
 		mesh_NORAML = new VertexArray(vertices, indices, tcs);
 	}
 
-	public static void loadDefault2() {
+	// full screen mesh is used in FBO rendering
+	public static void loadDefaultMesh_FBO() {
 		float SIZE_X = 1f;
 		float SIZE_Y = 1f;
 		float[] vertices = new float[] { 0, 0, 0f, 0, SIZE_Y, 0f, SIZE_X, SIZE_Y, 0f, SIZE_X, 0, 0f };
@@ -72,11 +73,10 @@ public class SpriteRenderer extends Component {
 		// OLD
 		/*
 		 * clean up the glsl memory if (mesh != null) {
-		 * GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-		 * GL15.glDeleteBuffers(mesh.vbo);
+		 * GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0); GL15.glDeleteBuffers(mesh.vbo);
 		 *
-		 * GL30.glBindVertexArray(0); GL30.glDeleteVertexArrays(mesh.vao); }
-		 * mesh = null;
+		 * GL30.glBindVertexArray(0); GL30.glDeleteVertexArrays(mesh.vao); } mesh =
+		 * null;
 		 */
 		allSpriteRenderer.remove(this);
 

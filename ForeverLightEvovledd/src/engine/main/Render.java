@@ -175,8 +175,8 @@ public class Render implements Runnable {
 		FontRenderer.init();
 
 		// load default shaders
-		SpriteRenderer.loadDefault();
-		SpriteRenderer.loadDefault2();
+		SpriteRenderer.loadDefaultMesh_normal();
+		SpriteRenderer.loadDefaultMesh_FBO();
 		// load default textures
 		Texture.LoadDefault(new File("res/Sprites"));
 
