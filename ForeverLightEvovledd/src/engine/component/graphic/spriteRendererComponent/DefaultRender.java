@@ -47,7 +47,7 @@ public class DefaultRender extends SpriteRendererComponent {
 								gameObject.transform.getScale().y * spriteRenderer.graphicScaleOffset)));
 		shader.setUniform3f("colorTaint", Color);
 
-		SpriteRenderer.mesh_NORAML.render();
+		VertexArray.mesh_NORAML.render();
 
 		shader.disable();
 		glBindTexture(GL_TEXTURE_2D, 0);

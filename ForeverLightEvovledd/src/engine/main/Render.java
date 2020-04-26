@@ -73,6 +73,7 @@ import engine.component.graphic.FrameBufferObject;
 import engine.component.graphic.Shader;
 import engine.component.graphic.SpriteRenderer;
 import engine.component.graphic.Texture;
+import engine.component.graphic.VertexArray;
 import engine.component.graphic.instancedRendering.InstancedRenderer;
 import engine.font.FontRenderer;
 import engine.input.InputKey;
@@ -174,9 +175,9 @@ public class Render implements Runnable {
 		// init TextMaster
 		FontRenderer.init();
 
-		// load default shaders
-		SpriteRenderer.loadDefaultMesh_normal();
-		SpriteRenderer.loadDefaultMesh_FBO();
+		// load default mesh
+		VertexArray.loadDefaultMesh_normal();
+		VertexArray.loadDefaultMesh_FBO();
 		// load default textures
 		Texture.LoadDefault(new File("res/Sprites"));
 
@@ -365,7 +366,7 @@ public class Render implements Runnable {
 		shader.setUniformMat4f("ml_matrix",
 				Maths.createTransformationMatrix(new Vector3f(0, 0, -10), 0, new Vector2f(1f, 1f)));
 		shader.setUniformMat4f("pr_matrix", new Matrix4f().ortho(0, 1, 1, 0, -10, 10));
-		SpriteRenderer.mesh_FULSCREEN.render();
+		VertexArray.mesh_FULSCREEN.render();
 
 		shader.disable();
 

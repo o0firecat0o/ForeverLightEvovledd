@@ -99,7 +99,7 @@ public class ShieldRenderer extends SpriteRendererComponent {
 		shader.setUniform1f("edgeThickness", edgeThickness);
 		shader.setUniform3f("shieldColor", shieldColor);
 
-		SpriteRenderer.mesh_NORAML.render();
+		VertexArray.mesh_NORAML.render();
 
 		shader.disable();
 

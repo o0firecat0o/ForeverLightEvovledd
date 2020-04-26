@@ -62,7 +62,7 @@ public class Font extends Component {
 						gameObject.transform.rotation, new Vector2f(scale.x * FontSize, scale.y * FontSize)))
 				.setUniform1i("x_size", Text_Length).setUniform1i("y_size", number_of_lines);
 
-		SpriteRenderer.mesh_NORAML.render();
+		VertexArray.mesh_NORAML.render();
 		shader.disable();
 		glBindTexture(GL_TEXTURE_2D, 0);
 

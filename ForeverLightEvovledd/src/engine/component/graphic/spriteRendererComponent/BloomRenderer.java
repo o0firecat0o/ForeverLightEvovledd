@@ -46,7 +46,7 @@ public class BloomRenderer extends SpriteRendererComponent {
 						new Vector2f(gameObject.transform.getScale().x * spriteRenderer.graphicScaleOffset,
 								gameObject.transform.getScale().y * spriteRenderer.graphicScaleOffset)));
 
-		SpriteRenderer.mesh_NORAML.render();
+		VertexArray.mesh_NORAML.render();
 
 		shader.disable();
 		glBindTexture(GL_TEXTURE_2D, 0);

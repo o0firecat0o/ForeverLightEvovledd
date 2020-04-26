@@ -14,31 +14,6 @@ public class SpriteRenderer extends Component {
 
 	public static ArrayList<SpriteRenderer> allSpriteRenderer = new ArrayList<>();
 
-	public static void loadDefaultMesh_normal() {
-		float SIZE_X = 100 / 2;
-		float SIZE_Y = 100 / 2;
-		float[] vertices = new float[] { -SIZE_X, -SIZE_Y, 0f, -SIZE_X, SIZE_Y, 0f, SIZE_X, SIZE_Y, 0f, SIZE_X, -SIZE_Y,
-				0f };
-		byte[] indices = new byte[] { 0, 1, 2, 2, 3, 0 };
-		float[] tcs = new float[] { 0, 1, 0, 0, 1, 0, 1, 1 };
-
-		mesh_NORAML = new VertexArray(vertices, indices, tcs);
-	}
-
-	// full screen mesh is used in FBO rendering
-	public static void loadDefaultMesh_FBO() {
-		float SIZE_X = 1f;
-		float SIZE_Y = 1f;
-		float[] vertices = new float[] { 0, 0, 0f, 0, SIZE_Y, 0f, SIZE_X, SIZE_Y, 0f, SIZE_X, 0, 0f };
-		byte[] indices = new byte[] { 0, 1, 2, 2, 3, 0 };
-		float[] tcs = new float[] { 0, 1, 0, 0, 1, 0, 1, 1 };
-
-		mesh_FULSCREEN = new VertexArray(vertices, indices, tcs);
-	}
-
-	public static VertexArray mesh_NORAML;
-	public static VertexArray mesh_FULSCREEN;
-
 	private ArrayList<SpriteRendererComponent> spriterenderercomponents = new ArrayList<>();
 
 	public int texture;

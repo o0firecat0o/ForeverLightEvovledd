@@ -18,8 +18,7 @@ public class CircularMeterRenderer extends SpriteRendererComponent {
 	/**
 	 * setting the angle
 	 * 
-	 * @param angle
-	 *            from 0 to 1;
+	 * @param angle from 0 to 1;
 	 * @return
 	 */
 	public CircularMeterRenderer setPrecentage(float precentage) {
@@ -30,8 +29,7 @@ public class CircularMeterRenderer extends SpriteRendererComponent {
 	/**
 	 * setting the thickness of the line
 	 * 
-	 * @param thickness
-	 *            from 0 to 0.5
+	 * @param thickness from 0 to 0.5
 	 * @return
 	 */
 	public CircularMeterRenderer setThickness(float thickness) {
@@ -81,7 +79,7 @@ public class CircularMeterRenderer extends SpriteRendererComponent {
 		shader.setUniform3f("Color", Color);
 		shader.setUniform1f("innerDiameter", innerDiameter);
 
-		SpriteRenderer.mesh_NORAML.render();
+		VertexArray.mesh_NORAML.render();
 
 		shader.disable();
 	}

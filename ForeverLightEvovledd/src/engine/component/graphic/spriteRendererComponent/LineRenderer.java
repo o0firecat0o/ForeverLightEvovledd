@@ -93,7 +93,7 @@ public class LineRenderer extends SpriteRendererComponent {
 			shader.setUniform3f("LazerColor", new Vector3f(0.259f, 1.0f, 1.0f));
 			shader.setUniform1f("relativeScale", 100 * width / distance);
 
-			SpriteRenderer.mesh_NORAML.render();
+			VertexArray.mesh_NORAML.render();
 
 			shader.disable();
 			glBindTexture(GL_TEXTURE_2D, 0);
@@ -112,7 +112,7 @@ public class LineRenderer extends SpriteRendererComponent {
 					new Vector3f(midpoint.x, midpoint.y, 0), rotation, new Vector2f(distance / 100f, width)));
 
 			shader.setUniform1f("timer", timer / 120f);
-			SpriteRenderer.mesh_NORAML.render();
+			VertexArray.mesh_NORAML.render();
 
 			shader.disable();
 			glBindTexture(GL_TEXTURE_2D, 0);
