@@ -14,4 +14,7 @@ public class SpriteRenderer {
 
 	public static ArrayList<SpriteRendererComponent> allSpriteRendererComponents = new ArrayList<>();
 
+	public static int getSpriteRendererComponentsCounts() {
+		return allSpriteRendererComponents.size();
+	}
 }
