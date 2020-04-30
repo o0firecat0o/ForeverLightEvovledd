@@ -3,7 +3,7 @@ package engine.component.graphic.instancedRendering;
 import org.joml.*;
 
 public class InstancedRenderObject {
-	public Matrix4f matrix4f;
+	public Matrix4f matrix4f; // includes rotation, position and scale
 	public Vector4f Color;
 
 	public InstancedRenderObject(Matrix4f position, Vector4f Color) {

@@ -1,4 +1,4 @@
-package engine.component.graphic.instancedRendering;
+package engine.font;
 
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBindTexture;
@@ -13,9 +13,8 @@ import org.lwjgl.opengl.*;
 
 import engine.component.graphic.*;
 
-public class InstancedRenderCage {
+public class TextRenderCage {
 	public int TextureID;
-	public int FrameBufferID;
 
 	public VertexArray mesh;
 	public int vbo;
@@ -25,13 +24,12 @@ public class InstancedRenderCage {
 
 	private int pointer = 0;
 
-	public ArrayList<InstancedRenderObject> instancedRenderObjects = new ArrayList<>();
+	public ArrayList<TextObject> textObjects = new ArrayList<>();
 
 	public final FloatBuffer BUFFER = org.lwjgl.BufferUtils.createFloatBuffer(MAX_INSTANCES * INSTANCE_DATA_LENGTH * 4);
 
-	public InstancedRenderCage(int TextureID, int FrameBufferID) {
+	public TextRenderCage(int TextureID) {
 		this.TextureID = TextureID;
-		this.FrameBufferID = FrameBufferID;
 
 		float SIZE_X = 100 / 2;
 		float SIZE_Y = 100 / 2;
@@ -51,7 +49,7 @@ public class InstancedRenderCage {
 	}
 
 	public void Render() {
-		if (instancedRenderObjects.size() > MAX_INSTANCES) {
+		if (textObjects.size() > MAX_INSTANCES) {
 			throw new RuntimeException(
 					"MaxInstances Reached for texture:" + TextureID + "," + Texture.getTexture(TextureID));
 		}
@@ -64,9 +62,9 @@ public class InstancedRenderCage {
 
 		shader.enable();
 
-		float[] vboDATA = new float[instancedRenderObjects.size() * INSTANCE_DATA_LENGTH];
-		for (int i = 0; i < instancedRenderObjects.size(); i++) {
-			InstancedRenderObject object = instancedRenderObjects.get(i);
+		float[] vboDATA = new float[textObjects.size() * INSTANCE_DATA_LENGTH];
+		for (int i = 0; i < textObjects.size(); i++) {
+			TextObject object = textObjects.get(i);
 			storeMatrixData(object.matrix4f, vboDATA);
 			vboDATA[pointer++] = object.Color.x;
 			vboDATA[pointer++] = object.Color.y;
@@ -77,13 +75,13 @@ public class InstancedRenderCage {
 		updateVBO(vbo, vboDATA, BUFFER);
 
 		mesh.bind();
-		mesh.drawParticle(instancedRenderObjects.size());
+		mesh.drawParticle(textObjects.size());
 
 		shader.disable();
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		instancedRenderObjects.clear();
+		textObjects.clear();
 	}
 
 	private void storeMatrixData(Matrix4f matrix, float[] vboData) {

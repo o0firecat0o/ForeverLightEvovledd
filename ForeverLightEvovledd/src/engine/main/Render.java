@@ -77,6 +77,8 @@ import engine.component.graphic.VertexArray;
 import engine.component.graphic.instancedRendering.InstancedRenderer;
 import engine.component.graphic.spriteRendererComponent.SpriteRendererComponent;
 import engine.font.FontRenderer;
+import engine.font.TextObject;
+import engine.font.TextRenderer;
 import engine.input.InputKey;
 import engine.input.InputMouseButton;
 import engine.input.InputMousePos;
@@ -94,6 +96,8 @@ public class Render implements Runnable {
 	public static boolean finishInit = false;
 
 	public static long fps;
+
+	private static Vector4f BackGroundColor = new Vector4f(1.0f, 0.8f, 0.8f, 1.0f);
 
 	public static FrameBufferObject bloomFrameBuffer; // For bloom effect
 	public static FrameBufferObject mainFrameBuffer;
@@ -283,6 +287,7 @@ public class Render implements Runnable {
 		}
 
 		InstancedRenderer.Render(mainFrameBuffer.FrameBufferID);
+		TextRenderer.Render();
 
 		// Font rendering
 		glEnable(GL_BLEND);
@@ -381,8 +386,6 @@ public class Render implements Runnable {
 		Main.setHeight(windowSize.y);
 		System.out.println("Setting Window Size to x: " + windowSize.x + ",y :" + windowSize.y);
 	}
-
-	private static Vector4f BackGroundColor = new Vector4f(1.0f, 0.8f, 0.8f, 1.0f);
 
 	public static void setBackGroundColor(Vector4f backGroundColor) {
 		BackGroundColor = backGroundColor;
