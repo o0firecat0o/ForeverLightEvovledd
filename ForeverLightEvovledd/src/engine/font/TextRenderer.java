@@ -21,7 +21,10 @@ public class TextRenderer {
 		// TODO: add ignore depth
 
 		for (int i = 0; i < textRenderCages.size(); i++) {
-			textRenderCages.get(i).Render();
+			for (int j = 0; j < TextMaster.stringOjbects.size(); j++) {
+				textRenderCages.get(i).Render(TextMaster.stringOjbects.get(j).getTextObjects());
+			}
+
 		}
 
 		glDisable(GL_BLEND);
@@ -29,35 +32,10 @@ public class TextRenderer {
 
 	private static List<TextRenderCage> textRenderCages = new ArrayList<>();
 
-	public static void Add(List<TextObject> textObjects, String fontname) throws Exception {
-		TextRenderCage trc = getTextRenderCage(fontname);
-		if (trc == null) {
-			throw new Exception(fontname + "is not initiated, please add it in loaddefault at TextMaster.java");
-		}
-		trc.textObjects.addAll(textObjects);
-	}
-
-	public static void Add(TextObject textObject, String fontname) {
-		TextRenderCage trc = getTextRenderCage(fontname);
-		if (trc == null) {
-			trc = NewTextRenderCage(fontname);
-		}
-		trc.textObjects.add(textObject);
-	}
-
 	public static TextRenderCage NewTextRenderCage(String fontname) {
 		TextRenderCage textRenderCage = new TextRenderCage(fontname);
 		System.out.println("New T Render Cage for Texture:" + fontname);
 		textRenderCages.add(textRenderCage);
 		return textRenderCage;
-	}
-
-	private static TextRenderCage getTextRenderCage(String fontname) {
-		for (int i = 0; i < textRenderCages.size(); i++) {
-			if (textRenderCages.get(i).FontName == fontname) {
-				return textRenderCages.get(i);
-			}
-		}
-		return null;
 	}
 }

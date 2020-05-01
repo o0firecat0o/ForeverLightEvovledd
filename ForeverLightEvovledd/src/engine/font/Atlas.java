@@ -52,6 +52,15 @@ public class Atlas {
 		return getGlyph(0);
 	}
 
+	public Glyph getGlyph(char c) {
+		for (Glyph glyph : glyphs) {
+			if (glyph.id == c) {
+				return glyph;
+			}
+		}
+		return getGlyph(0);
+	}
+
 	private void loadAtlasFile() {
 		System.out.println("loading font with fontname: " + FontName);
 		ArrayList<String> results = FileUtils.loadAsStringArray("res/" + FontName + ".fnt");

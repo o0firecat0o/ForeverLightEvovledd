@@ -28,10 +28,6 @@ public class TextRenderCage {
 
 	private int pointer = 0;
 
-	// TODO: make this upper one class, i.e. not removing all textObjects everytime
-	// rendering
-	public ArrayList<TextObject> textObjects = new ArrayList<>();
-
 	private final FloatBuffer BUFFER = org.lwjgl.BufferUtils
 			.createFloatBuffer(MAX_INSTANCES * INSTANCE_DATA_LENGTH * 4);
 
@@ -66,7 +62,7 @@ public class TextRenderCage {
 		mesh.addInstancedAttribute(vbo, 8, 2, INSTANCE_DATA_LENGTH, 22); // width and height
 	}
 
-	public void Render() {
+	public void Render(ArrayList<TextObject> textObjects) {
 		if (textObjects.size() > MAX_INSTANCES) {
 			throw new RuntimeException(
 					"MaxInstances Reached for texture:" + TextureID + "," + Texture.getTexture(TextureID));
@@ -107,8 +103,6 @@ public class TextRenderCage {
 		shader.disable();
 
 		glBindTexture(GL_TEXTURE_2D, 0);
-
-		textObjects.clear();
 	}
 
 	private void storeMatrixData(Matrix4f matrix, float[] vboData) {

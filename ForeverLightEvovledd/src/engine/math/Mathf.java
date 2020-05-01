@@ -19,10 +19,8 @@ public class Mathf {
 
 	/**
 	 * 
-	 * @param vectorthe
-	 *            vector to be rotated
-	 * @param angle
-	 *            angle in radians
+	 * @param vectorthe vector to be rotated
+	 * @param angle     angle in radians
 	 * @return
 	 */
 	public static Vector2f rotateVector(Vector2f vector, float angle) {
@@ -35,10 +33,8 @@ public class Mathf {
 	/**
 	 * 
 	 * @param vector
-	 * @param angle
-	 *            angle in radians
-	 * @param origin
-	 *            the vector is rotate around this origin
+	 * @param angle  angle in radians
+	 * @param origin the vector is rotate around this origin
 	 * @return
 	 */
 	public static Vector2f rotateVectorAroundPoint(Vector2f vector, float angle, Vector2f origin) {
@@ -69,6 +65,10 @@ public class Mathf {
 		return new Vector2f(a.x + b.x, a.y + b.y);
 	}
 
+	public static Vector3f addVector(Vector2f a, Vector2f b, float z) {
+		return new Vector3f(a.x + b.x, a.y + b.y, z);
+	}
+
 	public static Vector2f minusVector(Vector2f a, Vector2f b) {
 		return new Vector2f(a.x - b.x, a.y - b.y);
 	}
@@ -92,8 +92,7 @@ public class Mathf {
 
 	/**
 	 * 
-	 * @param angle
-	 *            In Radians, just put in gameObject.transform.rotation
+	 * @param angle In Radians, just put in gameObject.transform.rotation
 	 * @return
 	 */
 	public static Vector2f Vector2fFromAngle(float angle) {
@@ -111,10 +110,8 @@ public class Mathf {
 	 * return the direction that you need to turn if you want to archieve target
 	 * angel from current angle
 	 * 
-	 * @param CurrentAngle
-	 *            in radian
-	 * @param TargetAngle
-	 *            in radian
+	 * @param CurrentAngle in radian
+	 * @param TargetAngle  in radian
 	 * @return 0 -> 3.14, need clockwise rotation; 0 -> -3.14 need anticlockwise
 	 *         rotation
 	 */

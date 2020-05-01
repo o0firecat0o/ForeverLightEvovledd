@@ -292,13 +292,6 @@ public class Render implements Runnable {
 		InstancedRenderer.Render(mainFrameBuffer.FrameBufferID);
 		TextRenderer.Render();
 
-		TextRenderer.Add(new TextObject(new Vector3f(0), 0, new Vector2f(1, 1), new Vector4f(1, 1, 1, 1), 51),
-				"Utsaah");
-		TextRenderer.Add(new TextObject(new Vector3f(30, 30, 0), 0, new Vector2f(1, 1), new Vector4f(1, 1, 1, 1), 82),
-				"Utsaah");
-		TextRenderer.Add(new TextObject(new Vector3f(0), 0, new Vector2f(1, 1), new Vector4f(1, 1, 1, 1), 53),
-				"Utsaah");
-
 		// Font rendering
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
