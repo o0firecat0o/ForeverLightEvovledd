@@ -36,32 +36,32 @@ public class TextRenderer {
 	 * @param TextureID
 	 * @param FrameBufferID
 	 */
-	public static void Add(List<TextObject> textObjects, int TextureID) {
-		TextRenderCage trc = getTextRenderCage(TextureID);
+	public static void Add(List<TextObject> textObjects, String fontname) {
+		TextRenderCage trc = getTextRenderCage(fontname);
 		if (trc == null) {
-			trc = NewTextRenderCage(TextureID);
+			trc = NewTextRenderCage(fontname);
 		}
 		trc.textObjects.addAll(textObjects);
 	}
 
-	public static void Add(TextObject textObject, int TextureID) {
-		TextRenderCage trc = getTextRenderCage(TextureID);
+	public static void Add(TextObject textObject, String fontname) {
+		TextRenderCage trc = getTextRenderCage(fontname);
 		if (trc == null) {
-			trc = NewTextRenderCage(TextureID);
+			trc = NewTextRenderCage(fontname);
 		}
 		trc.textObjects.add(textObject);
 	}
 
-	private static TextRenderCage NewTextRenderCage(int TextureID) {
-		TextRenderCage textRenderCage = new TextRenderCage(TextureID);
-		System.out.println("New T Render Cage for Texture:" + TextureID);
+	private static TextRenderCage NewTextRenderCage(String fontname) {
+		TextRenderCage textRenderCage = new TextRenderCage(fontname);
+		System.out.println("New T Render Cage for Texture:" + fontname);
 		textRenderCages.add(textRenderCage);
 		return textRenderCage;
 	}
 
-	private static TextRenderCage getTextRenderCage(int TextureID) {
+	private static TextRenderCage getTextRenderCage(String fontname) {
 		for (int i = 0; i < textRenderCages.size(); i++) {
-			if (textRenderCages.get(i).TextureID == TextureID) {
+			if (textRenderCages.get(i).FontName == fontname) {
 				return textRenderCages.get(i);
 			}
 		}

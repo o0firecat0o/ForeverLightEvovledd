@@ -61,7 +61,6 @@ public class InstancedRenderCage {
 		GL11.glBindTexture(GL_TEXTURE_2D, TextureID);
 
 		Shader shader = Shader.getShader("DefaultParticle");
-
 		shader.enable();
 
 		float[] vboDATA = new float[instancedRenderObjects.size() * INSTANCE_DATA_LENGTH];

@@ -36,6 +36,14 @@ public class Shader {
 	}
 
 	public static void loadDefault() {
+		/*
+		 * 
+		 * NEVER COPY SHADERS DIRECTLY FROM ECLIPSE ITS FORMAT IS DIFFERENT FROM OPENGL
+		 * 
+		 * 
+		 * 
+		 * 
+		 */
 		Shader.createShader("shaders/default.vert", "shaders/default.frag", "DEFAULT")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1);
 		Shader.createShader("shaders/default.vert", "shaders/default.frag", "UI")
@@ -59,12 +67,17 @@ public class Shader {
 				.setUniform1i("tex7", 7);
 		Shader.createShader("shaders/default.vert", "shaders/LazerCurved.frag", "LazerCurved")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix);
+
 		Shader.createShader("shaders/defaultParticle.vert", "shaders/defaultParticle.frag", "DefaultParticle")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1);
+		Shader.createShader("shaders/text.vert", "shaders/text.frag", "DefaultText")
+				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1);
+
 		Shader.createShader("shaders/default.vert", "shaders/CircularMeter.frag", "CircularMeter")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix);
 		Shader.createShader("shaders/default.vert", "shaders/Trail.frag", "Trail").setUniform1i("tex", 1)
 				.setUniform1i("tex2", 2).isUIShader();
+
 	}
 
 	public static Shader createShader(String vertex, String fragment, String Name) {

@@ -5,31 +5,91 @@ import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 
+import java.io.Console;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.*;
 
 import engine.component.graphic.*;
+import engine.utils.FileUtils;
 
 public class TextRenderCage {
-	public int TextureID;
+	public final int TextureID; // the texture of the text atlas
+	public final String FontName;
 
-	public VertexArray mesh;
-	public int vbo;
+	private VertexArray mesh;
+	private int vbo;
 
-	public static final int MAX_INSTANCES = 50000;
-	public static final int INSTANCE_DATA_LENGTH = 20;
+	private static final int MAX_INSTANCES = 50000;
+	private static final int INSTANCE_DATA_LENGTH = 24;
 
 	private int pointer = 0;
 
+	// TODO: make this upper one class, i.e. not removing all textObjects everytime
+	// rendering
 	public ArrayList<TextObject> textObjects = new ArrayList<>();
 
-	public final FloatBuffer BUFFER = org.lwjgl.BufferUtils.createFloatBuffer(MAX_INSTANCES * INSTANCE_DATA_LENGTH * 4);
+	private final FloatBuffer BUFFER = org.lwjgl.BufferUtils
+			.createFloatBuffer(MAX_INSTANCES * INSTANCE_DATA_LENGTH * 4);
 
-	public TextRenderCage(int TextureID) {
-		this.TextureID = TextureID;
+	private ArrayList<Atlas> atlas = new ArrayList<>();
+
+	// get the atlas from ASCII id
+	private Atlas getAtlas(int id) {
+		for (Atlas a : atlas) {
+			if (a.id == id) {
+				return a;
+			}
+		}
+		return getAtlas(0);
+	}
+
+	private class Atlas {
+		int id; // ASCII code
+		int graphicx; // xpos in texture atlas
+		int graphicy; // ypos in texture atlas
+		int width; // width in texture atlas
+		int height; // height in texture atlas
+		int xoffset; // relative position when writing
+		int yoffset; // relative position when writing
+		int xadvance; // advance of writer pointer when writing
+	}
+
+	private void loadAtlasFile() {
+		System.out.println("loading font with fontname: " + FontName);
+		ArrayList<String> results = FileUtils.loadAsStringArray("res/" + FontName + ".fnt");
+
+		for (int i = 0; i < results.size(); i++) {
+			// char id=0 x=0 y=0 width=73 height=84 xoffset=8 yoffset=4 xadvance=93 page=0
+			// chnl=0
+			ArrayList<String> splittedString = new ArrayList<String>(Arrays.asList(results.get(i).split(" ")));
+			// clean up all the empty ""
+			splittedString.removeAll(Arrays.asList("", null));
+			// check if the line start with string "char", if yes, it is a atlas
+			if (!splittedString.get(0).contentEquals("char")) {
+				continue;
+			}
+			Atlas a = new Atlas();
+			a.id = Integer.parseInt(splittedString.get(1).split("=")[1]);
+			a.graphicx = Integer.parseInt(splittedString.get(2).split("=")[1]);
+			a.graphicy = Integer.parseInt(splittedString.get(3).split("=")[1]);
+			a.width = Integer.parseInt(splittedString.get(4).split("=")[1]);
+			a.height = Integer.parseInt(splittedString.get(5).split("=")[1]);
+			a.xoffset = Integer.parseInt(splittedString.get(6).split("=")[1]);
+			a.yoffset = Integer.parseInt(splittedString.get(7).split("=")[1]);
+			a.xadvance = Integer.parseInt(splittedString.get(8).split("=")[1]);
+			atlas.add(a);
+		}
+	}
+
+	public TextRenderCage(String fontname) {
+		this.TextureID = Texture.getTexture(fontname);
+		this.FontName = fontname;
+
+		loadAtlasFile();
 
 		float SIZE_X = 100 / 2;
 		float SIZE_Y = 100 / 2;
@@ -41,11 +101,13 @@ public class TextRenderCage {
 		mesh = new VertexArray(vertices, indices, tcs);
 
 		vbo = mesh.createEmptyVBO(INSTANCE_DATA_LENGTH * MAX_INSTANCES);
-		mesh.addInstancedAttribute(vbo, 2, 4, INSTANCE_DATA_LENGTH, 0);
+		mesh.addInstancedAttribute(vbo, 2, 4, INSTANCE_DATA_LENGTH, 0); // matrix4f
 		mesh.addInstancedAttribute(vbo, 3, 4, INSTANCE_DATA_LENGTH, 4);
 		mesh.addInstancedAttribute(vbo, 4, 4, INSTANCE_DATA_LENGTH, 8);
 		mesh.addInstancedAttribute(vbo, 5, 4, INSTANCE_DATA_LENGTH, 12);
-		mesh.addInstancedAttribute(vbo, 6, 4, INSTANCE_DATA_LENGTH, 16);
+		mesh.addInstancedAttribute(vbo, 6, 4, INSTANCE_DATA_LENGTH, 16); // color
+		mesh.addInstancedAttribute(vbo, 7, 2, INSTANCE_DATA_LENGTH, 20); // graphicx and graphicy
+		mesh.addInstancedAttribute(vbo, 8, 2, INSTANCE_DATA_LENGTH, 22); // width and height
 	}
 
 	public void Render() {
@@ -58,23 +120,34 @@ public class TextRenderCage {
 		glActiveTexture(GL_TEXTURE1);
 		GL11.glBindTexture(GL_TEXTURE_2D, TextureID);
 
-		Shader shader = Shader.getShader("DefaultParticle");
+		// TODO: add neglect depth
+
+		Shader shader = Shader.getShader("DefaultText");
 
 		shader.enable();
 
 		float[] vboDATA = new float[textObjects.size() * INSTANCE_DATA_LENGTH];
 		for (int i = 0; i < textObjects.size(); i++) {
 			TextObject object = textObjects.get(i);
+			Atlas a = getAtlas(object.charID);
 			storeMatrixData(object.matrix4f, vboDATA);
 			vboDATA[pointer++] = object.Color.x;
 			vboDATA[pointer++] = object.Color.y;
 			vboDATA[pointer++] = object.Color.z;
 			vboDATA[pointer++] = object.Color.w;
+			vboDATA[pointer++] = a.graphicx / 512f;
+			vboDATA[pointer++] = a.graphicy / 512f;
+			vboDATA[pointer++] = a.width / 512f;
+			vboDATA[pointer++] = a.height / 512f;
 		}
 
 		updateVBO(vbo, vboDATA, BUFFER);
 
 		mesh.bind();
+
+		// shader.setUniformMat4f("pr_matrix",
+		// SpriteRenderer.pr_matrix).setUniform1i("tex", 1);
+
 		mesh.drawParticle(textObjects.size());
 
 		shader.disable();
