@@ -1,10 +1,8 @@
 package engine.font;
 
-import java.awt.List;
 import java.util.ArrayList;
 
 import org.joml.Vector2f;
-import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import engine.math.Mathf;
@@ -21,7 +19,8 @@ public class TextMaster {
 
 	public static ArrayList<StringObject> stringOjbects = new ArrayList<>();
 
-	public static void CreateText(String fontName, String text, Vector2f position, float rotation, int size,
+	// TODO: add Vector rotation
+	public static StringObject CreateText(String fontName, String text, Vector2f position, float rotation, int size,
 			float lineLength, float linePadding) {
 
 		///////////////////////////////////////////////////////
@@ -32,7 +31,7 @@ public class TextMaster {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return;
+			return null;
 		}
 		//////////////////////////////////////////////////////
 
@@ -76,12 +75,11 @@ public class TextMaster {
 			float advancepointer = 0;
 			for (int j = 0; j < singleLine.length(); j++) {
 				char c = singleLine.charAt(j);
-				TextObject textObject = new TextObject(
-						Mathf.addVector(position, new Vector2f(
-								(atlas.getGlyph(c).xoffset + atlas.getGlyph(c).width / 2 + advancepointer) * 2 * size,
-								(-atlas.getGlyph(c).yoffset - atlas.getGlyph(c).height / 2 - i * linePadding) * size),
-								0),
-						rotation,
+				Vector2f addedVector = new Vector2f(
+						(atlas.getGlyph(c).xoffset + atlas.getGlyph(c).width / 2 + advancepointer) * 2 * size,
+						(-atlas.getGlyph(c).yoffset - atlas.getGlyph(c).height / 2 - i * linePadding) * size);
+				Vector2f rotatedVector = Mathf.rotateVectorAroundPoint(addedVector, rotation, position);
+				TextObject textObject = new TextObject(Mathf.addVector(position, rotatedVector, 0), rotation,
 						new Vector2f(atlas.getGlyph(c).width / 100f * size, atlas.getGlyph(c).height / 100f * size),
 						new Vector4f(1, 1, 1, 1), c);
 				stringObject.addTextObjects(textObject);
@@ -90,10 +88,13 @@ public class TextMaster {
 
 			// ******************************
 		}
+		//////////////////////////////////////////////////////
+		stringObject.fontName = fontName;
 
 		stringOjbects.add(stringObject);
 
-		//////////////////////////////////////////////////////
+		return stringObject;
 
+		//////////////////////////////////////////////////////
 	}
 }

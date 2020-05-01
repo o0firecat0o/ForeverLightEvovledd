@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class StringObject {
 	final ArrayList<TextObject> textObjects = new ArrayList<>();
+	public String fontName;
 
 	public void addTextObjects(TextObject textObject) {
 		textObjects.add(textObject);

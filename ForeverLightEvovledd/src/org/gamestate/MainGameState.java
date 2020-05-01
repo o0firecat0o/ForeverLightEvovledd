@@ -29,6 +29,6 @@ public class MainGameState implements IGameState {
 						+ "str= ch+str;   // str will change to \"Apple\"\r\n"
 						+ "For insert a char at the end of a string also we can use additional operation.\r\n"
 						+ "Example:\r\n" + "\r\n" + "",
-				new Vector2f(), 0, 1, 20, 100);
+				new Vector2f(), 2, 1, 20, 100);
 	}
 }

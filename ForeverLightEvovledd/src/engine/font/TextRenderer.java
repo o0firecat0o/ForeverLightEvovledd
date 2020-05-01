@@ -22,9 +22,10 @@ public class TextRenderer {
 
 		for (int i = 0; i < textRenderCages.size(); i++) {
 			for (int j = 0; j < TextMaster.stringOjbects.size(); j++) {
-				textRenderCages.get(i).Render(TextMaster.stringOjbects.get(j).getTextObjects());
+				if (TextMaster.stringOjbects.get(j).fontName == textRenderCages.get(i).FontName) {
+					textRenderCages.get(i).Render(TextMaster.stringOjbects.get(j).getTextObjects());
+				}
 			}
-
 		}
 
 		glDisable(GL_BLEND);
@@ -34,7 +35,7 @@ public class TextRenderer {
 
 	public static TextRenderCage NewTextRenderCage(String fontname) {
 		TextRenderCage textRenderCage = new TextRenderCage(fontname);
-		System.out.println("New T Render Cage for Texture:" + fontname);
+		System.out.println("New Text Render Cage for Texture:" + fontname);
 		textRenderCages.add(textRenderCage);
 		return textRenderCage;
 	}
