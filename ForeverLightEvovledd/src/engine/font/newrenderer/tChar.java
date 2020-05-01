@@ -3,13 +3,17 @@ package engine.font.newrenderer;
 import org.joml.Vector4f;
 
 public class tChar {
-	char c;
-	boolean bold = false;
-	Vector4f color = new Vector4f(0, 0, 0, 1);
+	public char charID;
+	public boolean bold = false;
+	public Vector4f color = new Vector4f(1, 1, 1, 1);
 
-	public tChar(char c, boolean bold, Vector4f color) {
-		this.c = c;
+	public tChar(char charID, boolean bold, Vector4f color) {
+		this.charID = charID;
 		this.bold = bold;
 		this.color = color;
+	}
+
+	public tChar(char charID) {
+		this.charID = charID;
 	}
 }

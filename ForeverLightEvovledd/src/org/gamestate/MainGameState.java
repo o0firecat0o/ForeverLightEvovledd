@@ -3,6 +3,8 @@ package org.gamestate;
 import org.joml.Vector2f;
 
 import engine.font.newrenderer.TextMaster;
+import engine.font.newrenderer.tChar;
+import engine.font.newrenderer.tString;
 import engine.gamestate.*;
 
 public class MainGameState implements IGameState {
@@ -29,6 +31,13 @@ public class MainGameState implements IGameState {
 						+ "str= ch+str;   // str will change to \"Apple\"\r\n"
 						+ "For insert a char at the end of a string also we can use additional operation.\r\n \t"
 						+ "Example:\r\n" + "\r\n" + "",
-				new Vector2f(), 2, 1, 20, 100);
+				new Vector2f(), 0, 1, 20, 100);
+
+		tString tString = new tString("acb\b\r#c93131abc\ba\rb");
+		tString.convert_b_ToBold();
+		tString.convert_r_ToColor();
+		for (tChar list : tString.getCharList()) {
+			System.out.println(list.color);
+		}
 	}
 }

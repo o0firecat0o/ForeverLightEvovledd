@@ -22,6 +22,7 @@ public class DebugScreen extends Component {
 
 	}
 
+	// TODO: finish added log
 	private ArrayList<String> addedLog = new ArrayList<>();
 	private Font debugFont;
 

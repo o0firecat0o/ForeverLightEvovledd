@@ -1,5 +1,7 @@
 package engine.math;
 
+import java.awt.Color;
+
 import org.jbox2d.common.Vec2;
 import org.joml.*;
 import org.joml.Math;
@@ -71,6 +73,10 @@ public class Mathf {
 
 	public static Vector2f minusVector(Vector2f a, Vector2f b) {
 		return new Vector2f(a.x - b.x, a.y - b.y);
+	}
+
+	public static Vector4f ColorToVector4f(Color c) {
+		return new Vector4f(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
 	}
 
 	/**

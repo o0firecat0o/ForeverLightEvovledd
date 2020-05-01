@@ -16,9 +16,4 @@ void main()
 {
 	color.rgb = texture(tex, fs_in.offset + fs_in.tc*fs_in.size).rgb*fs_in.col.rgb;
 	color.a = texture(tex, fs_in.offset + fs_in.tc*fs_in.size).a;
-
-
-	if(color.a<0.1){
-		discard;
-	}
 }
