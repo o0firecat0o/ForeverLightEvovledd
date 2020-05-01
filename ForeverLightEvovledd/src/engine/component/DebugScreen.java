@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.joml.Vector2f;
 
-import engine.font.Font;
+import engine.font.oldrenderer.Font;
 import engine.gui.GUI;
 import engine.main.*;
 import engine.object.Component;

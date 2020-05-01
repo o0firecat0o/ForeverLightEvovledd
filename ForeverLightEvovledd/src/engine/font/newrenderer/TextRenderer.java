@@ -1,4 +1,4 @@
-package engine.font;
+package engine.font.newrenderer;
 
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;

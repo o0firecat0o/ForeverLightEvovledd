@@ -2,7 +2,7 @@ package org.gamestate;
 
 import org.joml.Vector2f;
 
-import engine.font.TextMaster;
+import engine.font.newrenderer.TextMaster;
 import engine.gamestate.*;
 
 public class MainGameState implements IGameState {
@@ -27,7 +27,7 @@ public class MainGameState implements IGameState {
 						+ "for insert, in the beginning, we can just use additional operation.\r\n" + "Example:\r\n"
 						+ "\r\n" + "char ch='A';\r\n" + "String str=\"pple\";\r\n"
 						+ "str= ch+str;   // str will change to \"Apple\"\r\n"
-						+ "For insert a char at the end of a string also we can use additional operation.\r\n"
+						+ "For insert a char at the end of a string also we can use additional operation.\r\n \t"
 						+ "Example:\r\n" + "\r\n" + "",
 				new Vector2f(), 2, 1, 20, 100);
 	}

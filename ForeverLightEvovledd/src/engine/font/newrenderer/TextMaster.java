@@ -1,4 +1,4 @@
-package engine.font;
+package engine.font.newrenderer;
 
 import java.util.ArrayList;
 
@@ -10,6 +10,8 @@ import engine.math.Mathf;
 public class TextMaster {
 
 	// TODO: add color to text
+	// TODO: add bolding to text
+	// TODO: add new line
 	// TODO: load automatically via reading files
 	public static void LoadDefaultText() {
 		Atlas.createAtlas("Utsaah");
@@ -19,7 +21,6 @@ public class TextMaster {
 
 	public static ArrayList<StringObject> stringOjbects = new ArrayList<>();
 
-	// TODO: add Vector rotation
 	public static StringObject CreateText(String fontName, String text, Vector2f position, float rotation, int size,
 			float lineLength, float linePadding) {
 
@@ -87,6 +88,8 @@ public class TextMaster {
 			}
 
 			// ******************************
+
+			// TODO: align to center
 		}
 		//////////////////////////////////////////////////////
 		stringObject.fontName = fontName;

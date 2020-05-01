@@ -1,4 +1,4 @@
-package engine.font;
+package engine.font.newrenderer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
