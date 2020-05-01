@@ -29,17 +29,10 @@ public class TextRenderer {
 
 	private static List<TextRenderCage> textRenderCages = new ArrayList<>();
 
-	/**
-	 * This function MUST be called in the render thread
-	 * 
-	 * @param instancedRenderObjects
-	 * @param TextureID
-	 * @param FrameBufferID
-	 */
-	public static void Add(List<TextObject> textObjects, String fontname) {
+	public static void Add(List<TextObject> textObjects, String fontname) throws Exception {
 		TextRenderCage trc = getTextRenderCage(fontname);
 		if (trc == null) {
-			trc = NewTextRenderCage(fontname);
+			throw new Exception(fontname + "is not initiated, please add it in loaddefault at TextMaster.java");
 		}
 		trc.textObjects.addAll(textObjects);
 	}
@@ -52,7 +45,7 @@ public class TextRenderer {
 		trc.textObjects.add(textObject);
 	}
 
-	private static TextRenderCage NewTextRenderCage(String fontname) {
+	public static TextRenderCage NewTextRenderCage(String fontname) {
 		TextRenderCage textRenderCage = new TextRenderCage(fontname);
 		System.out.println("New T Render Cage for Texture:" + fontname);
 		textRenderCages.add(textRenderCage);

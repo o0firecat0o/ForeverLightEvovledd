@@ -77,6 +77,7 @@ import engine.component.graphic.VertexArray;
 import engine.component.graphic.instancedRendering.InstancedRenderer;
 import engine.component.graphic.spriteRendererComponent.SpriteRendererComponent;
 import engine.font.FontRenderer;
+import engine.font.TextMaster;
 import engine.font.TextObject;
 import engine.font.TextRenderer;
 import engine.input.InputKey;
@@ -185,6 +186,8 @@ public class Render implements Runnable {
 		VertexArray.loadDefaultMesh_FBO();
 		// load default textures
 		Texture.LoadDefault(new File("res/Sprites"));
+		// load default text atlas, and create the instance renderer for it
+		TextMaster.LoadDefaultText();
 
 		// Camera
 		GameObject cameraObject = new GameObject();
