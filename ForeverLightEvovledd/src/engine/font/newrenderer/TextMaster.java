@@ -30,7 +30,6 @@ public class TextMaster {
 		try {
 			atlas = Atlas.getAtlas(fontName);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -82,7 +81,7 @@ public class TextMaster {
 				Vector2f rotatedVector = Mathf.rotateVectorAroundPoint(addedVector, rotation, position);
 				TextObject textObject = new TextObject(Mathf.addVector(position, rotatedVector, 0), rotation,
 						new Vector2f(atlas.getGlyph(c).width / 100f * size, atlas.getGlyph(c).height / 100f * size),
-						new Vector4f(1, 1, 1, 1), c);
+						new Vector4f(0, 0, 0, 1), c);
 				stringObject.addTextObjects(textObject);
 				advancepointer += atlas.getGlyph(c).xadvance;
 			}

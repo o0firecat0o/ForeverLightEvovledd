@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.table.TableStringConverter;
+
 import org.joml.Vector4f;
 
 import engine.math.Mathf;
@@ -27,6 +29,30 @@ public class tString {
 
 	public ArrayList<tChar> getCharList() {
 		return charList;
+	}
+
+	public tString appendChar(char c) {
+		tChar char1 = new tChar(c);
+		charList.add(char1);
+		return this;
+	}
+
+	public tString clear() {
+		charList.clear();
+		return this;
+	}
+
+	public boolean isEmpty() {
+		if (charList.size() == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public tString appendChar(tChar c) {
+		charList.add(c);
+		return this;
 	}
 
 	// change the char inbetween two /b to bold
@@ -82,5 +108,46 @@ public class tString {
 			}
 		}
 		return this;
+	}
+
+	public static ArrayList<tString> SeperateString(String fontName, tString string, float lineLength) {
+		// load the atlas
+		Atlas atlas;
+		try {
+			atlas = Atlas.getAtlas(fontName);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		ArrayList<tString> returnList = new ArrayList<>();
+		lineLength = lineLength * 50f;
+
+		float templength = 0;
+		tString tempString = new tString("");
+		for (int i = 0; i < string.length(); i++) {
+			if ((string.getChar(i).charID == ' ')) {
+				if (templength > lineLength) {
+					returnList.add(tempString);
+					tempString = new tString("");
+					templength = 0;
+					continue;
+				}
+			}
+			if ((string.getChar(i).charID == '\n')) {
+				returnList.add(tempString);
+				tempString = new tString("");
+				templength = 0;
+				continue;
+			}
+			tempString.appendChar(string.getChar(i));
+			templength += atlas.getGlyph(string.getChar(i).charID).xadvance;
+		}
+		// add the final line
+		if (!tempString.isEmpty()) {
+			returnList.add(tempString);
+		}
+
+		return returnList;
 	}
 }

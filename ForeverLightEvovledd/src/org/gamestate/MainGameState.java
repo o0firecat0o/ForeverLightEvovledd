@@ -1,5 +1,9 @@
 package org.gamestate;
 
+import java.io.Console;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.joml.Vector2f;
 
 import engine.font.newrenderer.TextMaster;
@@ -33,11 +37,11 @@ public class MainGameState implements IGameState {
 						+ "Example:\r\n" + "\r\n" + "",
 				new Vector2f(), 0, 1, 20, 100);
 
-		tString tString = new tString("acb\b\r#c93131abc\ba\rb");
-		tString.convert_b_ToBold();
-		tString.convert_r_ToColor();
-		for (tChar list : tString.getCharList()) {
-			System.out.println(list.color);
+		tString TString = new tString(
+				"for inserta\n\bbafdbafbadfvscasdfa, a char at the begin ning and e nd of the string the simplest way is using");
+		ArrayList<tString> tStrings = tString.SeperateString("Utsaah", TString, 20);
+		for (tString tString2 : tStrings) {
+			System.out.println(tString2.length());
 		}
 	}
 }
