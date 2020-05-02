@@ -1,10 +1,13 @@
 package engine.math;
 
 import java.awt.Color;
+import java.util.function.ToDoubleBiFunction;
 
 import org.jbox2d.common.Vec2;
 import org.joml.*;
 import org.joml.Math;
+
+import com.esotericsoftware.kryonet.FrameworkMessage;
 
 import engine.object.GameObject;
 
@@ -21,8 +24,8 @@ public class Mathf {
 
 	/**
 	 * 
-	 * @param vectorthe vector to be rotated
-	 * @param angle     angle in radians
+	 * @param vector the vector to be rotated
+	 * @param angle  angle in radians
 	 * @return
 	 */
 	public static Vector2f rotateVector(Vector2f vector, float angle) {
@@ -75,8 +78,14 @@ public class Mathf {
 		return new Vector2f(a.x - b.x, a.y - b.y);
 	}
 
+	/**
+	 * convert java native library color to opengl color
+	 * 
+	 * @param c java native library color
+	 * @return Vector4f rgba from (0,0,0,0) to (1,1,1,1)
+	 */
 	public static Vector4f ColorToVector4f(Color c) {
-		return new Vector4f(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
+		return new Vector4f(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
 	}
 
 	/**

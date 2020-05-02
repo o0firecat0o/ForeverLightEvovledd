@@ -5,13 +5,12 @@ import java.util.ArrayList;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
+import engine.font.newrenderer.Atlas.Glyph;
 import engine.math.Mathf;
 
 public class TextMaster {
 
-	// TODO: add color to text
 	// TODO: add bolding to text
-	// TODO: add new line
 	// TODO: load automatically via reading files
 	public static void LoadDefaultText() {
 		Atlas.createAtlas("Utsaah");
@@ -34,29 +33,21 @@ public class TextMaster {
 			return null;
 		}
 		//////////////////////////////////////////////////////
+		// convert the string from string to TString for better manipulation
+		TString tText = new TString(text);
+		//////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////
-		// seperate the text into different line
-		ArrayList<String> seperatedString = new ArrayList<>();
+		// change char between \b and \r to bolding and different color
+		tText.convert_b_ToBold();
+		tText.convert_r_ToColor();
+		//////////////////////////////////////////////////////
 
-		lineLength = lineLength * 50f;
-		float templength = 0;
-		String tempString = "";
-		for (int i = 0; i < text.length(); i++) {
-			tempString += text.charAt(i);
-			templength += atlas.getGlyph(text.charAt(i)).xadvance;
-			if ((text.charAt(i) == ' ')) {
-				if (templength > lineLength) {
-					seperatedString.add(tempString);
-					tempString = "";
-					templength = 0;
-				}
-			}
-		}
-		// add the final line
-		if (!tempString.isEmpty()) {
-			seperatedString.add(tempString);
-		}
+		//////////////////////////////////////////////////////
+		// seperate the string into lines
+		// for each \n, new line is created
+		// if string length> line length, new line is created
+		ArrayList<TString> seperatedString = TString.SeperateString(fontName, tText, lineLength);
 		//////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////
@@ -64,26 +55,26 @@ public class TextMaster {
 		StringObject stringObject = new StringObject();
 
 		for (int i = 0; i < seperatedString.size(); i++) {
-			String singleLine = seperatedString.get(i);
+			TString singleLine = seperatedString.get(i);
 			float singleLineLength = 0;
 			for (int j = 0; j < singleLine.length(); j++) {
-				singleLineLength += atlas.getGlyph(singleLine.charAt(j)).xadvance;
+				singleLineLength += atlas.getGlyph(singleLine.getChar(j).charID).xadvance;
 			}
 
 			// ******************************
 			// align to left
 			float advancepointer = 0;
 			for (int j = 0; j < singleLine.length(); j++) {
-				char c = singleLine.charAt(j);
-				Vector2f addedVector = new Vector2f(
-						(atlas.getGlyph(c).xoffset + atlas.getGlyph(c).width / 2 + advancepointer) * 2 * size,
-						(-atlas.getGlyph(c).yoffset - atlas.getGlyph(c).height / 2 - i * linePadding) * size);
+				TChar tc = singleLine.getChar(j);
+				char c = singleLine.getChar(j).charID;
+				Glyph g = atlas.getGlyph(c);
+				Vector2f addedVector = new Vector2f((g.xoffset + g.width / 2 + advancepointer) * 2 * size,
+						(-g.yoffset - g.height / 2 - i * linePadding) * size);
 				Vector2f rotatedVector = Mathf.rotateVectorAroundPoint(addedVector, rotation, position);
 				TextObject textObject = new TextObject(Mathf.addVector(position, rotatedVector, 0), rotation,
-						new Vector2f(atlas.getGlyph(c).width / 100f * size, atlas.getGlyph(c).height / 100f * size),
-						new Vector4f(0, 0, 0, 1), c);
+						new Vector2f(g.width / 100f * size, g.height / 100f * size), tc.color, c);
 				stringObject.addTextObjects(textObject);
-				advancepointer += atlas.getGlyph(c).xadvance;
+				advancepointer += g.xadvance;
 			}
 
 			// ******************************
