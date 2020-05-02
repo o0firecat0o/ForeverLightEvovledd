@@ -10,16 +10,16 @@ import org.joml.Vector4f;
 
 import engine.math.Mathf;
 
-public class tString {
-	ArrayList<tChar> charList = new ArrayList<>();
+public class TString {
+	ArrayList<TChar> charList = new ArrayList<>();
 
-	public tString(String s) {
+	public TString(String s) {
 		for (int i = 0; i < s.length(); i++) {
-			charList.add(new tChar(s.charAt(i)));
+			charList.add(new TChar(s.charAt(i)));
 		}
 	}
 
-	public tChar getChar(int location) {
+	public TChar getChar(int location) {
 		return charList.get(location);
 	}
 
@@ -27,17 +27,17 @@ public class tString {
 		return charList.size();
 	}
 
-	public ArrayList<tChar> getCharList() {
+	public ArrayList<TChar> getCharList() {
 		return charList;
 	}
 
-	public tString appendChar(char c) {
-		tChar char1 = new tChar(c);
+	public TString appendChar(char c) {
+		TChar char1 = new TChar(c);
 		charList.add(char1);
 		return this;
 	}
 
-	public tString clear() {
+	public TString clear() {
 		charList.clear();
 		return this;
 	}
@@ -50,17 +50,17 @@ public class tString {
 		}
 	}
 
-	public tString appendChar(tChar c) {
+	public TString appendChar(TChar c) {
 		charList.add(c);
 		return this;
 	}
 
 	// change the char inbetween two /b to bold
-	public tString convert_b_ToBold() {
+	public TString convert_b_ToBold() {
 		boolean b = false;
 
-		for (Iterator<tChar> iterator = charList.iterator(); iterator.hasNext();) {
-			tChar c = iterator.next();
+		for (Iterator<TChar> iterator = charList.iterator(); iterator.hasNext();) {
+			TChar c = iterator.next();
 			if (c.charID == '\b') {
 				b = !b;
 				iterator.remove();
@@ -73,14 +73,14 @@ public class tString {
 		return this;
 	}
 
-	public tString convert_r_ToColor() {
+	public TString convert_r_ToColor() {
 		boolean r = false;
 		int counter = 0;
 		String colorString = "";
 
 		// remove all /b character
-		for (Iterator<tChar> iterator = charList.iterator(); iterator.hasNext();) {
-			tChar c = iterator.next();
+		for (Iterator<TChar> iterator = charList.iterator(); iterator.hasNext();) {
+			TChar c = iterator.next();
 			if (c.charID == '\r') {
 				r = !r;
 				iterator.remove();
@@ -110,7 +110,7 @@ public class tString {
 		return this;
 	}
 
-	public static ArrayList<tString> SeperateString(String fontName, tString string, float lineLength) {
+	public static ArrayList<TString> SeperateString(String fontName, TString string, float lineLength) {
 		// load the atlas
 		Atlas atlas;
 		try {
@@ -120,23 +120,23 @@ public class tString {
 			return null;
 		}
 
-		ArrayList<tString> returnList = new ArrayList<>();
+		ArrayList<TString> returnList = new ArrayList<>();
 		lineLength = lineLength * 50f;
 
 		float templength = 0;
-		tString tempString = new tString("");
+		TString tempString = new TString("");
 		for (int i = 0; i < string.length(); i++) {
 			if ((string.getChar(i).charID == ' ')) {
 				if (templength > lineLength) {
 					returnList.add(tempString);
-					tempString = new tString("");
+					tempString = new TString("");
 					templength = 0;
 					continue;
 				}
 			}
 			if ((string.getChar(i).charID == '\n')) {
 				returnList.add(tempString);
-				tempString = new tString("");
+				tempString = new TString("");
 				templength = 0;
 				continue;
 			}

@@ -7,8 +7,8 @@ import java.util.Iterator;
 import org.joml.Vector2f;
 
 import engine.font.newrenderer.TextMaster;
-import engine.font.newrenderer.tChar;
-import engine.font.newrenderer.tString;
+import engine.font.newrenderer.TChar;
+import engine.font.newrenderer.TString;
 import engine.gamestate.*;
 
 public class MainGameState implements IGameState {
@@ -37,10 +37,10 @@ public class MainGameState implements IGameState {
 						+ "Example:\r\n" + "\r\n" + "",
 				new Vector2f(), 0, 1, 20, 100);
 
-		tString TString = new tString(
+		TString TString = new TString(
 				"for inserta\n\bbafdbafbadfvscasdfa, a char at the begin ning and e nd of the string the simplest way is using");
-		ArrayList<tString> tStrings = tString.SeperateString("Utsaah", TString, 20);
-		for (tString tString2 : tStrings) {
+		ArrayList<TString> tStrings = TString.SeperateString("Utsaah", TString, 20);
+		for (TString tString2 : tStrings) {
 			System.out.println(tString2.length());
 		}
 	}
