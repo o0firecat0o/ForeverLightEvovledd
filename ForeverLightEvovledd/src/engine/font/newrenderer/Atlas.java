@@ -34,6 +34,7 @@ public class Atlas {
 	}
 
 	public static void createAtlas(String FontName) {
+		// TODO: prevent double creation of the same atlas
 		new Atlas(FontName);
 	}
 

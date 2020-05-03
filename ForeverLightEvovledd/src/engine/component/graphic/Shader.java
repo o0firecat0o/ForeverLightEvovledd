@@ -44,6 +44,7 @@ public class Shader {
 		 * 
 		 * 
 		 */
+
 		Shader.createShader("shaders/default.vert", "shaders/default.frag", "DEFAULT")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1);
 		Shader.createShader("shaders/default.vert", "shaders/default.frag", "UI")

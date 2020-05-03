@@ -32,6 +32,8 @@ public class TextMaster {
 			e.printStackTrace();
 			return null;
 		}
+		///////////////////////////////////////////////////////
+
 		//////////////////////////////////////////////////////
 		// convert the string from string to TString for better manipulation
 		TString tText = new TString(text);
@@ -56,10 +58,6 @@ public class TextMaster {
 
 		for (int i = 0; i < seperatedString.size(); i++) {
 			TString singleLine = seperatedString.get(i);
-			float singleLineLength = 0;
-			for (int j = 0; j < singleLine.length(); j++) {
-				singleLineLength += atlas.getGlyph(singleLine.getChar(j).charID).xadvance;
-			}
 
 			// ******************************
 			// align to left
@@ -90,4 +88,6 @@ public class TextMaster {
 
 		//////////////////////////////////////////////////////
 	}
+
+	// TODO: add amend text function
 }

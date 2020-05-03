@@ -31,6 +31,22 @@ public class TString {
 		return charList;
 	}
 
+	public float getGlyphLength(String fontName) {
+		Atlas atlas;
+		try {
+			atlas = Atlas.getAtlas(fontName);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+
+		float singleLineLength = 0;
+		for (int j = 0; j < length(); j++) {
+			singleLineLength += atlas.getGlyph(getChar(j).charID).xadvance;
+		}
+		return singleLineLength;
+	}
+
 	public TString appendChar(char c) {
 		TChar char1 = new TChar(c);
 		charList.add(char1);

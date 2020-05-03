@@ -12,6 +12,8 @@ uniform sampler2D tex2;
 uniform int x_size;
 uniform int y_size;
 
+
+
 vec2 intToVec2(int INT){
 	int y = int(floor(float(INT)/16f));
 	int x = INT - y *16;
