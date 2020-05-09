@@ -13,6 +13,9 @@ import java.util.List;
 import engine.component.graphic.Shader;
 
 public class TextRendererMaster {
+
+	private static List<TextRenderCage> textRenderCages = new ArrayList<>();
+
 	public static void Render() {
 
 		glEnable(GL_BLEND);
@@ -61,8 +64,6 @@ public class TextRendererMaster {
 
 		glDisable(GL_BLEND);
 	}
-
-	private static List<TextRenderCage> textRenderCages = new ArrayList<>();
 
 	public static TextRenderCage NewTextRenderCage(String fontname) {
 		TextRenderCage textRenderCage = new TextRenderCage(fontname);

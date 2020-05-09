@@ -2,10 +2,7 @@ package engine.font.newrenderer;
 
 import java.util.ArrayList;
 
-import javax.sql.rowset.serial.SerialArray;
-
 import org.joml.Vector2f;
-import org.joml.Vector4f;
 
 import engine.font.newrenderer.Atlas.Glyph;
 import engine.math.Mathf;
@@ -16,7 +13,6 @@ public class TextMaster {
 	public static void LoadDefaultText() {
 		Atlas.createAtlas("Utsaah");
 		TextRendererMaster.NewTextRenderCage("Utsaah");
-
 	}
 
 	// the render loop will loop through all stringObjects and render the
