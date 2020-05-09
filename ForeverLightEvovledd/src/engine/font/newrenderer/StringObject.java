@@ -6,6 +6,7 @@ import org.joml.Vector2f;
 
 public class StringObject {
 	final ArrayList<TextObject> textObjects = new ArrayList<>();
+	public ArrayList<TString> seperatedString = new ArrayList<>();
 	public String fontName;
 	public String text;
 	public Vector2f position;
@@ -20,5 +21,10 @@ public class StringObject {
 
 	public ArrayList<TextObject> getTextObjects() {
 		return textObjects;
+	}
+
+	public StringObject clearTextObjects() {
+		textObjects.clear();
+		return this;
 	}
 }

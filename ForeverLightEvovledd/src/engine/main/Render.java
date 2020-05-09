@@ -78,7 +78,7 @@ import engine.component.graphic.instancedRendering.InstancedRenderer;
 import engine.component.graphic.spriteRendererComponent.SpriteRendererComponent;
 import engine.font.newrenderer.TextMaster;
 import engine.font.newrenderer.TextObject;
-import engine.font.newrenderer.TextRenderer;
+import engine.font.newrenderer.TextRendererMaster;
 import engine.font.oldrenderer.FontRenderer;
 import engine.input.InputKey;
 import engine.input.InputMouseButton;
@@ -290,7 +290,7 @@ public class Render implements Runnable {
 		}
 
 		InstancedRenderer.Render(mainFrameBuffer.FrameBufferID);
-		TextRenderer.Render();
+		TextRendererMaster.Render();
 
 		// Font rendering
 		glEnable(GL_BLEND);
