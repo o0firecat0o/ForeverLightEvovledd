@@ -73,10 +73,6 @@ public class TextRenderCage {
 		glActiveTexture(GL_TEXTURE1);
 		GL11.glBindTexture(GL_TEXTURE_2D, TextureID);
 
-		Shader shader = Shader.getShader("DefaultText");
-
-		shader.enable();
-
 		float[] vboDATA = new float[textObjects.size() * INSTANCE_DATA_LENGTH];
 		for (int i = 0; i < textObjects.size(); i++) {
 			TextObject object = textObjects.get(i);
@@ -97,12 +93,7 @@ public class TextRenderCage {
 
 		mesh.bind();
 
-		// shader.setUniformMat4f("pr_matrix",
-		// SpriteRenderer.pr_matrix).setUniform1i("tex", 1);
-
 		mesh.drawParticle(textObjects.size());
-
-		shader.disable();
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}

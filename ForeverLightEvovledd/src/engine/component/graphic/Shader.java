@@ -71,6 +71,7 @@ public class Shader {
 
 		Shader.createShader("shaders/defaultParticle.vert", "shaders/defaultParticle.frag", "DefaultParticle")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1);
+
 		Shader.createShader("shaders/text.vert", "shaders/text.frag", "DefaultText")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1);
 

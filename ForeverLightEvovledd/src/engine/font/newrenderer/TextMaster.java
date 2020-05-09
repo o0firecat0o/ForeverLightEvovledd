@@ -10,7 +10,6 @@ import engine.math.Mathf;
 
 public class TextMaster {
 
-	// TODO: add bolding to text
 	// TODO: load automatically via reading files
 	public static void LoadDefaultText() {
 		Atlas.createAtlas("Utsaah");
@@ -25,28 +24,10 @@ public class TextMaster {
 	public static StringObject CreateText(String fontName, String text, Vector2f position, float rotation, int size,
 			float lineLength, float linePadding) {
 
-		//////////////////////////////////////////////////////
-		// convert the string from string to TString for better manipulation
-		TString tText = new TString(text);
-		//////////////////////////////////////////////////////
-
 		// create the stringObject to store all the information about the string, also
 		// the rendering textObjects, for later use of amend, delete, transform and
 		// rotate
 		StringObject stringObject = new StringObject();
-
-		//////////////////////////////////////////////////////
-		// change char between \b and \r to bolding and different color
-		tText.convert_b_ToBold();
-		tText.convert_r_ToColor();
-		//////////////////////////////////////////////////////
-
-		//////////////////////////////////////////////////////
-		// seperate the string into lines
-		// for each \n, new line is created
-		// if string length> line length, new line is created
-		ArrayList<TString> seperatedString = TString.SeperateString(fontName, tText, lineLength);
-		//////////////////////////////////////////////////////
 
 		// store all information into the stringObject
 		stringObject.fontName = fontName;
@@ -56,12 +37,15 @@ public class TextMaster {
 		stringObject.text = text;
 		stringObject.lineLength = lineLength;
 		stringObject.linePadding = linePadding;
-		stringObject.seperatedString = seperatedString;
+
+		// seperate the string into lines
+		// change /b /r into bolding and color
+		stringObject.createProcessedString();
 
 		//////////////////////////////////////////////////////
 		// instantiate textobject for each line
 
-		createTextObjects(stringObject, seperatedString);
+		createTextObjects(stringObject, stringObject.seperatedString);
 		//////////////////////////////////////////////////////
 		stringOjbects.add(stringObject);
 
@@ -83,6 +67,12 @@ public class TextMaster {
 	public static StringObject translate(StringObject stringObject, Vector2f position, float rotation) {
 		stringObject.position = position;
 		stringObject.rotation = rotation;
+		createTextObjects(stringObject, stringObject.seperatedString);
+		return stringObject;
+	}
+
+	public static StringObject resize(StringObject stringObject, float size) {
+		stringObject.size = size;
 		createTextObjects(stringObject, stringObject.seperatedString);
 		return stringObject;
 	}

@@ -10,6 +10,7 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.component.graphic.Shader;
 import engine.component.graphic.instancedRendering.InstancedRenderCage;
 import engine.component.graphic.instancedRendering.InstancedRenderObject;
 
@@ -20,6 +21,9 @@ public class TextRendererMaster {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		// TODO: add ignore depth
 
+		Shader shader = Shader.getShader("DefaultText");
+		shader.enable();
+
 		for (int i = 0; i < textRenderCages.size(); i++) {
 			for (int j = 0; j < TextMaster.stringOjbects.size(); j++) {
 				if (TextMaster.stringOjbects.get(j).fontName == textRenderCages.get(i).FontName) {
@@ -27,6 +31,8 @@ public class TextRendererMaster {
 				}
 			}
 		}
+
+		shader.disable();
 
 		glDisable(GL_BLEND);
 	}

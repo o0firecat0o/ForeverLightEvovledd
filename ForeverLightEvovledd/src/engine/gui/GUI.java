@@ -3,7 +3,6 @@ package engine.gui;
 import org.joml.Vector2f;
 
 import engine.component.Button;
-import engine.component.graphic.SpriteRenderer;
 import engine.component.graphic.spriteRendererComponent.DefaultRender;
 import engine.font.oldrenderer.Font;
 import engine.object.UIObject;
