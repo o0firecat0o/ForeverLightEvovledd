@@ -5,16 +5,15 @@ import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 
-import java.io.Console;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.joml.Matrix4f;
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
 
-import engine.component.graphic.*;
-import engine.utils.FileUtils;
+import engine.component.graphic.Texture;
+import engine.component.graphic.VertexArray;
 
 public class TextRenderCage {
 	public final int TextureID; // the texture of the text atlas
@@ -23,10 +22,10 @@ public class TextRenderCage {
 	private VertexArray mesh;
 	private int vbo;
 
-	private static final int MAX_INSTANCES = 10000;
+	private static final int MAX_INSTANCES = 100000;
 	private static final int INSTANCE_DATA_LENGTH = 25;
 
-	private int pointer = 0;
+	public int pointer = 0;
 
 	private final FloatBuffer BUFFER = org.lwjgl.BufferUtils
 			.createFloatBuffer(MAX_INSTANCES * INSTANCE_DATA_LENGTH * 4);
@@ -70,6 +69,7 @@ public class TextRenderCage {
 		}
 
 		pointer = 0;
+
 		glActiveTexture(GL_TEXTURE1);
 		GL11.glBindTexture(GL_TEXTURE_2D, TextureID);
 

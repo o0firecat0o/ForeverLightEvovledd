@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engine.component.graphic.Shader;
-import engine.component.graphic.instancedRendering.InstancedRenderCage;
-import engine.component.graphic.instancedRendering.InstancedRenderObject;
 
 public class TextRendererMaster {
 	public static void Render() {
@@ -22,22 +20,43 @@ public class TextRendererMaster {
 		// TODO: add ignore depth
 
 		for (int i = 0; i < textRenderCages.size(); i++) {
-			for (int j = 0; j < TextMaster.stringOjbects.size(); j++) {
+			// UIObject and normal gameObject will be using different shader
+			// so there will be two draw calls for each fontName, one for normal font and
+			// one for UI font
+			ArrayList<TextObject> defaultTextList = new ArrayList<>();
+			ArrayList<TextObject> uiTextList = new ArrayList<>();
+			TextRenderCage textRenderCage = textRenderCages.get(i);
 
-				Shader shader;
-				if (TextMaster.stringOjbects.get(j).isUIObject) {
-					shader = Shader.getShader("DefaultTextUI");
-				} else {
-					shader = Shader.getShader("DefaultText");
+			// loop through all the string, and add the textObjects in the string to the
+			// temp list for rendering
+			// if it is the same font with the rendering cages
+			for (int j = 0; j < TextMaster.stringOjbects.size(); j++) {
+				StringObject stringObject = TextMaster.stringOjbects.get(j);
+
+				if (stringObject.fontName != textRenderCage.FontName) {
+					continue;
+
 				}
 
-				if (TextMaster.stringOjbects.get(j).fontName == textRenderCages.get(i).FontName) {
-					shader.enable();
-					textRenderCages.get(i).Render(TextMaster.stringOjbects.get(j).getTextObjects());
-					shader.disable();
+				if (stringObject.isUIObject) {
+					uiTextList.addAll(stringObject.getTextObjects());
+				} else {
+					defaultTextList.addAll(stringObject.getTextObjects());
 				}
 
 			}
+			// actual rendering for normal text
+			Shader shader;
+			shader = Shader.getShader("DefaultText");
+			shader.enable();
+			textRenderCage.Render(defaultTextList);
+			shader.disable();
+
+			// actual rendering for UI text
+			shader = Shader.getShader("DefaultTextUI");
+			shader.enable();
+			textRenderCage.Render(uiTextList);
+			shader.disable();
 		}
 
 		glDisable(GL_BLEND);

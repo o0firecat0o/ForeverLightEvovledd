@@ -1,14 +1,11 @@
 package engine.font.newrenderer;
 
-import org.joml.Vector2f;
-
-import engine.component.graphic.Shader;
 import engine.object.Component;
 import engine.object.UIObject;
 
 public class TextRenderer extends Component {
 
-	StringObject stringObject;
+	private final StringObject stringObject;
 
 	@Override
 	protected void Update() {
@@ -49,6 +46,10 @@ public class TextRenderer extends Component {
 	public TextRenderer setText(String text) {
 		TextMaster.setText(stringObject, text);
 		return this;
+	}
+
+	public String getText() {
+		return stringObject.text;
 	}
 
 	@Override
