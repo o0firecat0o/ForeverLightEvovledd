@@ -12,14 +12,8 @@ public class TextRenderer extends Component {
 
 	@Override
 	protected void Update() {
-
-	}
-
-	@Override
-	public void UpdateRender() {
-		TextMaster.translate(stringObject, gameObject.transform.getPositionVector2f(),
-				gameObject.transform.getRotation());
-		super.UpdateRender();
+		TextMaster.translateANDresize(stringObject, gameObject.transform.getPositionVector2f(),
+				gameObject.transform.getRotation(), gameObject.transform.getScale().x);
 	}
 
 	@Override
@@ -50,5 +44,16 @@ public class TextRenderer extends Component {
 
 	public TextRenderer(String text) {
 		this("Utsaah", text, 1, 20, 100);
+	}
+
+	public TextRenderer setText(String text) {
+		TextMaster.setText(stringObject, text);
+		return this;
+	}
+
+	@Override
+	public void Destroy() {
+		TextMaster.stringOjbects.remove(stringObject);
+		super.Destroy();
 	}
 }

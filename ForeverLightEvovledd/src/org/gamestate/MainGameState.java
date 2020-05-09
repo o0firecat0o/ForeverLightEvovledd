@@ -15,6 +15,7 @@ public class MainGameState implements IGameState {
 
 	@Override
 	public void Update() {
+
 	}
 
 	@Override
@@ -22,15 +23,11 @@ public class MainGameState implements IGameState {
 
 	}
 
-	UIObject gameObject;
+	TextRenderer textrenderer;
 
 	@Override
 	public void Init() {
-		gameObject = new UIObject(UIPositions.Centered, new Vector2f(), 0);
-		String text = "UPDATE 15.5\n" + "- New \r#fffffftitle screen\n" + "- Trade system overhauled\n"
-				+ "- Caste System re\bquires a civic now\n" + "- Galaxy generation tweaked\n" + "- Housing \rreduced\n"
-				+ "- many bugfixes\n" + "- localizat\bion improvements\n" + "- compatibility improvements";
-		gameObject.AddComponent(new TextRenderer("Utsaah", text, 1, 20, 100));
-
+		GameObject gameObject = new GameObject();
+		textrenderer = gameObject.AddComponent(new TextRenderer("Hello world"));
 	}
 }

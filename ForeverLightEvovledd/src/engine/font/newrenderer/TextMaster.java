@@ -2,6 +2,8 @@ package engine.font.newrenderer;
 
 import java.util.ArrayList;
 
+import javax.sql.rowset.serial.SerialArray;
+
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
@@ -31,7 +33,8 @@ public class TextMaster {
 
 		// store all information into the stringObject
 		stringObject.fontName = fontName;
-		stringObject.position = position;
+		stringObject.position.x = position.x;
+		stringObject.position.y = position.y;
 		stringObject.rotation = rotation;
 		stringObject.size = size;
 		stringObject.text = text;
@@ -54,24 +57,44 @@ public class TextMaster {
 		//////////////////////////////////////////////////////
 	}
 
-	public static StringObject amendToText(StringObject stringObject, String text) {
-		TString tText = new TString(stringObject.text + text);
+	public static StringObject setText(StringObject stringObject, String text) {
+		stringObject.text = text;
+
+		TString tText = new TString(text);
 		tText.convert_b_ToBold();
 		tText.convert_r_ToColor();
 		ArrayList<TString> seperatedString = TString.SeperateString(stringObject.fontName, tText,
 				stringObject.lineLength);
+
+		stringObject.seperatedString = seperatedString;
+
 		createTextObjects(stringObject, seperatedString);
 		return stringObject;
 	}
 
+	public static StringObject amendToText(StringObject stringObject, String text) {
+		return setText(stringObject, stringObject.text + text);
+	}
+
 	public static StringObject translate(StringObject stringObject, Vector2f position, float rotation) {
-		stringObject.position = position;
+		stringObject.position.x = position.x;
+		stringObject.position.y = position.y;
 		stringObject.rotation = rotation;
 		createTextObjects(stringObject, stringObject.seperatedString);
 		return stringObject;
 	}
 
 	public static StringObject resize(StringObject stringObject, float size) {
+		stringObject.size = size;
+		createTextObjects(stringObject, stringObject.seperatedString);
+		return stringObject;
+	}
+
+	public static StringObject translateANDresize(StringObject stringObject, Vector2f position, float rotation,
+			float size) {
+		stringObject.position.x = position.x;
+		stringObject.position.y = position.y;
+		stringObject.rotation = rotation;
 		stringObject.size = size;
 		createTextObjects(stringObject, stringObject.seperatedString);
 		return stringObject;
@@ -119,7 +142,7 @@ public class TextMaster {
 
 			// TODO: align to center
 		}
-
+		// System.out.println(stringObject.text);
 		return stringObject;
 	}
 }

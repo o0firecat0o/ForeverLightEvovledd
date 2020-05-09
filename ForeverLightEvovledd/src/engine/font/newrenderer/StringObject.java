@@ -9,8 +9,8 @@ public class StringObject {
 	public ArrayList<TString> seperatedString = new ArrayList<>();
 	public String fontName;
 	public String text;
-	public Vector2f position;
-	public float rotation;
+	public final Vector2f position = new Vector2f();
+	public float rotation = 0;
 	public float size;
 	public float lineLength;
 	public float linePadding;
