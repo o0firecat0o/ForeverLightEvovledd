@@ -8,6 +8,7 @@ public class TextObject {
 	public Matrix4f matrix4f; // includes rotation, position and scale
 	public Vector4f Color;
 	public int charID; // ASCII code
+	public boolean bold = false;
 
 	public TextObject(Matrix4f position, Vector4f Color, int charID) {
 		this.matrix4f = position;
@@ -19,5 +20,10 @@ public class TextObject {
 		this.matrix4f = Maths.createTransformationMatrix(position, rotation, scale);
 		this.Color = Color;
 		this.charID = charID;
+	}
+
+	public TextObject setBolding(boolean bold) {
+		this.bold = bold;
+		return this;
 	}
 }

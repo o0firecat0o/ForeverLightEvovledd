@@ -21,8 +21,8 @@ public class MainGameState implements IGameState {
 	public void Init() {
 		TextMaster.CreateText("Utsaah",
 				"UPDATE 15.5\n" + "- New \r#fffffftitle screen\n" + "- Trade system overhauled\n"
-						+ "- Caste System requires a civic now\n" + "- Galaxy generation tweaked\n"
-						+ "- Housing \rreduced\n" + "- many bugfixes\n" + "- localization improvements\n"
+						+ "- Caste System re\bquires a civic now\n" + "- Galaxy generation tweaked\n"
+						+ "- Housing \rreduced\n" + "- many bugfixes\n" + "- localizat\bion improvements\n"
 						+ "- compatibility improvements",
 				new Vector2f(), 0, 1, 20, 100);
 

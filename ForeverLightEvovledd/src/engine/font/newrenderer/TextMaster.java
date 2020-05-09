@@ -71,6 +71,7 @@ public class TextMaster {
 				Vector2f rotatedVector = Mathf.rotateVectorAroundPoint(addedVector, rotation, position);
 				TextObject textObject = new TextObject(Mathf.addVector(position, rotatedVector, 0), rotation,
 						new Vector2f(g.width / 100f * size, g.height / 100f * size), tc.color, c);
+				textObject.setBolding(tc.bold);
 				stringObject.addTextObjects(textObject);
 				advancepointer += g.xadvance;
 			}
@@ -81,6 +82,12 @@ public class TextMaster {
 		}
 		//////////////////////////////////////////////////////
 		stringObject.fontName = fontName;
+		stringObject.position = position;
+		stringObject.rotation = rotation;
+		stringObject.size = size;
+		stringObject.text = text;
+		stringObject.lineLength = lineLength;
+		stringObject.lineLength = linePadding;
 
 		stringOjbects.add(stringObject);
 

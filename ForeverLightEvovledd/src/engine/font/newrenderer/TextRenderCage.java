@@ -23,8 +23,8 @@ public class TextRenderCage {
 	private VertexArray mesh;
 	private int vbo;
 
-	private static final int MAX_INSTANCES = 50000;
-	private static final int INSTANCE_DATA_LENGTH = 24;
+	private static final int MAX_INSTANCES = 10000;
+	private static final int INSTANCE_DATA_LENGTH = 25;
 
 	private int pointer = 0;
 
@@ -60,6 +60,7 @@ public class TextRenderCage {
 		mesh.addInstancedAttribute(vbo, 6, 4, INSTANCE_DATA_LENGTH, 16); // color
 		mesh.addInstancedAttribute(vbo, 7, 2, INSTANCE_DATA_LENGTH, 20); // graphicx and graphicy
 		mesh.addInstancedAttribute(vbo, 8, 2, INSTANCE_DATA_LENGTH, 22); // width and height
+		mesh.addInstancedAttribute(vbo, 9, 1, INSTANCE_DATA_LENGTH, 24); // bolding
 	}
 
 	public void Render(ArrayList<TextObject> textObjects) {
@@ -89,6 +90,7 @@ public class TextRenderCage {
 			vboDATA[pointer++] = glyph.graphicy / 512f;
 			vboDATA[pointer++] = glyph.width / 512f;
 			vboDATA[pointer++] = glyph.height / 512f;
+			vboDATA[pointer++] = object.bold ? 1f : 0f;
 		}
 
 		updateVBO(vbo, vboDATA, BUFFER);
