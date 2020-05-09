@@ -8,7 +8,7 @@ public class MainGameState implements IGameState {
 
 	@Override
 	public void Update() {
-		textrenderer.setText(textrenderer.getText() + "a");
+
 	}
 
 	@Override
@@ -17,6 +17,7 @@ public class MainGameState implements IGameState {
 	}
 
 	TextRenderer textrenderer;
+	boolean a = false;
 
 	@Override
 	public void Init() {

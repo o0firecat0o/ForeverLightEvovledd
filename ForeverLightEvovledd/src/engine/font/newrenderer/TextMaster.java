@@ -53,6 +53,14 @@ public class TextMaster {
 		//////////////////////////////////////////////////////
 	}
 
+	public static int getTotalFontCount() {
+		int returnCount = 0;
+		for (StringObject stringObject : stringOjbects) {
+			returnCount += stringObject.getTextObjects().size();
+		}
+		return returnCount;
+	}
+
 	public static StringObject setText(StringObject stringObject, String text) {
 		stringObject.text = text;
 
