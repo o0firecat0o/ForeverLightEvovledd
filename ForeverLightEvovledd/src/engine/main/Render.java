@@ -178,9 +178,6 @@ public class Render implements Runnable {
 		firstBlur = new FrameBufferObject(Main.getHeight() / 4, Main.getWidth() / 4);
 		finalBlur = new FrameBufferObject(Main.getHeight(), Main.getWidth());
 
-		// init TextMaster
-		FontRenderer.init();
-
 		// load default mesh
 		VertexArray.loadDefaultMesh_normal();
 		VertexArray.loadDefaultMesh_FBO();
