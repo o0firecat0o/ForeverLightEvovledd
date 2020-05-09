@@ -74,6 +74,8 @@ public class Shader {
 
 		Shader.createShader("shaders/text.vert", "shaders/text.frag", "DefaultText")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1);
+		Shader.createShader("shaders/text.vert", "shaders/text.frag", "DefaultTextUI")
+				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).isUIShader();
 
 		Shader.createShader("shaders/default.vert", "shaders/CircularMeter.frag", "CircularMeter")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix);

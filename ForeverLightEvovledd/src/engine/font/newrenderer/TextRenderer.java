@@ -2,13 +2,13 @@ package engine.font.newrenderer;
 
 import org.joml.Vector2f;
 
+import engine.component.graphic.Shader;
 import engine.object.Component;
+import engine.object.UIObject;
 
 public class TextRenderer extends Component {
 
 	StringObject stringObject;
-
-	// TODO: addUI text
 
 	@Override
 	protected void Update() {
@@ -24,7 +24,12 @@ public class TextRenderer extends Component {
 
 	@Override
 	protected void Start() {
-
+		// tell the TextRendererMaster class to use the correct shader
+		if (gameObject instanceof UIObject) {
+			stringObject.isUIObject = true;
+		} else {
+			stringObject.isUIObject = false;
+		}
 	}
 
 	public TextRenderer(StringObject stringObject) {
@@ -41,5 +46,9 @@ public class TextRenderer extends Component {
 		stringObject.createProcessedString();
 
 		TextMaster.stringOjbects.add(stringObject);
+	}
+
+	public TextRenderer(String text) {
+		this("Utsaah", text, 1, 20, 100);
 	}
 }

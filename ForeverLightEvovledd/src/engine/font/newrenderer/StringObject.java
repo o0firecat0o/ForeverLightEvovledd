@@ -14,6 +14,7 @@ public class StringObject {
 	public float size;
 	public float lineLength;
 	public float linePadding;
+	public boolean isUIObject = false;
 
 	public void addTextObjects(TextObject textObject) {
 		textObjects.add(textObject);

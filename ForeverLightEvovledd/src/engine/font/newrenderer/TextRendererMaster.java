@@ -21,18 +21,24 @@ public class TextRendererMaster {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		// TODO: add ignore depth
 
-		Shader shader = Shader.getShader("DefaultText");
-		shader.enable();
-
 		for (int i = 0; i < textRenderCages.size(); i++) {
 			for (int j = 0; j < TextMaster.stringOjbects.size(); j++) {
-				if (TextMaster.stringOjbects.get(j).fontName == textRenderCages.get(i).FontName) {
-					textRenderCages.get(i).Render(TextMaster.stringOjbects.get(j).getTextObjects());
+
+				Shader shader;
+				if (TextMaster.stringOjbects.get(j).isUIObject) {
+					shader = Shader.getShader("DefaultTextUI");
+				} else {
+					shader = Shader.getShader("DefaultText");
 				}
+
+				if (TextMaster.stringOjbects.get(j).fontName == textRenderCages.get(i).FontName) {
+					shader.enable();
+					textRenderCages.get(i).Render(TextMaster.stringOjbects.get(j).getTextObjects());
+					shader.disable();
+				}
+
 			}
 		}
-
-		shader.disable();
 
 		glDisable(GL_BLEND);
 	}
