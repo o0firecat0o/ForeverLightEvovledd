@@ -35,7 +35,7 @@ public class ShieldRenderer extends SpriteRendererComponent {
 
 	@Override
 	public void Start() {
-		SetFrameBuffer(Render.mainFrameBuffer2);
+		SetFrameBuffer(Render.postprocessingBuffer);
 
 		timer = 0;
 		timer2 = 1;

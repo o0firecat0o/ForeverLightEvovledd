@@ -1,18 +1,51 @@
 package engine.component.graphic;
 
-import static org.lwjgl.opengl.EXTFramebufferObject.*;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT;
+import static org.lwjgl.opengl.EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT;
+import static org.lwjgl.opengl.EXTFramebufferObject.GL_FRAMEBUFFER_EXT;
+import static org.lwjgl.opengl.EXTFramebufferObject.GL_RENDERBUFFER_EXT;
+import static org.lwjgl.opengl.EXTFramebufferObject.glBindFramebufferEXT;
+import static org.lwjgl.opengl.EXTFramebufferObject.glBindRenderbufferEXT;
+import static org.lwjgl.opengl.EXTFramebufferObject.glFramebufferRenderbufferEXT;
+import static org.lwjgl.opengl.EXTFramebufferObject.glFramebufferTexture2DEXT;
+import static org.lwjgl.opengl.EXTFramebufferObject.glGenFramebuffersEXT;
+import static org.lwjgl.opengl.EXTFramebufferObject.glGenRenderbuffersEXT;
+import static org.lwjgl.opengl.EXTFramebufferObject.glRenderbufferStorageEXT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_INT;
+import static org.lwjgl.opengl.GL11.GL_LINEAR;
+import static org.lwjgl.opengl.GL11.GL_RGBA;
+import static org.lwjgl.opengl.GL11.GL_RGBA8;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glGenTextures;
+import static org.lwjgl.opengl.GL11.glTexImage2D;
+import static org.lwjgl.opengl.GL11.glTexParameterf;
+import static org.lwjgl.opengl.GL11.glTexParameteri;
+import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
 
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL14;
+
+import engine.main.Main;
 
 public class FrameBufferObject {
 
 	public int FrameBufferID;
 	public int colorTextureID;
 	public int depthRenderBufferID;
+	public int Width;
+	public int Height;
 
 	public FrameBufferObject(int Width, int Height) {
+		this.Width = Width;
+		this.Height = Height;
+
 		// check if FBO is enable
 		boolean FBOEnabled = GL.createCapabilities().GL_EXT_framebuffer_object;
 		System.out.println("FBO capabilities is " + FBOEnabled);
@@ -57,5 +90,16 @@ public class FrameBufferObject {
 
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0); // Swithch back to normal
 														// framebuffer rendering
+	}
+
+	public void bind() {
+		glViewport(0, 0, Width, Height);
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, FrameBufferID);
+		glClear(GL_DEPTH_BUFFER_BIT);
+	}
+
+	public void unbind() {
+		glViewport(0, 0, Main.getWidth(), Main.getHeight());
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 	}
 }
