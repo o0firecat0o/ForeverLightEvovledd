@@ -5,7 +5,7 @@
 	<classpathentry kind="lib" path="lib/lwjgl-glfw-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl-glfw-natives-windows.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl-glfw-sources.jar"/>
-	<classpathentry kind="lib" path="lib/lwjgl-glfw.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl-glfw.jar" sourcepath="lib/lwjgl-glfw-sources.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl-nanovg-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl-nanovg-natives-windows.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl-nanovg-sources.jar"/>
@@ -18,7 +18,7 @@
 	<classpathentry kind="lib" path="lib/lwjgl-opengl-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl-opengl-natives-windows.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl-opengl-sources.jar"/>
-	<classpathentry kind="lib" path="lib/lwjgl-opengl.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl-opengl.jar" sourcepath="lib/lwjgl-opengl-sources.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl-stb-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl-stb-natives-windows.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl-stb-sources.jar"/>

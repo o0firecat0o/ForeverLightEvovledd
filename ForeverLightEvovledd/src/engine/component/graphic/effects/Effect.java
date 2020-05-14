@@ -93,7 +93,7 @@ public class Effect {
 				super.Start();
 
 				SetFrameBuffer(Render.mainFrameBuffer);
-				SetFrameBuffer(Render.finalBlur);
+				SetFrameBuffer(Render.glowFrameBuffer);
 			}
 		});
 	}

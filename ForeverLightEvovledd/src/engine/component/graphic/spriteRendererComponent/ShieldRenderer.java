@@ -74,7 +74,7 @@ public class ShieldRenderer extends SpriteRendererComponent {
 		GL11.glBindTexture(GL_TEXTURE_2D, Texture.getTexture("shield"));
 
 		glActiveTexture(GL_TEXTURE2);
-		GL11.glBindTexture(GL_TEXTURE_2D, Render.postBloomShader.FrameBufferID);
+		GL11.glBindTexture(GL_TEXTURE_2D, Render.postBloomBuffer.FrameBufferID);
 
 		glActiveTexture(GL_TEXTURE3);
 		GL11.glBindTexture(GL_TEXTURE_2D, Texture.getTexture("rock_n"));

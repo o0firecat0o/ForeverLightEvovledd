@@ -45,7 +45,6 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glClearDepth;
 import static org.lwjgl.opengl.GL11.glDepthFunc;
-import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glFlush;
 import static org.lwjgl.opengl.GL11.glGetError;
@@ -101,11 +100,11 @@ public class Render implements Runnable {
 	public static FrameBufferObject bloomFrameBuffer; // For bloom effect
 	public static FrameBufferObject mainFrameBuffer;
 	public static FrameBufferObject postprocessingBuffer; // frame buffer after all
-														// distortion
-	private static FrameBufferObject firstBlur;
-	public static FrameBufferObject finalBlur;
+															// distortion
+	private static FrameBufferObject blurProcessingBuffer;
+	public static FrameBufferObject glowFrameBuffer;
 
-	public static FrameBufferObject postBloomShader;
+	public static FrameBufferObject postBloomBuffer;
 
 	public static FrameBufferObject rippleDistortion;
 
@@ -169,12 +168,12 @@ public class Render implements Runnable {
 		postprocessingBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
 		rippleDistortion = new FrameBufferObject(Main.getWidth(), Main.getHeight());
 
-		postBloomShader = new FrameBufferObject(Main.getWidth(), Main.getHeight());
+		postBloomBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
 
 		// Creating an FBO with smaller size
 		// remeber to set the viewport to smaller also
-		firstBlur = new FrameBufferObject(Main.getHeight() / 4, Main.getWidth() / 4);
-		finalBlur = new FrameBufferObject(Main.getHeight(), Main.getWidth());
+		blurProcessingBuffer = new FrameBufferObject(Main.getHeight() / 4, Main.getWidth() / 4);
+		glowFrameBuffer = new FrameBufferObject(Main.getHeight(), Main.getWidth());
 
 		// load default mesh
 		VertexArray.loadDefaultMesh_normal();
@@ -254,6 +253,9 @@ public class Render implements Runnable {
 		// set the background color back to black before all rendering
 		setBackGroundColor(new Vector4f(0, 0, 0, 0));
 
+		////////////////////////////////////////////////////////////////////////////
+		////// Rendering Start here
+
 		// FBO rendering: BloomBuffer
 		bloomFrameBuffer.bind();
 		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
@@ -279,38 +281,30 @@ public class Render implements Runnable {
 		}
 		InstancedRenderer.Render(mainFrameBuffer.FrameBufferID);
 
-		TextRendererMaster.Render();
-
 		// Font rendering
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+		// new renderer
+		TextRendererMaster.Render();
+		// old renderer
 		FontRenderer.render();
 
-		glDisable(GL_BLEND);
-
-		// Main Rendering
-
 		// Blur horizontally
-		firstBlur.bind();
-
+		blurProcessingBuffer.bind();
 		fullScreenRender(Shader.getShader("HBlur"), bloomFrameBuffer.colorTextureID, 0);
 
 		// Blur vertically
-		finalBlur.bind();
-
-		fullScreenRender(Shader.getShader("VBlur"), firstBlur.colorTextureID, 0);
+		glowFrameBuffer.bind();
+		fullScreenRender(Shader.getShader("VBlur"), blurProcessingBuffer.colorTextureID, 0);
 
 		// Render the stuff that does not need blur, hence, only glow
 		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
-			SpriteRenderer.allSpriteRendererComponents.get(i).render(finalBlur.FrameBufferID);
+			SpriteRenderer.allSpriteRendererComponents.get(i).render(glowFrameBuffer.FrameBufferID);
 		}
-		InstancedRenderer.Render(finalBlur.FrameBufferID);
+		InstancedRenderer.Render(glowFrameBuffer.FrameBufferID);
 
 		/// Bloom result render, added the mainFrame
 
-		postBloomShader.bind();
-		fullScreenRender(Shader.getShader("Bloom"), mainFrameBuffer.colorTextureID, finalBlur.colorTextureID);
+		postBloomBuffer.bind();
+		fullScreenRender(Shader.getShader("Bloom"), mainFrameBuffer.colorTextureID, glowFrameBuffer.colorTextureID);
 
 		// Added ripple distortion into the postbloom buffer
 		glViewport(0, 0, Main.getWidth(), Main.getHeight());
@@ -318,7 +312,7 @@ public class Render implements Runnable {
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		fullScreenRender(Shader.getShader("Ripple"), postBloomShader.FrameBufferID, rippleDistortion.colorTextureID);
+		fullScreenRender(Shader.getShader("Ripple"), postBloomBuffer.FrameBufferID, rippleDistortion.colorTextureID);
 
 		// Main Render 2
 		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
