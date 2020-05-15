@@ -118,6 +118,8 @@ public class Render implements Runnable {
 		// set resizeable to false
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
+		// TODO: check version
+
 		// make the program use the highest OpenGL version possible
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
@@ -328,14 +330,16 @@ public class Render implements Runnable {
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		// TODO: make this fail when using opengl version <4.0
+
 		ArrayList<Vector2f> arrayList = new ArrayList<>();
-		arrayList.add(new Vector2f(0.2f, 0f));
-		arrayList.add(new Vector2f(-0.5f, -0.5f));
+		arrayList.add(new Vector2f(0.5f, 0.5f));
+		arrayList.add(new Vector2f(0.6f, 0.6f));
 
 		Shader.getShader("Swirl").enable();
 
 		Shader.getShader("Swirl").setUniform2fv("veclist", arrayList);
-
+		Shader.getShader("Swirl").setUniform2f("resolution", Main.getWidth(), Main.getHeight());
 		Shader.getShader("Swirl").disable();
 
 		fullScreenRender(Shader.getShader("Swirl"), swirlFrameBuffer.colorTextureID, 0);

@@ -9,8 +9,9 @@ in DATA{
 } fs_in;
 
 uniform sampler2D tex;
-uniform vec2 veclist[20];
-const int veccount = 20;
+uniform vec2 veclist[2];
+const int veccount = 2;
+uniform vec2 resolution;
 
 
 void main()
@@ -18,17 +19,15 @@ void main()
 	 float effectRadius = .2;
 	 float effectAngle = 2. * PI;
 
-	 vec2 center = vec2(0.5,0.5) + veclist[0];
+	 vec2 uv = fs_in.tc;
 
 	 for(int i = 0; i < veccount; i++){
-			 center += veclist[i];
+		 uv -= veclist[i];
+		 float len = length(uv * vec2(resolution.x/ resolution.y,1.));
+	     float angle = atan(uv.y, uv.x) + effectAngle * smoothstep(effectRadius, 0., len);
+		 float radius = length(uv);
+		 uv = vec2(radius * cos(angle), radius * sin(angle))+ veclist[i];
 	 }
 
-	 vec2 uv = fs_in.tc / vec2(1.0,1.0) - center;
-
-	 float len = length(uv * vec2(1., 1.));
-	 float angle = atan(uv.y, uv.x) + effectAngle * smoothstep(effectRadius, 0., len);
-	 float radius = length(uv);
-
-	color = texture(tex, vec2(radius * cos(angle), radius * sin(angle)) + center).rgba;
+	color = texture(tex, uv).rgba;
 }
