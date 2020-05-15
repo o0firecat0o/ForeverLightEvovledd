@@ -56,6 +56,7 @@ import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -97,16 +98,18 @@ public class Render implements Runnable {
 
 	private static Vector4f BackGroundColor = new Vector4f(1.0f, 0.8f, 0.8f, 1.0f);
 
+	public static FrameBufferObject swirlFrameBuffer;
+	public static FrameBufferObject rippleFrameBuffer; // For ripple effect
 	public static FrameBufferObject bloomFrameBuffer; // For bloom effect
+	public static FrameBufferObject glowFrameBuffer; // For glow only, without bloom
 	public static FrameBufferObject mainFrameBuffer;
-	public static FrameBufferObject postprocessingBuffer; // frame buffer after all
-															// distortion
+
 	private static FrameBufferObject blurProcessingBuffer;
-	public static FrameBufferObject glowFrameBuffer;
+	private static FrameBufferObject postBloomBuffer;
+	private static FrameBufferObject postRippleBuffer;
 
-	public static FrameBufferObject postBloomBuffer;
-
-	public static FrameBufferObject rippleDistortion;
+	public static FrameBufferObject postProcessingBuffer; // frame buffer after all
+	// distortion
 
 	private void init() {
 		if (!glfwInit()) {
@@ -165,10 +168,12 @@ public class Render implements Runnable {
 		// Create a FBO
 		bloomFrameBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
 		mainFrameBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
-		postprocessingBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
-		rippleDistortion = new FrameBufferObject(Main.getWidth(), Main.getHeight());
+		postProcessingBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
+		rippleFrameBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
+		swirlFrameBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
 
 		postBloomBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
+		postRippleBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
 
 		// Creating an FBO with smaller size
 		// remeber to set the viewport to smaller also
@@ -264,17 +269,17 @@ public class Render implements Runnable {
 		InstancedRenderer.Render(bloomFrameBuffer.FrameBufferID);
 
 		// FBO rendering: RippleDistortion
-		rippleDistortion.bind();
+		rippleFrameBuffer.bind();
 		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
-			SpriteRenderer.allSpriteRendererComponents.get(i).render(rippleDistortion.FrameBufferID);
+			SpriteRenderer.allSpriteRendererComponents.get(i).render(rippleFrameBuffer.FrameBufferID);
 		}
-		InstancedRenderer.Render(rippleDistortion.FrameBufferID);
+		InstancedRenderer.Render(rippleFrameBuffer.FrameBufferID);
 
 		// FBO rendering: MainBuffer
 		mainFrameBuffer.bind();
 
 		// the actual background color is here!
-		fullScreenRender(Shader.getShader("UI"), Texture.getTexture("bg"), 0);
+		fullScreenRender(Shader.getShader("UI"), Texture.getTexture("honey_comb"), 0);
 
 		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
 			SpriteRenderer.allSpriteRendererComponents.get(i).render(mainFrameBuffer.FrameBufferID);
@@ -307,18 +312,39 @@ public class Render implements Runnable {
 		fullScreenRender(Shader.getShader("Bloom"), mainFrameBuffer.colorTextureID, glowFrameBuffer.colorTextureID);
 
 		// Added ripple distortion into the postbloom buffer
+		postRippleBuffer.bind();
+		fullScreenRender(Shader.getShader("Ripple"), postBloomBuffer.colorTextureID, rippleFrameBuffer.colorTextureID);
+
+		// Added swirl distortion into the postripple buffer
+		swirlFrameBuffer.bind();
+		fullScreenRender(Shader.getShader("UI"), postRippleBuffer.colorTextureID, 0);
+
+		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
+			SpriteRenderer.allSpriteRendererComponents.get(i).render(swirlFrameBuffer.FrameBufferID);
+		}
+
 		glViewport(0, 0, Main.getWidth(), Main.getHeight());
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		fullScreenRender(Shader.getShader("Ripple"), postBloomBuffer.FrameBufferID, rippleDistortion.colorTextureID);
+		ArrayList<Vector2f> arrayList = new ArrayList<>();
+		arrayList.add(new Vector2f(0.2f, 0f));
+		arrayList.add(new Vector2f(0.5f, 0.5f));
+
+		Shader.getShader("Swirl").enable();
+
+		Shader.getShader("Swirl").setUniform2fv("veclist", arrayList);
+
+		Shader.getShader("Swirl").disable();
+
+		fullScreenRender(Shader.getShader("Swirl"), swirlFrameBuffer.colorTextureID, 0);
 
 		// Main Render 2
 		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
-			SpriteRenderer.allSpriteRendererComponents.get(i).render(postprocessingBuffer.FrameBufferID);
+			SpriteRenderer.allSpriteRendererComponents.get(i).render(postProcessingBuffer.FrameBufferID);
 		}
-		InstancedRenderer.Render(postprocessingBuffer.FrameBufferID);
+		InstancedRenderer.Render(postProcessingBuffer.FrameBufferID);
 
 		// Main Render loop end
 		//////
@@ -342,6 +368,10 @@ public class Render implements Runnable {
 
 		glActiveTexture(GL_TEXTURE1);
 		GL11.glBindTexture(GL_TEXTURE_2D, textureID);
+		// TODO: move to swirl shader
+		// used for swirl shader
+		GL11.glTexParameterf(GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+		GL11.glTexParameterf(GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 
 		glActiveTexture(GL_TEXTURE2);
 		GL11.glBindTexture(GL_TEXTURE_2D, textureID2);

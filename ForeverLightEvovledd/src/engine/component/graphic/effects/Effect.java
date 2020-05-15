@@ -17,7 +17,7 @@ public class Effect {
 		GameObject gameObject = new GameObject();
 		gameObject.transform.setPosition(position);
 
-		gameObject.AddComponent(new DefaultRender().SetFrameBuffer(Render.rippleDistortion));
+		gameObject.AddComponent(new DefaultRender().SetFrameBuffer(Render.rippleFrameBuffer));
 		gameObject.AddComponent(new Animation()).Load("ripple");
 		gameObject.GetComponent(Animation.class).AddFunction(new IAnimationFunction() {
 

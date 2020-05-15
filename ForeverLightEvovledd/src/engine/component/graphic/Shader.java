@@ -8,11 +8,17 @@ import static org.lwjgl.opengl.GL20.glUniform3f;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.joml.*;
+import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.lwjgl.opengl.GL20;
 
-import engine.utils.*;
+import engine.utils.BufferUtils;
+import engine.utils.ShaderUtils;
 
 public class Shader {
 
@@ -56,9 +62,13 @@ public class Shader {
 		Shader.createShader("shaders/default.vert", "shaders/bloom.frag", "Bloom")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).setUniform1i("tex2", 2)
 				.isUIShader();
+
 		Shader.createShader("shaders/default.vert", "shaders/RippleDistortion.frag", "Ripple")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).setUniform1i("tex2", 2)
 				.isUIShader();
+		Shader.createShader("shaders/default.vert", "shaders/SwirlDistortion.frag", "Swirl")
+				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).isUIShader();
+
 		Shader.createShader("shaders/default.vert", "shaders/Shield.frag", "Shield")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).setUniform1i("tex2", 2)
 				.setUniform1i("tex3", 3).setUniform1i("tex4", 4);
@@ -185,6 +195,18 @@ public class Shader {
 				BufferUtils.createFloatBuffer(new float[] { matrix.m00(), matrix.m01(), matrix.m02(), matrix.m03(),
 						matrix.m10(), matrix.m11(), matrix.m12(), matrix.m13(), matrix.m20(), matrix.m21(),
 						matrix.m22(), matrix.m23(), matrix.m30(), matrix.m31(), matrix.m32(), matrix.m33() }));
+		return this;
+	}
+
+	public Shader setUniform2fv(String name, ArrayList<Vector2f> arrayList) {
+		if (!enabled)
+			enable();
+		float[] floatList = new float[2 * arrayList.size()];
+		for (int i = 0; i < arrayList.size(); i++) {
+			floatList[2 * i] = arrayList.get(i).x;
+			floatList[2 * i + 1] = arrayList.get(i).y;
+		}
+		GL20.glUniform2fv(getUniform(name), BufferUtils.createFloatBuffer(floatList));
 		return this;
 	}
 

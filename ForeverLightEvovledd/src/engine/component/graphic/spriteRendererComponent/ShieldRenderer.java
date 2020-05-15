@@ -8,13 +8,17 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE3;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE4;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 
-import org.joml.*;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 
-import engine.component.graphic.*;
-import engine.main.*;
-import engine.math.*;
-import engine.object.GameObject;
+import engine.component.graphic.Shader;
+import engine.component.graphic.Texture;
+import engine.component.graphic.VertexArray;
+import engine.main.Main;
+import engine.main.Render;
+import engine.math.Mathf;
+import engine.math.Maths;
 
 public class ShieldRenderer extends SpriteRendererComponent {
 
@@ -35,7 +39,7 @@ public class ShieldRenderer extends SpriteRendererComponent {
 
 	@Override
 	public void Start() {
-		SetFrameBuffer(Render.postprocessingBuffer);
+		SetFrameBuffer(Render.postProcessingBuffer);
 
 		timer = 0;
 		timer2 = 1;
@@ -74,7 +78,7 @@ public class ShieldRenderer extends SpriteRendererComponent {
 		GL11.glBindTexture(GL_TEXTURE_2D, Texture.getTexture("shield"));
 
 		glActiveTexture(GL_TEXTURE2);
-		GL11.glBindTexture(GL_TEXTURE_2D, Render.postBloomBuffer.FrameBufferID);
+		GL11.glBindTexture(GL_TEXTURE_2D, Render.bloomFrameBuffer.FrameBufferID);
 
 		glActiveTexture(GL_TEXTURE3);
 		GL11.glBindTexture(GL_TEXTURE_2D, Texture.getTexture("rock_n"));

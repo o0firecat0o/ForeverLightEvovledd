@@ -17,7 +17,6 @@ public class MainGameState implements IGameState {
 	}
 
 	TextRenderer textrenderer;
-	boolean a = false;
 
 	@Override
 	public void Init() {

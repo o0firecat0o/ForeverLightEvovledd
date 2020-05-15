@@ -11,9 +11,11 @@ import static org.lwjgl.opengl.GL11.glDeleteTextures;
 import static org.lwjgl.opengl.GL11.glTexImage2D;
 
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -62,11 +64,10 @@ public class Texture {
 
 	@Deprecated
 	/**
-	 * This function is Deprecated because it could not run in the logic loop,
-	 * it has to be called in the render loop
+	 * This function is Deprecated because it could not run in the logic loop, it
+	 * has to be called in the render loop
 	 * 
-	 * @param name
-	 *            Name of the texture
+	 * @param name Name of the texture
 	 */
 	public static void destroyTexture(String name) {
 		int textureID = NAME_ID_DICTIONARY.get(name);
@@ -157,8 +158,7 @@ public class Texture {
 	 * native java robot screen capture
 	 * 
 	 * @param name
-	 * @param image
-	 *            The Buffered Image
+	 * @param image The Buffered Image
 	 * @return
 	 */
 	public static int createTexture(String name, BufferedImage image) {

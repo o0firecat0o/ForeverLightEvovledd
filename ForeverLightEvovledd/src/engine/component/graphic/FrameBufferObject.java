@@ -32,8 +32,6 @@ import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL14;
 
-import engine.main.Main;
-
 public class FrameBufferObject {
 
 	public int FrameBufferID;
@@ -98,8 +96,4 @@ public class FrameBufferObject {
 		glClear(GL_DEPTH_BUFFER_BIT);
 	}
 
-	public void unbind() {
-		glViewport(0, 0, Main.getWidth(), Main.getHeight());
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-	}
 }
