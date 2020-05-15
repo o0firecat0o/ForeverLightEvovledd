@@ -210,6 +210,21 @@ public class Shader {
 		return this;
 	}
 
+	@Deprecated
+	// not yet tested
+	public Shader setUniform3fv(String name, ArrayList<Vector3f> arrayList) {
+		if (!enabled)
+			enable();
+		float[] floatList = new float[3 * arrayList.size()];
+		for (int i = 0; i < arrayList.size(); i++) {
+			floatList[3 * i] = arrayList.get(i).x;
+			floatList[3 * i + 1] = arrayList.get(i).y;
+			floatList[3 * i + 2] = arrayList.get(i).z;
+		}
+		GL20.glUniform3fv(getUniform(name), BufferUtils.createFloatBuffer(floatList));
+		return this;
+	}
+
 	public void enable() {
 		glUseProgram(ID);
 		enabled = true;
