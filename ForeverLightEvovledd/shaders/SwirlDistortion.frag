@@ -1,6 +1,7 @@
 #version 330 core
 #define PI 3.14159
 
+
 layout (location = 0) out vec4 color;
 
 in DATA{
@@ -8,15 +9,20 @@ in DATA{
 } fs_in;
 
 uniform sampler2D tex;
-uniform vec2[] veclist;
+uniform vec2 veclist[20];
+const int veccount = 20;
 
 
 void main()
 {
-	 float effectRadius = .1;
+	 float effectRadius = .2;
 	 float effectAngle = 2. * PI;
 
-	 vec2 center = vec2(0.5,0.5) + veclist[1];
+	 vec2 center = vec2(0.5,0.5) + veclist[0];
+
+	 for(int i = 0; i < veccount; i++){
+			 center += veclist[i];
+	 }
 
 	 vec2 uv = fs_in.tc / vec2(1.0,1.0) - center;
 

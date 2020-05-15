@@ -119,8 +119,8 @@ public class Render implements Runnable {
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
 		// make the program use the highest OpenGL version possible
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
@@ -330,7 +330,7 @@ public class Render implements Runnable {
 
 		ArrayList<Vector2f> arrayList = new ArrayList<>();
 		arrayList.add(new Vector2f(0.2f, 0f));
-		arrayList.add(new Vector2f(0.5f, 0.5f));
+		arrayList.add(new Vector2f(-0.5f, -0.5f));
 
 		Shader.getShader("Swirl").enable();
 
