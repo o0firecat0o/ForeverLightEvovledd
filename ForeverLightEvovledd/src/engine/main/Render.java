@@ -66,6 +66,7 @@ import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GLCapabilities;
 import org.lwjgl.opengl.GLUtil;
 
 import engine.component.Camera;
@@ -92,6 +93,7 @@ public class Render implements Runnable {
 
 	public static boolean running = false;
 	public static long window;
+	public static GLCapabilities glCapabilities;
 
 	public static boolean finishInit = false;
 
@@ -149,7 +151,7 @@ public class Render implements Runnable {
 
 		glfwMakeContextCurrent(window);
 		glfwShowWindow(window);
-		GL.createCapabilities();
+		glCapabilities = GL.createCapabilities();
 
 		glClearDepth(1.0f); // Depth Buffer Setup
 		glDepthFunc(GL_LEQUAL); // The Type Of Depth Testing (Less Or Equal)
@@ -314,25 +316,28 @@ public class Render implements Runnable {
 
 		//////////////////////////////////////////////////////////
 		// Added swirl distortion into the postripple buffer
-
-		// TODO: make this fail when using opengl version <4.0
 		swirlFrameBuffer.bind();
 
-		SwirlRenderer.swirlList.clear();
-		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
-			SpriteRenderer.allSpriteRendererComponents.get(i).render(swirlFrameBuffer.FrameBufferID);
+		// Swirl Shader require open GL 4.0 or above to run
+		if (glCapabilities.OpenGL40) {
+			SwirlRenderer.swirlList.clear();
+			for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
+				SpriteRenderer.allSpriteRendererComponents.get(i).render(swirlFrameBuffer.FrameBufferID);
+			}
+
+			Shader.getShader("Swirl").enable();
+
+			ArrayList<Vector4f> swirlList = SwirlRenderer.returnALlSwirlinVector4f();
+			Shader.getShader("Swirl").setUniform4fv("veclist", swirlList);
+			Shader.getShader("Swirl").setUniform1f("veccount", swirlList.size());
+			Shader.getShader("Swirl").setUniform1f("scroll", Camera.MAIN.scroll);
+			Shader.getShader("Swirl").setUniform2f("resolution", Main.getWidth(), Main.getHeight());
+			Shader.getShader("Swirl").disable();
+
+			fullScreenRender(Shader.getShader("Swirl"), postRippleBuffer.colorTextureID, 0);
+		} else {
+			fullScreenRender(Shader.getShader("UI"), postRippleBuffer.colorTextureID, 0);
 		}
-
-		Shader.getShader("Swirl").enable();
-
-		ArrayList<Vector4f> swirlList = SwirlRenderer.returnALlSwirlinVector4f();
-		Shader.getShader("Swirl").setUniform4fv("veclist", swirlList);
-		Shader.getShader("Swirl").setUniform1f("veccount", swirlList.size());
-		Shader.getShader("Swirl").setUniform1f("scroll", Camera.MAIN.scroll);
-		Shader.getShader("Swirl").setUniform2f("resolution", Main.getWidth(), Main.getHeight());
-		Shader.getShader("Swirl").disable();
-
-		fullScreenRender(Shader.getShader("Swirl"), postRippleBuffer.colorTextureID, 0);
 
 		///////////////////////////////////////////////////////////
 

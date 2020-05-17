@@ -45,6 +45,10 @@ public class SwirlRenderer extends SpriteRendererComponent {
 		this.rotating = rotating;
 	}
 
+	public void setReducingSize(boolean reducingSize) {
+		this.reducingSize = reducingSize;
+	}
+
 	@Override
 	public void Render(int FrameBufferObjectID) {
 		swirlList.add(new Swirl(Camera.MAIN.WorldToOpenGLPosition(gameObject.transform.getPositionVector2f()), radius,

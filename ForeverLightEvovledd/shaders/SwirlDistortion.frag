@@ -17,9 +17,7 @@ uniform vec2 resolution;
 
 void main()
 {
-
-
-	 vec2 uv = fs_in.tc;
+	vec2 uv = fs_in.tc;
 
 	 for(int i = 0; i < veccount; i++){
 		 float effectRadius = veclist[i].z * scroll;
