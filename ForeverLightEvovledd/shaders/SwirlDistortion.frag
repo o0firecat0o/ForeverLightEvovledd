@@ -10,18 +10,21 @@ in DATA{
 
 uniform sampler2D tex;
 uniform vec4 veclist[50];
-const int veccount = 1;
+uniform float veccount;
+uniform float scroll;
 uniform vec2 resolution;
 
 
 void main()
 {
-	 float effectRadius = .2;
-	 float effectAngle = 2. * PI;
+
 
 	 vec2 uv = fs_in.tc;
 
 	 for(int i = 0; i < veccount; i++){
+		 float effectRadius = veclist[i].z * scroll;
+		 float effectAngle = veclist[i].w * PI;
+
 		 uv -= veclist[i].xy;
 		 float len = length(uv * vec2(resolution.x/ resolution.y,1.));
 	     float angle = atan(uv.y, uv.x) + effectAngle * smoothstep(effectRadius, 0., len);

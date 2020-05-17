@@ -15,7 +15,9 @@ public class SwirlRenderer extends SpriteRendererComponent {
 	public static ArrayList<Swirl> swirlList = new ArrayList<>();
 
 	public float radius = 0.5f;
-	public float angle = 0.2f;
+	public float angle = 0.4f;
+	public boolean rotating = true; // to start swirling or not
+	public boolean reducingSize = true;
 
 	class Swirl {
 		final Vector2f position;
@@ -34,23 +36,32 @@ public class SwirlRenderer extends SpriteRendererComponent {
 
 		for (Swirl swirl : swirlList) {
 			arrayList.add(new Vector4f(swirl.position.x, swirl.position.y, swirl.radius, swirl.angle));
-			// System.out.println(new Vector4f(swirl.position.x, swirl.position.y,
-			// swirl.radius, swirl.angle));
 		}
 
 		return arrayList;
 	}
 
+	public void setRotation(boolean rotating) {
+		this.rotating = rotating;
+	}
+
 	@Override
 	public void Render(int FrameBufferObjectID) {
-		swirlList.add(new Swirl(Camera.MAIN.WorldToScreenPosition(gameObject.transform.getPositionVector2f()), radius,
+		swirlList.add(new Swirl(Camera.MAIN.WorldToOpenGLPosition(gameObject.transform.getPositionVector2f()), radius,
 				angle));
-		// System.out.println(Camera.MAIN.WorldToScreenPosition(gameObject.transform.getPositionVector2f()));
 	}
 
 	@Override
 	protected void Update() {
-		// System.out.println(gameObject.transform.getPositionVector2f());
+		if (rotating) {
+			angle += 0.01f;
+		}
+		if (reducingSize) {
+			radius -= 0.004f;
+			if (radius < 0) {
+				gameObject.InitDestroy();
+			}
+		}
 	}
 
 	@Override

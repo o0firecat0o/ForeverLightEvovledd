@@ -56,6 +56,7 @@ import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -288,12 +289,6 @@ public class Render implements Runnable {
 		}
 		InstancedRenderer.Render(mainFrameBuffer.FrameBufferID);
 
-		// Font rendering
-		// new renderer
-		TextRendererMaster.Render();
-		// old renderer
-		FontRenderer.render();
-
 		// Blur horizontally
 		blurProcessingBuffer.bind();
 		fullScreenRender(Shader.getShader("HBlur"), bloomFrameBuffer.colorTextureID, 0);
@@ -330,11 +325,14 @@ public class Render implements Runnable {
 
 		Shader.getShader("Swirl").enable();
 
-		Shader.getShader("Swirl").setUniform4fv("veclist", SwirlRenderer.returnALlSwirlinVector4f());
+		ArrayList<Vector4f> swirlList = SwirlRenderer.returnALlSwirlinVector4f();
+		Shader.getShader("Swirl").setUniform4fv("veclist", swirlList);
+		Shader.getShader("Swirl").setUniform1f("veccount", swirlList.size());
+		Shader.getShader("Swirl").setUniform1f("scroll", Camera.MAIN.scroll);
 		Shader.getShader("Swirl").setUniform2f("resolution", Main.getWidth(), Main.getHeight());
 		Shader.getShader("Swirl").disable();
 
-		fullScreenRender(Shader.getShader("UI"), postRippleBuffer.colorTextureID, 0);
+		fullScreenRender(Shader.getShader("Swirl"), postRippleBuffer.colorTextureID, 0);
 
 		///////////////////////////////////////////////////////////
 
@@ -350,6 +348,12 @@ public class Render implements Runnable {
 			SpriteRenderer.allSpriteRendererComponents.get(i).render(postProcessingBuffer.FrameBufferID);
 		}
 		InstancedRenderer.Render(postProcessingBuffer.FrameBufferID);
+
+		// Font rendering
+		// new renderer
+		TextRendererMaster.Render();
+		// old renderer
+		FontRenderer.render();
 
 		// Main Render loop end
 		//////

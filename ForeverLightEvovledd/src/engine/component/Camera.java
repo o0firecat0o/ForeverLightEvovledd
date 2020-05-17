@@ -125,6 +125,13 @@ public class Camera extends Component {
 		return worldVector;
 	}
 
+	public Vector2f WorldToOpenGLPosition(Vector2f original) {
+		Vector2f returnVector = WorldToScreenPosition(original);
+		returnVector.x /= Main.getWidth();
+		returnVector.y /= Main.getHeight();
+		return returnVector;
+	}
+
 	public Vector2f WorldToScreenPosition(Vector2f original) {
 		Vector2f returnVector = new Vector2f();
 

@@ -1,13 +1,14 @@
 package org.gamestate;
 
 import org.joml.Vector2i;
-import org.joml.Vector3f;
 
 import engine.component.Camera;
 import engine.component.graphic.Texture;
 import engine.component.graphic.spriteRendererComponent.DefaultRender;
+import engine.component.graphic.spriteRendererComponent.SwirlRenderer;
 import engine.gamestate.IGameState;
 import engine.input.InputKey;
+import engine.input.InputMouseButton;
 import engine.main.Render;
 import engine.object.GameObject;
 
@@ -15,9 +16,10 @@ public class MainGameState implements IGameState {
 
 	@Override
 	public void Update() {
-		System.out.println(Camera.MAIN.WorldToScreenPosition(gameObject2.transform.getPositionVector2f()));
+		// System.out.println(Camera.MAIN.WorldToScreenPosition(gameObject2.transform.getPositionVector2f()));
 		// System.out.println(Camera.MAIN.InputMousePositionV2f());
 		// System.out.println(InputMousePos.ScreenPos);
+		// System.out.println(Camera.MAIN.WorldToOpenGLPosition(gameObject2.transform.getPositionVector2f()));
 		if (InputKey.OnKeysDown(290)) {
 			Render.setWindowSize(new Vector2i(1024, 768));
 		}
@@ -30,6 +32,9 @@ public class MainGameState implements IGameState {
 		if (InputKey.OnKeysDown(293)) {
 			Render.setWindowSize(new Vector2i(1920, 1080));
 		}
+		if (InputMouseButton.OnMouseDown(0)) {
+			MakeSwirl();
+		}
 	}
 
 	@Override
@@ -37,7 +42,12 @@ public class MainGameState implements IGameState {
 
 	}
 
-	GameObject gameObject2;
+	public void MakeSwirl() {
+		GameObject gameObject = new GameObject();
+		gameObject.AddComponent(new SwirlRenderer());
+		gameObject.transform.setPosition(2);
+		gameObject.transform.setPosition(Camera.MAIN.InputMousePositionV2f());
+	}
 
 	@Override
 	public void Init() {
@@ -49,9 +59,5 @@ public class MainGameState implements IGameState {
 				gameObject.AddComponent(new DefaultRender().SetTexture(Texture.getTexture("Block1")));
 			}
 		}
-
-		gameObject2 = new GameObject();
-		gameObject2.AddComponent(new DefaultRender().SetTexture(Texture.getTexture("Block5")));
-		gameObject2.transform.setPosition(new Vector3f(-600, -600, 6));
 	}
 }
