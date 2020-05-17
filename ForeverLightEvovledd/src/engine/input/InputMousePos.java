@@ -5,7 +5,8 @@ import org.lwjgl.glfw.GLFWCursorPosCallback;
 
 import engine.component.Camera;
 import engine.main.Main;
-import engine.object.*;
+import engine.object.GameObject;
+import engine.object.UIObject;
 
 public class InputMousePos extends GLFWCursorPosCallback {
 
@@ -14,16 +15,10 @@ public class InputMousePos extends GLFWCursorPosCallback {
 	 */
 	public static Vector2f ScreenPos = new Vector2f();
 
-	/**
-	 * World Position after considering scroll
-	 */
-	public static Vector2f RelativePos = new Vector2f();
-
 	@Override
 	public void invoke(long window, double x, double y) {
 		ScreenPos.x = (float) x;
 		ScreenPos.y = Main.getHeight() - (float) y;
-		RelativePos = new Vector2f(ScreenPos.x / Camera.MAIN.scroll, ScreenPos.y / Camera.MAIN.scroll);
 	}
 
 	public static boolean overUIObject() {

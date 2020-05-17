@@ -1,10 +1,15 @@
 package engine.component;
 
-import org.joml.*;
+import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
-import engine.component.graphic.*;
-import engine.input.*;
+import engine.component.graphic.Shader;
+import engine.component.graphic.SpriteRenderer;
+import engine.input.InputKey;
+import engine.input.InputMousePos;
+import engine.input.InputMouseScroll;
 import engine.main.Main;
 import engine.math.Mathf;
 import engine.object.Component;
@@ -80,13 +85,19 @@ public class Camera extends Component {
 		gameObject.transform.setPosition(0, 0, 0);
 	}
 
+	/*
+	 * return Mouse position in World Position, considering camera scrolling and
+	 * camera movement
+	 */
 	public Vector2f InputMousePositionV2f() {
-		Vector2f screenVector = InputMousePos.RelativePos;
+		Vector2f screenVector = InputMousePos.ScreenPos;
 		Vector2f worldVector = new Vector2f();
-		worldVector.x = screenVector.x * 1280 / Main.getWidth();
-		worldVector.y = screenVector.y * 720 / Main.getHeight();
-		worldVector.x += gameObject.transform.position.x / scroll;
-		worldVector.y += gameObject.transform.position.y / scroll;
+		worldVector.x += screenVector.x * 1280 / Main.getWidth();
+		worldVector.y += screenVector.y * 720 / Main.getHeight();
+		worldVector.x += gameObject.transform.position.x;
+		worldVector.y += gameObject.transform.position.y;
+		worldVector.x /= scroll;
+		worldVector.y /= scroll;
 		return worldVector;
 	}
 
@@ -94,6 +105,7 @@ public class Camera extends Component {
 		return new Vector3f(InputMousePositionV2f().x, InputMousePositionV2f().y, 0);
 	}
 
+	// TODO: fix this shit, it is used in button
 	public Vector2f ScreenToWorldPositionWITHOUTSCROLL() {
 		Vector2f screenVector = InputMousePos.ScreenPos;
 		Vector2f worldVector = new Vector2f();
@@ -104,6 +116,7 @@ public class Camera extends Component {
 		return worldVector;
 	}
 
+	// TODO: fix this shit, it is also used in button
 	public Vector2f ScreenToWorldPositionWITHOUTscrollWITHOUTcamera() {
 		Vector2f screenVector = InputMousePos.ScreenPos;
 		Vector2f worldVector = new Vector2f();
@@ -114,27 +127,19 @@ public class Camera extends Component {
 
 	public Vector2f WorldToScreenPosition(Vector2f original) {
 		Vector2f returnVector = new Vector2f();
-		returnVector.add(original);
-		returnVector.x = returnVector.x / Main.getWidth();
-		returnVector.y = returnVector.y / Main.getHeight();
+
+		returnVector.x += original.x;
+		returnVector.y += original.y;
+
+		returnVector.x *= scroll;
+		returnVector.y *= scroll;
+
+		returnVector.x -= gameObject.transform.position.x;
+		returnVector.y -= gameObject.transform.position.y;
+
+		returnVector.x = returnVector.x / 1280 * Main.getWidth();
+		returnVector.y = returnVector.y / 720 * Main.getHeight();
+
 		return returnVector;
-	}
-
-	// TODO: fix this shit (when resizing the monitor it failed)
-	public float WorldToScreenPositionX(float x) {
-		float ScreenX = 0;
-		ScreenX += x * scroll;
-		ScreenX -= gameObject.transform.position.x;
-		ScreenX = ScreenX / Main.getWidth();
-		return ScreenX;
-	}
-
-	// TODO: fix this shit (when resizing the monitor it failed)
-	public float WorldToScreenPositionY(float y) {
-		float ScreenY = 0;
-		ScreenY += y * scroll;
-		ScreenY -= gameObject.transform.position.y;
-		ScreenY = ScreenY / Main.getHeight();
-		return ScreenY;
 	}
 }

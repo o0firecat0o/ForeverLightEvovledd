@@ -15,6 +15,7 @@ import java.util.Map;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.opengl.GL20;
 
 import engine.utils.BufferUtils;
@@ -222,6 +223,20 @@ public class Shader {
 			floatList[3 * i + 2] = arrayList.get(i).z;
 		}
 		GL20.glUniform3fv(getUniform(name), BufferUtils.createFloatBuffer(floatList));
+		return this;
+	}
+
+	public Shader setUniform4fv(String name, ArrayList<Vector4f> arrayList) {
+		if (!enabled)
+			enable();
+		float[] floatList = new float[4 * arrayList.size()];
+		for (int i = 0; i < arrayList.size(); i++) {
+			floatList[4 * i] = arrayList.get(i).x;
+			floatList[4 * i + 1] = arrayList.get(i).y;
+			floatList[4 * i + 2] = arrayList.get(i).z;
+			floatList[4 * i + 3] = arrayList.get(i).w;
+		}
+		GL20.glUniform4fv(getUniform(name), BufferUtils.createFloatBuffer(floatList));
 		return this;
 	}
 

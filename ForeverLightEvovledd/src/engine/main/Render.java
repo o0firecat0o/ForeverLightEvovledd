@@ -56,7 +56,6 @@ import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -75,6 +74,7 @@ import engine.component.graphic.SpriteRenderer;
 import engine.component.graphic.Texture;
 import engine.component.graphic.VertexArray;
 import engine.component.graphic.instancedRendering.InstancedRenderer;
+import engine.component.graphic.spriteRendererComponent.SwirlRenderer;
 import engine.font.newrenderer.TextMaster;
 import engine.font.newrenderer.TextRendererMaster;
 import engine.font.oldrenderer.FontRenderer;
@@ -281,7 +281,7 @@ public class Render implements Runnable {
 		mainFrameBuffer.bind();
 
 		// the actual background color is here!
-		fullScreenRender(Shader.getShader("UI"), Texture.getTexture("honey_comb"), 0);
+		fullScreenRender(Shader.getShader("UI"), Texture.getTexture("bg"), 0);
 
 		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
 			SpriteRenderer.allSpriteRendererComponents.get(i).render(mainFrameBuffer.FrameBufferID);
@@ -317,32 +317,33 @@ public class Render implements Runnable {
 		postRippleBuffer.bind();
 		fullScreenRender(Shader.getShader("Ripple"), postBloomBuffer.colorTextureID, rippleFrameBuffer.colorTextureID);
 
+		//////////////////////////////////////////////////////////
 		// Added swirl distortion into the postripple buffer
-		swirlFrameBuffer.bind();
-		fullScreenRender(Shader.getShader("UI"), postRippleBuffer.colorTextureID, 0);
 
+		// TODO: make this fail when using opengl version <4.0
+		swirlFrameBuffer.bind();
+
+		SwirlRenderer.swirlList.clear();
 		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
 			SpriteRenderer.allSpriteRendererComponents.get(i).render(swirlFrameBuffer.FrameBufferID);
 		}
+
+		Shader.getShader("Swirl").enable();
+
+		Shader.getShader("Swirl").setUniform4fv("veclist", SwirlRenderer.returnALlSwirlinVector4f());
+		Shader.getShader("Swirl").setUniform2f("resolution", Main.getWidth(), Main.getHeight());
+		Shader.getShader("Swirl").disable();
+
+		fullScreenRender(Shader.getShader("UI"), postRippleBuffer.colorTextureID, 0);
+
+		///////////////////////////////////////////////////////////
 
 		glViewport(0, 0, Main.getWidth(), Main.getHeight());
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// TODO: make this fail when using opengl version <4.0
-
-		ArrayList<Vector2f> arrayList = new ArrayList<>();
-		arrayList.add(new Vector2f(0.5f, 0.5f));
-		arrayList.add(new Vector2f(0.6f, 0.6f));
-
-		Shader.getShader("Swirl").enable();
-
-		Shader.getShader("Swirl").setUniform2fv("veclist", arrayList);
-		Shader.getShader("Swirl").setUniform2f("resolution", Main.getWidth(), Main.getHeight());
-		Shader.getShader("Swirl").disable();
-
-		fullScreenRender(Shader.getShader("Swirl"), swirlFrameBuffer.colorTextureID, 0);
+		fullScreenRender(Shader.getShader("UI"), swirlFrameBuffer.colorTextureID, 0);
 
 		// Main Render 2
 		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {

@@ -1,6 +1,7 @@
 package engine.input;
 
-import org.lwjgl.glfw.*;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWKeyCallback;
 
 public class InputKey extends GLFWKeyCallback {
 
