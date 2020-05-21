@@ -85,17 +85,17 @@ public class Shader {
 
 		//////////////////////////////////////
 		// New Font Renderer
-		Shader.createShader("shaders/text.vert", "shaders/text.frag", "DefaultText")
+		Shader.createShader("shaders/Text.vert", "shaders/Text.frag", "DefaultText")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1);
-		Shader.createShader("shaders/text.vert", "shaders/text.frag", "DefaultTextUI")
+		Shader.createShader("shaders/Text.vert", "shaders/Text.frag", "DefaultTextUI")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).isUIShader();
 		/////////////////////////////////////
 
 		/////////////////////////////////////
 		// Old Font Renderer
-		Shader.createShader("shaders/font.vert", "shaders/font.frag", "FONT")
+		Shader.createShader("shaders/Font.vert", "shaders/Font.frag", "FONT")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).setUniform1i("tex2", 2);
-		Shader.createShader("shaders/font.vert", "shaders/font.frag", "UIFONT")
+		Shader.createShader("shaders/Font.vert", "shaders/Font.frag", "UIFONT")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).setUniform1i("tex2", 2)
 				.isUIShader();
 		/////////////////////////////////////
