@@ -5,7 +5,7 @@ import org.joml.Vector2i;
 import engine.component.Camera;
 import engine.component.graphic.Texture;
 import engine.component.graphic.spriteRendererComponent.DefaultRender;
-import engine.component.graphic.spriteRendererComponent.SwirlRenderer;
+import engine.component.graphic.spriteRendererComponent.RippleRenderer;
 import engine.gamestate.IGameState;
 import engine.input.InputKey;
 import engine.input.InputMouseButton;
@@ -44,14 +44,13 @@ public class MainGameState implements IGameState {
 
 	public void MakeSwirl() {
 		GameObject gameObject = new GameObject();
-		gameObject.AddComponent(new SwirlRenderer());
+		gameObject.AddComponent(new RippleRenderer().SetTexture(Texture.getTexture("swirlnormal")));
 		gameObject.transform.setPosition(2);
 		gameObject.transform.setPosition(Camera.MAIN.InputMousePositionV2f());
 	}
 
 	@Override
 	public void Init() {
-
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
 				GameObject gameObject = new GameObject();

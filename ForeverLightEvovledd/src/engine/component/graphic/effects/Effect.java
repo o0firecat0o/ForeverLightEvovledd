@@ -1,11 +1,14 @@
 package engine.component.graphic.effects;
 
-import org.joml.*;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
-import engine.component.graphic.*;
-import engine.component.graphic.instancedRendering.particle.*;
+import engine.component.graphic.Animation;
+import engine.component.graphic.IAnimationFunction;
+import engine.component.graphic.instancedRendering.particle.Particle;
+import engine.component.graphic.instancedRendering.particle.ParticleRenderer;
 import engine.component.graphic.spriteRendererComponent.DefaultRender;
-import engine.component.graphic.spriteRendererComponent.SpriteRendererComponent;
 import engine.main.Render;
 import engine.math.Mathf;
 import engine.object.GameObject;
@@ -13,6 +16,7 @@ import engine.object.GameObject;
 public class Effect {
 
 	// Make a ripple Distortion
+	@Deprecated
 	public static void RippleDistortion(Vector3f position) {
 		GameObject gameObject = new GameObject();
 		gameObject.transform.setPosition(position);

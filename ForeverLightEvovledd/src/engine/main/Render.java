@@ -57,6 +57,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -76,6 +77,7 @@ import engine.component.graphic.SpriteRenderer;
 import engine.component.graphic.Texture;
 import engine.component.graphic.VertexArray;
 import engine.component.graphic.instancedRendering.InstancedRenderer;
+import engine.component.graphic.spriteRendererComponent.SpriteRendererComponent;
 import engine.component.graphic.spriteRendererComponent.SwirlRenderer;
 import engine.font.newrenderer.TextMaster;
 import engine.font.newrenderer.TextRendererMaster;
@@ -243,6 +245,8 @@ public class Render implements Runnable {
 		System.exit(0);
 	}
 
+	float timer = 0;
+
 	private void render() {
 		glfwPollEvents(); // Inputs
 
@@ -268,28 +272,24 @@ public class Render implements Runnable {
 
 		// FBO rendering: BloomBuffer
 		bloomFrameBuffer.bind();
-		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
-			SpriteRenderer.allSpriteRendererComponents.get(i).render(bloomFrameBuffer.FrameBufferID);
-		}
-		InstancedRenderer.Render(bloomFrameBuffer.FrameBufferID);
+		renderAll(bloomFrameBuffer.FrameBufferID);
 
+		/////////////////////////////////////////////////////////////////////
 		// FBO rendering: RippleDistortion
+
 		rippleFrameBuffer.bind();
-		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
-			SpriteRenderer.allSpriteRendererComponents.get(i).render(rippleFrameBuffer.FrameBufferID);
-		}
-		InstancedRenderer.Render(rippleFrameBuffer.FrameBufferID);
+		// set the background color to lightblue for normal mapping
+		fullScreenRender(Shader.getShader("UI"), Texture.getTexture("normalmapbg"), 0);
+
+		renderAll(rippleFrameBuffer.FrameBufferID);
+		/////////////////////////////////////////////////////////////////////
 
 		// FBO rendering: MainBuffer
 		mainFrameBuffer.bind();
 
 		// the actual background color is here!
 		fullScreenRender(Shader.getShader("UI"), Texture.getTexture("bg"), 0);
-
-		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
-			SpriteRenderer.allSpriteRendererComponents.get(i).render(mainFrameBuffer.FrameBufferID);
-		}
-		InstancedRenderer.Render(mainFrameBuffer.FrameBufferID);
+		renderAll(mainFrameBuffer.FrameBufferID);
 
 		// Blur horizontally
 		blurProcessingBuffer.bind();
@@ -300,10 +300,7 @@ public class Render implements Runnable {
 		fullScreenRender(Shader.getShader("VBlur"), blurProcessingBuffer.colorTextureID, 0);
 
 		// Render the stuff that does not need blur, hence, only glow
-		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
-			SpriteRenderer.allSpriteRendererComponents.get(i).render(glowFrameBuffer.FrameBufferID);
-		}
-		InstancedRenderer.Render(glowFrameBuffer.FrameBufferID);
+		renderAll(glowFrameBuffer.FrameBufferID);
 
 		/// Bloom result render, added the mainFrame
 
@@ -346,13 +343,10 @@ public class Render implements Runnable {
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		// fullScreenRender(Shader.getShader("UI"), swirlFrameBuffer.colorTextureID, 0);
 		fullScreenRender(Shader.getShader("UI"), swirlFrameBuffer.colorTextureID, 0);
 
-		// Main Render 2
-		for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
-			SpriteRenderer.allSpriteRendererComponents.get(i).render(postProcessingBuffer.FrameBufferID);
-		}
-		InstancedRenderer.Render(postProcessingBuffer.FrameBufferID);
+		renderAll(postProcessingBuffer.FrameBufferID);
 
 		// Font rendering
 		// new renderer
@@ -374,7 +368,16 @@ public class Render implements Runnable {
 		}
 
 		glfwSwapBuffers(window);
+	}
 
+	private static void renderAll(int FrameBufferID) {
+		for (Iterator<SpriteRendererComponent> iterator = SpriteRenderer.allSpriteRendererComponents
+				.iterator(); iterator.hasNext();) {
+			SpriteRendererComponent spriteRenderer = iterator.next();
+			spriteRenderer.render(FrameBufferID);
+		}
+
+		InstancedRenderer.Render(FrameBufferID);
 	}
 
 	private static void fullScreenRender(Shader shader, int textureID, int textureID2) {

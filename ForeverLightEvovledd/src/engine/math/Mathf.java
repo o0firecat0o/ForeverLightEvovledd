@@ -1,19 +1,34 @@
 package engine.math;
 
 import java.awt.Color;
-import java.util.function.ToDoubleBiFunction;
 
 import org.jbox2d.common.Vec2;
-import org.joml.*;
 import org.joml.Math;
-
-import com.esotericsoftware.kryonet.FrameworkMessage;
+import org.joml.Vector2f;
+import org.joml.Vector2i;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import engine.object.GameObject;
 
 public class Mathf {
 	public static float clamp(float val, float min, float max) {
 		return Math.max(min, Math.min(max, val));
+	}
+
+	public static float smoothstep(float lowerEdge, float upperEdge, float value) {
+		value = clamp((value - lowerEdge) / (upperEdge - lowerEdge), 0, 1);
+		return value * value * (3 - 2 * value);
+	}
+
+	public static float concaveUpwardIncreasingInterpolation(float lowerEdge, float upperEdge, float value) {
+		value = clamp((value - lowerEdge) / (upperEdge - lowerEdge), 0, 1);
+		return value * value;
+	}
+
+	public static float concaveDownwardIncreasingInterpolation(float lowerEdge, float upperEdge, float value) {
+		value = clamp((value - lowerEdge) / (upperEdge - lowerEdge), 0, 1);
+		return 1 - (1 - value) * (1 - value);
 	}
 
 	public static Vector2f interpolation(Vector2f first, Vector2f second, float percentage) {
