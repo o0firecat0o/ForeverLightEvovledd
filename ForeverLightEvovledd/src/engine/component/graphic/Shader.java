@@ -64,13 +64,20 @@ public class Shader {
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).setUniform1i("tex2", 2)
 				.isUIShader();
 
-		Shader.createShader("shaders/default.vert", "shaders/RippleDistortion.frag", "Ripple")
+		// ripple shader
+		Shader.createShader("shaders/default.vert", "shaders/RippleDistortion.frag", "RippleDistortion")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).setUniform1i("tex2", 2)
 				.isUIShader();
-		Shader.createShader("shaders/default.vert", "shaders/SwirlDistortion.frag", "Swirl")
-				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).isUIShader();
-		Shader.createShader("shaders/default.vert", "shaders/RippleDistortionObject.frag", "RippleObject")
+		Shader.createShader("shaders/default.vert", "shaders/RippleDistortionObject.frag", "RippleDistortionObject")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1);
+
+		// heatwave shader
+		Shader.createShader("shaders/default.vert", "shaders/HeatHazeDistortionObject.frag", "HeatHazeDistortionObject")
+				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1);
+
+		// swirl shader
+		Shader.createShader("shaders/default.vert", "shaders/SwirlDistortion.frag", "SwirlDistortion")
+				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).isUIShader();
 
 		Shader.createShader("shaders/default.vert", "shaders/Shield.frag", "Shield")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).setUniform1i("tex2", 2)

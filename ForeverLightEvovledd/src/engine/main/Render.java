@@ -318,7 +318,8 @@ public class Render implements Runnable {
 
 		// Added ripple distortion into the postbloom buffer
 		postRippleBuffer.bind();
-		fullScreenRender(Shader.getShader("Ripple"), postBloomBuffer.colorTextureID, rippleFrameBuffer.colorTextureID);
+		fullScreenRender(Shader.getShader("RippleDistortion"), postBloomBuffer.colorTextureID,
+				rippleFrameBuffer.colorTextureID);
 
 		//////////////////////////////////////////////////////////
 		// Added swirl distortion into the postripple buffer
@@ -331,16 +332,16 @@ public class Render implements Runnable {
 				SpriteRenderer.allSpriteRendererComponents.get(i).render(swirlFrameBuffer.FrameBufferID);
 			}
 
-			Shader.getShader("Swirl").enable();
+			Shader.getShader("SwirlDistortion").enable();
 
 			ArrayList<Vector4f> swirlList = SwirlRenderer.returnALlSwirlinVector4f();
-			Shader.getShader("Swirl").setUniform4fv("veclist", swirlList);
-			Shader.getShader("Swirl").setUniform1f("veccount", swirlList.size());
-			Shader.getShader("Swirl").setUniform1f("scroll", Camera.MAIN.scroll);
-			Shader.getShader("Swirl").setUniform2f("resolution", Main.getWidth(), Main.getHeight());
-			Shader.getShader("Swirl").disable();
+			Shader.getShader("SwirlDistortion").setUniform4fv("veclist", swirlList);
+			Shader.getShader("SwirlDistortion").setUniform1f("veccount", swirlList.size());
+			Shader.getShader("SwirlDistortion").setUniform1f("scroll", Camera.MAIN.scroll);
+			Shader.getShader("SwirlDistortion").setUniform2f("resolution", Main.getWidth(), Main.getHeight());
+			Shader.getShader("SwirlDistortion").disable();
 
-			fullScreenRender(Shader.getShader("Swirl"), postRippleBuffer.colorTextureID, 0);
+			fullScreenRender(Shader.getShader("SwirlDistortion"), postRippleBuffer.colorTextureID, 0);
 		}
 		// if computer doesnt support open GL 4.0, do the normal fullscreen rendering
 		// instead
