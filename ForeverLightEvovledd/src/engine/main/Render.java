@@ -103,6 +103,7 @@ public class Render implements Runnable {
 
 	private static Vector4f BackGroundColor = new Vector4f(1.0f, 0.8f, 0.8f, 1.0f);
 
+	public static FrameBufferObject heathazeFrameBuffer;
 	public static FrameBufferObject swirlFrameBuffer;
 	public static FrameBufferObject rippleFrameBuffer; // For ripple effect
 	public static FrameBufferObject bloomFrameBuffer; // For bloom effect
@@ -178,6 +179,7 @@ public class Render implements Runnable {
 		postProcessingBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
 		rippleFrameBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
 		swirlFrameBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
+		heathazeFrameBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
 
 		postBloomBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
 		postRippleBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
@@ -284,6 +286,13 @@ public class Render implements Runnable {
 		renderAll(rippleFrameBuffer.FrameBufferID);
 		/////////////////////////////////////////////////////////////////////
 
+		/////////////////////////////////////////////////////////////////////
+		// FBO rendering: HeatHazeDistortion
+
+		heathazeFrameBuffer.bind();
+		renderAll(heathazeFrameBuffer.FrameBufferID);
+		/////////////////////////////////////////////////////////////////////
+
 		// FBO rendering: MainBuffer
 		mainFrameBuffer.bind();
 
@@ -332,10 +341,12 @@ public class Render implements Runnable {
 			Shader.getShader("Swirl").disable();
 
 			fullScreenRender(Shader.getShader("Swirl"), postRippleBuffer.colorTextureID, 0);
-		} else {
+		}
+		// if computer doesnt support open GL 4.0, do the normal fullscreen rendering
+		// instead
+		else {
 			fullScreenRender(Shader.getShader("UI"), postRippleBuffer.colorTextureID, 0);
 		}
-
 		///////////////////////////////////////////////////////////
 
 		glViewport(0, 0, Main.getWidth(), Main.getHeight());

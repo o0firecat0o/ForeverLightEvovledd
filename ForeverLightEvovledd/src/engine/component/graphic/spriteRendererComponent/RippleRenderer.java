@@ -18,6 +18,7 @@ public class RippleRenderer extends SpriteRendererComponent {
 	public float age = 0f;
 	public float life = 120f; // life in frames;
 	public float scale_max = 3;
+	public float rotationSpeed = 0;
 
 	@Override
 	public void Render(int FrameBufferObjectID) {
@@ -61,7 +62,7 @@ public class RippleRenderer extends SpriteRendererComponent {
 		}
 		float scale = agePercentage * (scale_max - 1) + 1;
 		gameObject.transform.setScale(scale);
-		gameObject.transform.setRotation(gameObject.transform.getRotation() + 0.01f);
+		gameObject.transform.setRotation(gameObject.transform.getRotation() + rotationSpeed);
 	}
 
 	@Override
