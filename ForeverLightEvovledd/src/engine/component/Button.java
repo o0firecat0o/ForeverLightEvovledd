@@ -2,11 +2,11 @@ package engine.component;
 
 import org.joml.Vector2f;
 
-import engine.component.graphic.SpriteRenderer;
 import engine.component.graphic.spriteRendererComponent.DefaultRender;
 import engine.component.physic.ShapeType;
 import engine.input.InputMouseButton;
-import engine.object.*;
+import engine.object.Component;
+import engine.object.UIObject;
 
 public class Button extends Component {
 

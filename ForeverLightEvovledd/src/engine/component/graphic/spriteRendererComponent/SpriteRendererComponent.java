@@ -1,9 +1,9 @@
 package engine.component.graphic.spriteRendererComponent;
 
-import java.io.Console;
 import java.util.ArrayList;
 
-import engine.component.graphic.*;
+import engine.component.graphic.FrameBufferObject;
+import engine.component.graphic.SpriteRenderer;
 import engine.object.Component;
 
 public abstract class SpriteRendererComponent extends Component {

@@ -101,6 +101,8 @@ public class Render implements Runnable {
 
 	public static long fps;
 
+	public static int backgroundImage;
+
 	private static Vector4f BackGroundColor = new Vector4f(1.0f, 0.8f, 0.8f, 1.0f);
 
 	public static FrameBufferObject heatHazeFrameBuffer;
@@ -204,6 +206,8 @@ public class Render implements Runnable {
 		Camera.MAIN = cameraObject.AddComponent(new Camera());
 		cameraObject.stay_on_stage = true;
 
+		// set the background image the the pink background
+		backgroundImage = Texture.getTexture("bg");
 	}
 
 	@Override
@@ -299,7 +303,8 @@ public class Render implements Runnable {
 		mainFrameBuffer.bind();
 
 		// the actual background color is here!
-		fullScreenRender(Shader.getShader("UI"), Texture.getTexture("bg"), 0);
+		fullScreenRender(Shader.getShader("UI"), backgroundImage, 0);
+
 		renderAll(mainFrameBuffer.FrameBufferID);
 
 		// Blur horizontally
@@ -391,13 +396,16 @@ public class Render implements Runnable {
 	}
 
 	private static void renderAll(int FrameBufferID) {
-		for (Iterator<SpriteRendererComponent> iterator = SpriteRenderer.allSpriteRendererComponents
-				.iterator(); iterator.hasNext();) {
-			SpriteRendererComponent spriteRenderer = iterator.next();
-			spriteRenderer.render(FrameBufferID);
-		}
+		synchronized (new Object()) {
+			for (Iterator<SpriteRendererComponent> iterator = SpriteRenderer.allSpriteRendererComponents
+					.iterator(); iterator.hasNext();) {
 
-		InstancedRenderer.Render(FrameBufferID);
+				SpriteRendererComponent spriteRenderer = iterator.next();
+				spriteRenderer.render(FrameBufferID);
+			}
+
+			InstancedRenderer.Render(FrameBufferID);
+		}
 	}
 
 	private static void fullScreenRender(Shader shader, int textureID, int textureID2) {
@@ -438,17 +446,7 @@ public class Render implements Runnable {
 		glClearColor(BackGroundColor.x, BackGroundColor.y, BackGroundColor.z, BackGroundColor.w);
 	}
 
-	/**
-	 * get the screen position from 0 to 1 of X
-	 */
-	public static float getScreenPosition_X(float positionX) {
-		return positionX / Main.getWidth();
-	}
-
-	/**
-	 * get the screen position from 0 to 1 of Y
-	 */
-	public static float getScreenPosition_Y(float positionY) {
-		return positionY / Main.getHeight();
+	public static void setBackgroundImage(int texture) {
+		backgroundImage = texture;
 	}
 }

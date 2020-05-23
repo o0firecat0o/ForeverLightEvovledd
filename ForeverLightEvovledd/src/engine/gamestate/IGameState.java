@@ -1,9 +1,9 @@
 package engine.gamestate;
 
 public interface IGameState {
-	void Update();
+	public void Update();
 
-	void Stop();
+	public void Stop();
 
-	void Init();
+	public void Init();
 }

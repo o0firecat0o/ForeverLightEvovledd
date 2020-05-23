@@ -15,7 +15,7 @@ uniform float flameScale = 1;
 
 void main()
 {
-	color.r = texture(tex2, fract(fs_in.tc*flameScale +vec2(0.0,time))).r;
-	color.g = texture(tex2, fract(fs_in.tc*flameScale*3.4 +vec2(0.0,time*1.6))).g*1.3;
+	color.r = texture(tex2, fract(fs_in.tc*flameScale +vec2(0.0,time*0.2))).r;
+	color.g = texture(tex2, fract(fs_in.tc*flameScale*3.4 +vec2(0.0,time*0.3))).g*1.3;
 	color.a = texture(tex, fs_in.tc).a;
 }

@@ -60,5 +60,6 @@ public class MainGameState implements IGameState {
 				gameObject.AddComponent(new DefaultRender().SetTexture(Texture.getTexture("Block1")));
 			}
 		}
+		Render.setBackgroundImage(Texture.getTexture("universe1"));
 	}
 }

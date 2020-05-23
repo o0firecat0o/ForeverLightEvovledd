@@ -6,7 +6,6 @@ import org.joml.Matrix4f;
 
 import engine.component.graphic.spriteRendererComponent.SpriteRendererComponent;
 import engine.main.Main;
-import engine.object.Component;
 
 public class SpriteRenderer {
 

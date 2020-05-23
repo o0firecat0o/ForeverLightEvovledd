@@ -4,10 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.table.TableStringConverter;
-
-import org.joml.Vector4f;
-
 import engine.math.Mathf;
 
 public class TString {

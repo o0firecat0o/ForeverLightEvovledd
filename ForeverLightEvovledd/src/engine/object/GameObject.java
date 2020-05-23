@@ -90,7 +90,7 @@ public class GameObject extends UpdatableObject {
 
 	public boolean HasComponentExtendedFromClass(Class<?> componentClass) {
 		for (Component component : ComponentList) {
-			if (componentClass.isAssignableFrom(componentClass))
+			if (componentClass.isAssignableFrom(component.getClass()))
 				return true;
 		}
 		return false;
@@ -104,6 +104,7 @@ public class GameObject extends UpdatableObject {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T extends Component> T GetComponent(Class<T> componentClass) {
 		for (Component component : ComponentList) {
 			if (component.getClass().equals(componentClass))
@@ -112,6 +113,7 @@ public class GameObject extends UpdatableObject {
 		throw new RuntimeException("Missing Component: " + componentClass);
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T extends Component> T GetComponentExtendedFromClass(Class<T> componentClass) {
 		for (Component component : ComponentList) {
 			if (componentClass.isAssignableFrom(component.getClass()))
@@ -120,6 +122,7 @@ public class GameObject extends UpdatableObject {
 		throw new RuntimeException("Missing Component: " + componentClass);
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T extends Component> T GetComponentExtendedFromInterface(Class<?> interfaceClass) {
 		for (Component component : ComponentList) {
 			if (interfaceClass.isInstance(component))
@@ -128,6 +131,7 @@ public class GameObject extends UpdatableObject {
 		throw new RuntimeException("Missing Component: " + interfaceClass);
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T extends Component> ArrayList<T> GetComponents(Class<T> componentClass) {
 		ArrayList<T> arrayList = new ArrayList<>();
 		for (Component component : ComponentList) {

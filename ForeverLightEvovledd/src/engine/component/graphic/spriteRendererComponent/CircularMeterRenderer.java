@@ -1,12 +1,13 @@
 package engine.component.graphic.spriteRendererComponent;
 
-import org.joml.*;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 
-import engine.component.graphic.*;
+import engine.component.graphic.Shader;
+import engine.component.graphic.VertexArray;
 import engine.main.Render;
 import engine.math.Maths;
-import engine.object.GameObject;
 
 public class CircularMeterRenderer extends SpriteRendererComponent {
 
