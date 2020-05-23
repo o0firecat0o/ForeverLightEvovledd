@@ -7,12 +7,15 @@ in DATA{
 } fs_in;
 
 uniform sampler2D tex;
-uniform float alpha;
+uniform sampler2D tex2;
+
+uniform float time = 0;
+uniform float flameScale = 1;
+
 
 void main()
 {
-	vec3 basecolor = texture(tex, fs_in.tc).rgb;
-	basecolor.rgb = mix(vec3(0.5,0.5,1.0), basecolor.rgb, alpha);
-	color = vec4(basecolor.rgb, 1.0);
-
+	color.r = texture(tex2, fract(fs_in.tc*flameScale +vec2(0.0,time))).r;
+	color.g = texture(tex2, fract(fs_in.tc*flameScale*3.4 +vec2(0.0,time*1.6))).g*1.3;
+	color.a = texture(tex, fs_in.tc).a;
 }

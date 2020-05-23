@@ -103,7 +103,7 @@ public class Render implements Runnable {
 
 	private static Vector4f BackGroundColor = new Vector4f(1.0f, 0.8f, 0.8f, 1.0f);
 
-	public static FrameBufferObject heathazeFrameBuffer;
+	public static FrameBufferObject heatHazeFrameBuffer;
 	public static FrameBufferObject swirlFrameBuffer;
 	public static FrameBufferObject rippleFrameBuffer; // For ripple effect
 	public static FrameBufferObject bloomFrameBuffer; // For bloom effect
@@ -113,6 +113,7 @@ public class Render implements Runnable {
 	private static FrameBufferObject blurProcessingBuffer;
 	private static FrameBufferObject postBloomBuffer;
 	private static FrameBufferObject postRippleBuffer;
+	private static FrameBufferObject postHeatHazeBuffer;
 
 	public static FrameBufferObject postProcessingBuffer; // frame buffer after all
 	// distortion
@@ -179,8 +180,9 @@ public class Render implements Runnable {
 		postProcessingBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
 		rippleFrameBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
 		swirlFrameBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
-		heathazeFrameBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
+		heatHazeFrameBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
 
+		postHeatHazeBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
 		postBloomBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
 		postRippleBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
 
@@ -289,8 +291,8 @@ public class Render implements Runnable {
 		/////////////////////////////////////////////////////////////////////
 		// FBO rendering: HeatHazeDistortion
 
-		heathazeFrameBuffer.bind();
-		renderAll(heathazeFrameBuffer.FrameBufferID);
+		heatHazeFrameBuffer.bind();
+		renderAll(heatHazeFrameBuffer.FrameBufferID);
 		/////////////////////////////////////////////////////////////////////
 
 		// FBO rendering: MainBuffer
@@ -350,13 +352,19 @@ public class Render implements Runnable {
 		}
 		///////////////////////////////////////////////////////////
 
+		postHeatHazeBuffer.bind();
+		fullScreenRender(Shader.getShader("HeatHazeDistortion"), swirlFrameBuffer.colorTextureID,
+				heatHazeFrameBuffer.colorTextureID);
+
+		///////////////////////////////////////////////////////////
+
 		glViewport(0, 0, Main.getWidth(), Main.getHeight());
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// fullScreenRender(Shader.getShader("UI"), swirlFrameBuffer.colorTextureID, 0);
-		fullScreenRender(Shader.getShader("UI"), swirlFrameBuffer.colorTextureID, 0);
+		fullScreenRender(Shader.getShader("UI"), postHeatHazeBuffer.colorTextureID, 0);
 
 		renderAll(postProcessingBuffer.FrameBufferID);
 

@@ -11,6 +11,7 @@ import static org.lwjgl.opengl.EXTFramebufferObject.glFramebufferTexture2DEXT;
 import static org.lwjgl.opengl.EXTFramebufferObject.glGenFramebuffersEXT;
 import static org.lwjgl.opengl.EXTFramebufferObject.glGenRenderbuffersEXT;
 import static org.lwjgl.opengl.EXTFramebufferObject.glRenderbufferStorageEXT;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_INT;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
@@ -93,7 +94,8 @@ public class FrameBufferObject {
 	public void bind() {
 		glViewport(0, 0, Width, Height);
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, FrameBufferID);
-		glClear(GL_DEPTH_BUFFER_BIT);
+		// TODO: make some framebuffer not clearing, to make trail
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 }
