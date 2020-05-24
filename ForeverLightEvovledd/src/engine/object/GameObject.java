@@ -6,19 +6,9 @@ public class GameObject extends UpdatableObject {
 
 	public final Transform transform = new Transform();
 
-	private String Tag = "Default";
-
 	public boolean blockRayCast = false;
 
 	ArrayList<Component> ComponentList = new ArrayList<Component>();
-
-	public void setTag(String Tag) {
-		this.Tag = Tag;
-	}
-
-	public String getTag() {
-		return Tag;
-	}
 
 	@Override
 	public void Update() {
@@ -45,20 +35,6 @@ public class GameObject extends UpdatableObject {
 			}
 		}
 		super.Destroy();
-	}
-
-	public static ArrayList<GameObject> getGameObjectswithTag(String Name) {
-		ArrayList<GameObject> returnList = new ArrayList<>();
-		for (int i = 0; i < UpdatableObject.AllUpdatableObject.size(); i++) {
-			UpdatableObject updatableObject = UpdatableObject.AllUpdatableObject.get(i);
-			if (updatableObject instanceof GameObject) {
-				GameObject gObject = (GameObject) updatableObject;
-				if (gObject.getTag().equals(Name)) {
-					returnList.add(gObject);
-				}
-			}
-		}
-		return returnList;
 	}
 
 	public <T extends Component> T AddComponent(T component) throws RuntimeException {

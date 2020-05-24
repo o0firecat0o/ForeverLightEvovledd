@@ -103,7 +103,7 @@ public class Render implements Runnable {
 
 	public static int backgroundImage;
 
-	private static Vector4f BackGroundColor = new Vector4f(1.0f, 0.8f, 0.8f, 1.0f);
+	private static Vector4f BackGroundColor = new Vector4f(0f, 0f, 0f, 1.0f);
 
 	public static FrameBufferObject heatHazeFrameBuffer;
 	public static FrameBufferObject swirlFrameBuffer;
@@ -357,6 +357,7 @@ public class Render implements Runnable {
 		}
 		///////////////////////////////////////////////////////////
 
+		// added heat haze effect
 		postHeatHazeBuffer.bind();
 		fullScreenRender(Shader.getShader("HeatHazeDistortion"), swirlFrameBuffer.colorTextureID,
 				heatHazeFrameBuffer.colorTextureID);
@@ -396,7 +397,7 @@ public class Render implements Runnable {
 	}
 
 	private static void renderAll(int FrameBufferID) {
-		synchronized (new Object()) {
+		synchronized (SpriteRenderer.allSpriteRendererComponents) {
 			for (Iterator<SpriteRendererComponent> iterator = SpriteRenderer.allSpriteRendererComponents
 					.iterator(); iterator.hasNext();) {
 

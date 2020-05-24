@@ -2,15 +2,14 @@ package org.gamestate;
 
 import org.joml.Vector2i;
 
-import engine.component.Camera;
 import engine.component.graphic.Texture;
 import engine.component.graphic.spriteRendererComponent.DefaultRender;
 import engine.component.graphic.spriteRendererComponent.DissolveRenderer;
 import engine.gamestate.IGameState;
 import engine.input.InputKey;
-import engine.input.InputMouseButton;
 import engine.main.Render;
 import engine.object.GameObject;
+import engine.random.Random;
 
 public class MainGameState implements IGameState {
 
@@ -32,9 +31,8 @@ public class MainGameState implements IGameState {
 		if (InputKey.OnKeysDown(293)) {
 			Render.setWindowSize(new Vector2i(1920, 1080));
 		}
-		if (InputMouseButton.OnMouseDown(0)) {
-			MakeSwirl();
-		}
+
+		MakeSwirl();
 
 	}
 
@@ -47,7 +45,7 @@ public class MainGameState implements IGameState {
 		GameObject gameObject = new GameObject();
 		gameObject.AddComponent(new DissolveRenderer().SetTexture(Texture.getTexture("Block5")));
 		gameObject.transform.setPosition(9);
-		gameObject.transform.setPosition(Camera.MAIN.InputMousePositionV2f());
+		gameObject.transform.setPosition(Random.RandomVector(10000));
 	}
 
 	@Override
