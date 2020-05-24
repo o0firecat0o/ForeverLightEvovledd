@@ -3,6 +3,9 @@ package engine.object;
 import java.util.ArrayList;
 
 public abstract class Component {
+
+	public GameObject gameObject;
+
 	protected abstract void Update();
 
 	public void UpdateRender() {
@@ -14,8 +17,6 @@ public abstract class Component {
 	}
 
 	protected abstract void Start();
-
-	public GameObject gameObject;
 
 	protected void Destroy() {
 		gameObject.ComponentList.remove(this);
