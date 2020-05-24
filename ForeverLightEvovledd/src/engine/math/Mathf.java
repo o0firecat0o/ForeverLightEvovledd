@@ -37,6 +37,10 @@ public class Mathf {
 		return new Vector2f(x, y);
 	}
 
+	public static float fract(float value) {
+		return value % 1;
+	}
+
 	/**
 	 * 
 	 * @param vector the vector to be rotated

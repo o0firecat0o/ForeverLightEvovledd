@@ -17,7 +17,9 @@ public abstract class SpriteRendererComponent extends Component {
 	protected float graphicScaleOffset = 1f;
 
 	public SpriteRendererComponent() {
-		SpriteRenderer.allSpriteRendererComponents.add(this);
+		synchronized (this) {
+			SpriteRenderer.allSpriteRendererComponents.add(this);
+		}
 	}
 
 	// This function will be called in the render loop
@@ -33,7 +35,9 @@ public abstract class SpriteRendererComponent extends Component {
 			FrameBufferIDs.clear();
 			FrameBufferIDs = null;
 		}
-		SpriteRenderer.allSpriteRendererComponents.remove(this);
+		synchronized (this) {
+			SpriteRenderer.allSpriteRendererComponents.remove(this);
+		}
 		super.Destroy();
 	}
 

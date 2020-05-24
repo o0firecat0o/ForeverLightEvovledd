@@ -84,7 +84,7 @@ public class Shader {
 
 		// dissolve shader
 		Shader.createShader("shaders/default.vert", "shaders/Dissolve.frag", "Dissolve")
-				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1);
+				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).setUniform1i("tex2", 2);
 
 		Shader.createShader("shaders/default.vert", "shaders/Shield.frag", "Shield")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).setUniform1i("tex2", 2)
