@@ -1,7 +1,9 @@
-package engine.component.graphic;
+package engine.component.graphic.animation;
 
 import java.util.ArrayList;
 
+import engine.component.graphic.SpriteRenderer;
+import engine.component.graphic.Texture;
 import engine.component.graphic.spriteRendererComponent.DefaultRender;
 import engine.object.Component;
 

@@ -1,4 +1,4 @@
-package engine.component.graphic;
+package engine.component.graphic.animation;
 
 public abstract class IAnimationFunction {
 

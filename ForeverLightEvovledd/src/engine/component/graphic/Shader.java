@@ -82,6 +82,10 @@ public class Shader {
 		Shader.createShader("shaders/default.vert", "shaders/SwirlDistortion.frag", "SwirlDistortion")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).isUIShader();
 
+		// dissolve shader
+		Shader.createShader("shaders/default.vert", "shaders/Dissolve.frag", "Dissolve")
+				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1);
+
 		Shader.createShader("shaders/default.vert", "shaders/Shield.frag", "Shield")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).setUniform1i("tex2", 2)
 				.setUniform1i("tex3", 3).setUniform1i("tex4", 4);
