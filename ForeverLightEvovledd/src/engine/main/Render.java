@@ -57,7 +57,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -335,9 +335,7 @@ public class Render implements Runnable {
 		// Swirl Shader require open GL 4.0 or above to run
 		if (glCapabilities.OpenGL40) {
 			SwirlRenderer.swirlList.clear();
-			for (int i = 0; i < SpriteRenderer.allSpriteRendererComponents.size(); i++) {
-				SpriteRenderer.allSpriteRendererComponents.get(i).render(swirlFrameBuffer.FrameBufferID);
-			}
+			renderAll(swirlFrameBuffer.FrameBufferID);
 
 			Shader.getShader("SwirlDistortion").enable();
 
@@ -397,16 +395,15 @@ public class Render implements Runnable {
 	}
 
 	private static void renderAll(int FrameBufferID) {
-		synchronized (SpriteRenderer.allSpriteRendererComponents) {
-			for (Iterator<SpriteRendererComponent> iterator = SpriteRenderer.allSpriteRendererComponents
-					.iterator(); iterator.hasNext();) {
+		java.util.concurrent.CopyOnWriteArrayList<SpriteRendererComponent> spriteRendererComponents = new CopyOnWriteArrayList<>(
+				SpriteRenderer.getAllSpriteRendererComponents());
 
-				SpriteRendererComponent spriteRenderer = iterator.next();
-				spriteRenderer.render(FrameBufferID);
-			}
-
-			InstancedRenderer.Render(FrameBufferID);
+		for (SpriteRendererComponent spriteRendererComponent : spriteRendererComponents) {
+			spriteRendererComponent.render(FrameBufferID);
 		}
+
+		InstancedRenderer.Render(FrameBufferID);
+
 	}
 
 	private static void fullScreenRender(Shader shader, int textureID, int textureID2) {
