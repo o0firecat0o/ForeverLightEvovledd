@@ -234,7 +234,6 @@ public class Render implements Runnable {
 		long accumulator = 0;
 
 		while (running) {
-
 			render();
 			accumulator++;
 			if (System.currentTimeMillis() - originalTime >= 1000) {
@@ -279,13 +278,13 @@ public class Render implements Runnable {
 		////// Rendering Start here
 
 		// FBO rendering: BloomBuffer
-		bloomFrameBuffer.bind();
+		bloomFrameBuffer.bind_clear();
 		renderAll(bloomFrameBuffer.FrameBufferID);
 
 		/////////////////////////////////////////////////////////////////////
 		// FBO rendering: RippleDistortion
 
-		rippleFrameBuffer.bind();
+		rippleFrameBuffer.bind_clear();
 		// set the background color to lightblue for normal mapping
 		fullScreenRender(Shader.getShader("UI"), Texture.getTexture("normalmapbg"), 0);
 
@@ -295,12 +294,13 @@ public class Render implements Runnable {
 		/////////////////////////////////////////////////////////////////////
 		// FBO rendering: HeatHazeDistortion
 
-		heatHazeFrameBuffer.bind();
+		heatHazeFrameBuffer.bind_clear();
 		renderAll(heatHazeFrameBuffer.FrameBufferID);
 		/////////////////////////////////////////////////////////////////////
 
+		//////////////////////////////////////////////////////////////////////
 		// FBO rendering: MainBuffer
-		mainFrameBuffer.bind();
+		mainFrameBuffer.bind_clear();
 
 		// the actual background color is here!
 		fullScreenRender(Shader.getShader("UI"), backgroundImage, 0);
@@ -308,11 +308,11 @@ public class Render implements Runnable {
 		renderAll(mainFrameBuffer.FrameBufferID);
 
 		// Blur horizontally
-		blurProcessingBuffer.bind();
+		blurProcessingBuffer.bind_clear();
 		fullScreenRender(Shader.getShader("HBlur"), bloomFrameBuffer.colorTextureID, 0);
 
 		// Blur vertically
-		glowFrameBuffer.bind();
+		glowFrameBuffer.bind_clear();
 		fullScreenRender(Shader.getShader("VBlur"), blurProcessingBuffer.colorTextureID, 0);
 
 		// Render the stuff that does not need blur, hence, only glow
@@ -320,31 +320,31 @@ public class Render implements Runnable {
 
 		/// Bloom result render, added the mainFrame
 
-		postBloomBuffer.bind();
+		postBloomBuffer.bind_clear();
 		fullScreenRender(Shader.getShader("Bloom"), mainFrameBuffer.colorTextureID, glowFrameBuffer.colorTextureID);
 
 		// Added ripple distortion into the postbloom buffer
-		postRippleBuffer.bind();
+		postRippleBuffer.bind_clear();
 		fullScreenRender(Shader.getShader("RippleDistortion"), postBloomBuffer.colorTextureID,
 				rippleFrameBuffer.colorTextureID);
 
 		//////////////////////////////////////////////////////////
 		// Added swirl distortion into the postripple buffer
-		swirlFrameBuffer.bind();
+		swirlFrameBuffer.bind_clear();
 
 		// Swirl Shader require open GL 4.0 or above to run
 		if (glCapabilities.OpenGL40) {
 			SwirlRenderer.swirlList.clear();
 			renderAll(swirlFrameBuffer.FrameBufferID);
-
-			Shader.getShader("SwirlDistortion").enable();
+			Shader swirlShader = Shader.getShader("SwirlDistortion");
+			swirlShader.enable();
 
 			ArrayList<Vector4f> swirlList = SwirlRenderer.returnALlSwirlinVector4f();
-			Shader.getShader("SwirlDistortion").setUniform4fv("veclist", swirlList);
-			Shader.getShader("SwirlDistortion").setUniform1f("veccount", swirlList.size());
-			Shader.getShader("SwirlDistortion").setUniform1f("scroll", Camera.MAIN.scroll);
-			Shader.getShader("SwirlDistortion").setUniform2f("resolution", Main.getWidth(), Main.getHeight());
-			Shader.getShader("SwirlDistortion").disable();
+			swirlShader.setUniform4fv("veclist", swirlList);
+			swirlShader.setUniform1f("veccount", swirlList.size());
+			swirlShader.setUniform1f("scroll", Camera.MAIN.scroll);
+			swirlShader.setUniform2f("resolution", Main.getWidth(), Main.getHeight());
+			swirlShader.disable();
 
 			fullScreenRender(Shader.getShader("SwirlDistortion"), postRippleBuffer.colorTextureID, 0);
 		}
@@ -356,7 +356,7 @@ public class Render implements Runnable {
 		///////////////////////////////////////////////////////////
 
 		// added heat haze effect
-		postHeatHazeBuffer.bind();
+		postHeatHazeBuffer.bind_clear();
 		fullScreenRender(Shader.getShader("HeatHazeDistortion"), swirlFrameBuffer.colorTextureID,
 				heatHazeFrameBuffer.colorTextureID);
 
@@ -367,7 +367,6 @@ public class Render implements Runnable {
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// fullScreenRender(Shader.getShader("UI"), swirlFrameBuffer.colorTextureID, 0);
 		fullScreenRender(Shader.getShader("UI"), postHeatHazeBuffer.colorTextureID, 0);
 
 		renderAll(postProcessingBuffer.FrameBufferID);

@@ -86,6 +86,11 @@ public class Shader {
 		Shader.createShader("shaders/default.vert", "shaders/Dissolve.frag", "Dissolve")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).setUniform1i("tex2", 2);
 
+		// trail shader
+		Shader.createShader("shaders/default.vert", "shaders/default.frag", "TrailObject")
+				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1);
+		Shader.createShader("shaders/default.vert", "shaders/Trail.frag", "Trail").setUniform1i("tex", 1);
+
 		Shader.createShader("shaders/default.vert", "shaders/Shield.frag", "Shield")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix).setUniform1i("tex", 1).setUniform1i("tex2", 2)
 				.setUniform1i("tex3", 3).setUniform1i("tex4", 4);
@@ -118,8 +123,6 @@ public class Shader {
 
 		Shader.createShader("shaders/default.vert", "shaders/CircularMeter.frag", "CircularMeter")
 				.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix);
-		Shader.createShader("shaders/default.vert", "shaders/Trail.frag", "Trail").setUniform1i("tex", 1)
-				.setUniform1i("tex2", 2).isUIShader();
 
 	}
 

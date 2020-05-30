@@ -7,13 +7,9 @@ in DATA{
 } fs_in;
 
 uniform sampler2D tex;
-uniform sampler2D tex2;
 
 void main()
 {
-	color =  texture(tex, fs_in.tc) * 0.5 + texture(tex2, fs_in.tc) * 1;
-
-	if(color.a<0.1){
-		discard;
-	}
+	color = texture(tex, vec2(fs_in.tc.x,1-fs_in.tc.y));
+	color.a = color.a-0.002f;
 }

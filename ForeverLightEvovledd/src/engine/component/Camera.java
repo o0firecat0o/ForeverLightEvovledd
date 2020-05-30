@@ -36,15 +36,16 @@ public class Camera extends Component {
 					shader.setUniformMat4f("vw_matrix", new Matrix4f().translate(0, 0, 0));
 
 					shader.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix);
-					continue;
 				}
-
 				// else apply scale and translation
-				shader.setUniformMat4f("vw_matrix",
-						new Matrix4f().translate(-gameObject.transform.position.x, -gameObject.transform.position.y, 0)
-								.scale(scroll));
+				else {
+					shader.setUniformMat4f("vw_matrix",
+							new Matrix4f()
+									.translate(-gameObject.transform.position.x, -gameObject.transform.position.y, 0)
+									.scale(scroll));
 
-				shader.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix);
+					shader.setUniformMat4f("pr_matrix", SpriteRenderer.pr_matrix);
+				}
 			}
 		}
 		// Clear the rendered shader list

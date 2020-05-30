@@ -13,10 +13,7 @@ import static org.lwjgl.opengl.EXTFramebufferObject.glGenRenderbuffersEXT;
 import static org.lwjgl.opengl.EXTFramebufferObject.glRenderbufferStorageEXT;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_INT;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
-import static org.lwjgl.opengl.GL11.GL_RGBA;
-import static org.lwjgl.opengl.GL11.GL_RGBA8;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
@@ -31,12 +28,14 @@ import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
 
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 
 public class FrameBufferObject {
 
 	public int FrameBufferID;
 	public int colorTextureID;
+	public int depthTextureID;
 	public int depthRenderBufferID;
 	public int Width;
 	public int Height;
@@ -51,6 +50,7 @@ public class FrameBufferObject {
 
 		FrameBufferID = glGenFramebuffersEXT(); // create a new framebuffer
 		colorTextureID = glGenTextures(); // And finally a new depthbuffer
+		depthTextureID = glGenTextures();
 		depthRenderBufferID = glGenRenderbuffersEXT(); // And finally a new
 														// depthbuffer
 
@@ -67,11 +67,18 @@ public class FrameBufferObject {
 																			// it
 																			// linear
 																			// filterd
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, Width, Height, 0, GL_RGBA, GL_INT, (java.nio.ByteBuffer) null); // Create
-																													// the
-																													// texture
-																													// data
+		glTexImage2D(GL_TEXTURE_2D, 0, GL11.GL_RGBA, Width, Height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE,
+				(java.nio.ByteBuffer) null); // Create the texture data
+
 		glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, colorTextureID, 0); // attach
+
+		// initialize depth texture
+		glBindTexture(GL_TEXTURE_2D, depthTextureID);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL14.GL_DEPTH_COMPONENT24, Width, Height, 0, GL11.GL_DEPTH_COMPONENT,
+				GL11.GL_UNSIGNED_BYTE, (java.nio.ByteBuffer) null);
+
+		glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_TEXTURE_2D, depthTextureID, 0);
 
 		// initialize depth renderbuffer
 		glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthRenderBufferID); // bind
@@ -91,11 +98,15 @@ public class FrameBufferObject {
 														// framebuffer rendering
 	}
 
-	public void bind() {
+	public void bind_clear() {
 		glViewport(0, 0, Width, Height);
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, FrameBufferID);
-		// TODO: make some framebuffer not clearing, to make trail
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
+	public void bind() {
+		glViewport(0, 0, Width, Height);
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, FrameBufferID);
+		glClear(GL_DEPTH_BUFFER_BIT);
+	}
 }

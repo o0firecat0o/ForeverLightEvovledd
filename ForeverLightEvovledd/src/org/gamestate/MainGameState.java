@@ -1,15 +1,19 @@
 package org.gamestate;
 
+import org.joml.Vector2f;
 import org.joml.Vector2i;
 
+import engine.component.Camera;
 import engine.component.graphic.Texture;
 import engine.component.graphic.spriteRendererComponent.DefaultRender;
-import engine.component.graphic.spriteRendererComponent.DissolveRenderer;
 import engine.gamestate.IGameState;
 import engine.input.InputKey;
+import engine.input.InputMouseButton;
 import engine.main.Render;
 import engine.object.GameObject;
 import engine.random.Random;
+import engine.timer.ITimerFunction;
+import engine.timer.Timer;
 
 public class MainGameState implements IGameState {
 
@@ -32,8 +36,10 @@ public class MainGameState implements IGameState {
 			Render.setWindowSize(new Vector2i(1920, 1080));
 		}
 
-		MakeSwirl();
-
+		if (InputMouseButton.OnMouseDown(0)) {
+			MakeSwirl();
+			System.out.println("yay");
+		}
 	}
 
 	@Override
@@ -43,9 +49,18 @@ public class MainGameState implements IGameState {
 
 	public void MakeSwirl() {
 		GameObject gameObject = new GameObject();
-		gameObject.AddComponent(new DissolveRenderer().SetTexture(Texture.getTexture("Block5")));
-		gameObject.transform.setPosition(9);
-		gameObject.transform.setPosition(Random.RandomVector(10000));
+		gameObject.AddComponent(new DefaultRender().SetTexture(Texture.getTexture("Block5")));
+		gameObject.transform.setPosition(8);
+		gameObject.transform.setPosition(Camera.MAIN.InputMousePositionV2f());
+		new Timer(1, new ITimerFunction() {
+
+			Vector2f vector2f = Random.RandomVector(5);
+
+			@Override
+			public void run() {
+				gameObject.transform.addPosition(vector2f);
+			}
+		});
 	}
 
 	@Override
@@ -58,5 +73,6 @@ public class MainGameState implements IGameState {
 			}
 		}
 		Render.setBackgroundImage(Texture.getTexture("universe1"));
+
 	}
 }
