@@ -103,8 +103,6 @@ public class Render implements Runnable {
 
 	public static int backgroundImage;
 
-	private static Vector4f BackGroundColor = new Vector4f(0f, 0f, 0f, 1.0f);
-
 	public static FrameBufferObject heatHazeFrameBuffer;
 	public static FrameBufferObject swirlFrameBuffer;
 	public static FrameBufferObject rippleFrameBuffer; // For ripple effect
@@ -172,9 +170,6 @@ public class Render implements Runnable {
 		glActiveTexture(GL_TEXTURE1);
 		// Load all of the default shader
 		Shader.loadDefault();
-
-		// Set the Background Color to Black?
-		setBackGroundColor(new Vector4f(0f, 0f, 0f, 1.0f));
 
 		// Create a FBO
 		bloomFrameBuffer = new FrameBufferObject(Main.getWidth(), Main.getHeight());
@@ -272,7 +267,7 @@ public class Render implements Runnable {
 		}
 
 		// set the background color back to black before all rendering
-		setBackGroundColor(new Vector4f(0, 0, 0, 0));
+		glClearColor(0, 0, 0, 0);
 
 		////////////////////////////////////////////////////////////////////////////
 		////// Rendering Start here
@@ -437,11 +432,6 @@ public class Render implements Runnable {
 		Main.setHeight(windowSize.y);
 		SpriteRenderer.pr_matrix = new Matrix4f().ortho(0, Main.getWidth(), 0, Main.getHeight(), -10, 10);
 		System.out.println("Setting Window Size to x: " + windowSize.x + ",y :" + windowSize.y);
-	}
-
-	public static void setBackGroundColor(Vector4f backGroundColor) {
-		BackGroundColor = backGroundColor;
-		glClearColor(BackGroundColor.x, BackGroundColor.y, BackGroundColor.z, BackGroundColor.w);
 	}
 
 	public static void setBackgroundImage(int texture) {
