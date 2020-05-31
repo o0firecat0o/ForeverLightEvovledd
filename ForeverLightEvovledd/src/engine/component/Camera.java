@@ -80,7 +80,7 @@ public class Camera extends Component {
 		} else if (InputMouseScroll.scrollDown) {
 			tempScroll *= 0.9;
 		}
-		tempScroll = Mathf.clamp(tempScroll, 0.02f, 80f);
+		tempScroll = Mathf.clamp(tempScroll, 0.02f, 2.0f);
 		if (scroll < tempScroll) {
 			scroll += (tempScroll - scroll) * scroll * 0.3f;
 		} else if (scroll > tempScroll) {
