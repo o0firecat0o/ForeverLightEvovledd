@@ -21,6 +21,8 @@ public class Camera extends Component {
 	 */
 	public float scroll = 1;
 
+	private float tempScroll = 1;
+
 	public static Camera MAIN;
 
 	public boolean enable = true;
@@ -74,11 +76,16 @@ public class Camera extends Component {
 
 		// Srolling
 		if (InputMouseScroll.scrollUp) {
-			scroll *= 1.1;
+			tempScroll *= 1.1;
 		} else if (InputMouseScroll.scrollDown) {
-			scroll *= 0.9;
+			tempScroll *= 0.9;
 		}
-		scroll = Mathf.clamp(scroll, 0.02f, 80f);
+		tempScroll = Mathf.clamp(tempScroll, 0.02f, 80f);
+		if (scroll < tempScroll) {
+			scroll += (tempScroll - scroll) * scroll * 0.3f;
+		} else if (scroll > tempScroll) {
+			scroll -= (scroll - tempScroll) * scroll * 0.3f;
+		}
 	}
 
 	@Override
