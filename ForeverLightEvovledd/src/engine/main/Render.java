@@ -435,6 +435,7 @@ public class Render implements Runnable {
 		glfwSetWindowSize(window, windowSize.x, windowSize.y);
 		Main.setWidth(windowSize.x);
 		Main.setHeight(windowSize.y);
+		SpriteRenderer.pr_matrix = new Matrix4f().ortho(0, Main.getWidth(), 0, Main.getHeight(), -10, 10);
 		System.out.println("Setting Window Size to x: " + windowSize.x + ",y :" + windowSize.y);
 	}
 
